@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:test/features/booking/presentation/widgets/course_card.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
-class CoursesBokkingList extends StatelessWidget {
-  final List<CourseModel> courses;
 
-  const CoursesBokkingList({super.key, required this.courses});
+class CoursesBokkingList extends StatelessWidget {
+  const CoursesBokkingList({required this.courses, super.key});
+  final List<CourseModel> courses;
 
   @override
   Widget build(BuildContext context) {

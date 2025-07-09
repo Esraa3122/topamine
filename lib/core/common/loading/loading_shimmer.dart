@@ -20,7 +20,6 @@ class LoadingShimmer extends StatelessWidget {
       interval: const Duration(seconds: 0),
       color: Colors.white,
       colorOpacity: 0.3,
-      enabled: true,
       child: Container(
         height: height,
         width: width,

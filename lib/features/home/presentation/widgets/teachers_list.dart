@@ -6,32 +6,32 @@ class TeachersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<TeacherModel> teachers = [
+    final teachers = <TeacherModel>[
       TeacherModel(
-        name: "Sarah Johnson",
-        subject: "Mathematics",
-        imageUrl: "https://i.pravatar.cc/150?img=1",
+        name: 'Sarah Johnson',
+        subject: 'Mathematics',
+        imageUrl: 'https://i.pravatar.cc/150?img=1',
         rating: 4.5,
         reviews: 24,
       ),
       TeacherModel(
-        name: "Michael Chen",
-        subject: "English Literature",
-        imageUrl: "https://i.pravatar.cc/150?img=2",
-        rating: 4.0,
+        name: 'Michael Chen',
+        subject: 'English Literature',
+        imageUrl: 'https://i.pravatar.cc/150?img=2',
+        rating: 4,
         reviews: 32,
       ),
       TeacherModel(
-        name: "Emily Brown",
-        subject: "Science",
-        imageUrl: "https://i.pravatar.cc/150?img=3",
+        name: 'Emily Brown',
+        subject: 'Science',
+        imageUrl: 'https://i.pravatar.cc/150?img=3',
         rating: 4.3,
         reviews: 18,
       ),
       TeacherModel(
-        name: "David Wilson",
-        subject: "Languages",
-        imageUrl: "https://i.pravatar.cc/150?img=4",
+        name: 'David Wilson',
+        subject: 'Languages',
+        imageUrl: 'https://i.pravatar.cc/150?img=4',
         rating: 4.2,
         reviews: 27,
       ),

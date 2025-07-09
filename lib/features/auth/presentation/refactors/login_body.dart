@@ -49,7 +49,7 @@ class _LoginBodyState extends State<LoginBody> {
             await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
           } else if (role == 'student') {
             await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
-          }else {
+          } else {
             ShowToast.showToastErrorTop(
               message: context.translate(LangKeys.roleNotFound),
             );
@@ -132,7 +132,7 @@ class _LoginBodyState extends State<LoginBody> {
                   children: [
                     const Expanded(child: Divider()),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: TextApp(
                         text: context.translate(LangKeys.or),
                         theme: context.textStyle.copyWith(

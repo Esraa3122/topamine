@@ -17,72 +17,74 @@ class SigninWithGoogle extends StatelessWidget {
   final double? height;
   final double? width;
 
-Future<void> signInWithGoogle(BuildContext context) async {
-  try {
-    // تسجيل الدخول باستخدام Google
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    if (googleUser == null) return;
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      // تسجيل الدخول باستخدام Google
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // تسجيل الدخول في Firebase
-    final UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+      // تسجيل الدخول في Firebase
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
 
-    User? user = userCredential.user;
+      User? user = userCredential.user;
 
-    if (user == null) {
-      throw Exception('فشل تسجيل الدخول: المستخدم غير موجود');
-    }
-
-    // تأكد من وجود اسم المستخدم
-    if (user.displayName == null || user.displayName!.isEmpty) {
-      await user.updateDisplayName(googleUser.displayName ?? 'New User');
-      await user.reload();
-      user = FirebaseAuth.instance.currentUser;
-    }
-
-    final String uid = user!.uid;
-
-    final userData = {
-      'id': uid,
-      'name': user.displayName ?? googleUser.displayName ?? 'User',
-      'email': user.email ?? '',
-      'avatar': user.photoURL ?? '',
-      'role': 'teacher', 
-      'phone': user.phoneNumber ?? '',
-      'governorate': '',
-    };
-
-    final firestore = FirebaseFirestore.instance;
-    final docRef = firestore.collection('users').doc(uid);
-    final docSnapshot = await docRef.get();
-
-    if (!docSnapshot.exists) {
-      try {
-        await docRef.set(userData);
+      if (user == null) {
+        throw Exception('فشل تسجيل الدخول: المستخدم غير موجود');
       }
-       catch (e) {
-        throw Exception('حدث خطأ أثناء حفظ البيانات');
+
+      // تأكد من وجود اسم المستخدم
+      if (user.displayName == null || user.displayName!.isEmpty) {
+        await user.updateDisplayName(googleUser.displayName ?? 'New User');
+        await user.reload();
+        user = FirebaseAuth.instance.currentUser;
       }
-    } else {
-      debugPrint('المستخدم موجود مسبقًا في Firestore');
+
+      final String uid = user!.uid;
+
+      final userData = {
+        'id': uid,
+        'name': user.displayName ?? googleUser.displayName ?? 'User',
+        'email': user.email ?? '',
+        'avatar': user.photoURL ?? '',
+        'role': 'teacher',
+        'phone': user.phoneNumber ?? '',
+        'governorate': '',
+      };
+
+      final firestore = FirebaseFirestore.instance;
+      final docRef = firestore.collection('users').doc(uid);
+      final docSnapshot = await docRef.get();
+
+      if (!docSnapshot.exists) {
+        try {
+          await docRef.set(userData);
+        } catch (e) {
+          throw Exception('حدث خطأ أثناء حفظ البيانات');
+        }
+      } else {
+        debugPrint('المستخدم موجود مسبقًا في Firestore');
+      }
+      await sl<SharedPrefHelper>().saveUserSession(user.uid, 'teacher');
+
+      await context.pushReplacementNamed(AppRoutes.teacherProfile);
+    } catch (e) {
+      debugPrint(' Google Sign-In failed: $e');
+      buildAwesomeDialogError(
+        'Error',
+        'فشل تسجيل الدخول بواسطة Google:\n$e',
+        context,
+      );
     }
-        await sl<SharedPrefHelper>().saveUserSession(user.uid, 'teacher');
-
-
-    await context.pushReplacementNamed(AppRoutes.teacherProfile);
-  } catch (e) {
-    debugPrint(' Google Sign-In failed: $e');
-    buildAwesomeDialogError('Error', 'فشل تسجيل الدخول بواسطة Google:\n$e', context);
   }
-}
 
   @override
   Widget build(BuildContext context) {

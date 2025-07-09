@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseSection extends StatefulWidget {
-  final String title;
-  final String subtitle;
-  final List<String> contents;
-
-  const CourseSection({super.key, 
+  const CourseSection({
     required this.title,
     required this.subtitle,
     required this.contents,
+    super.key,
   });
+  final String title;
+  final String subtitle;
+  final List<String> contents;
 
   @override
   State<CourseSection> createState() => _CourseSectionState();
@@ -24,7 +25,7 @@ class _CourseSectionState extends State<CourseSection> {
       elevation: 0.5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         title: Text(
           widget.title,
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -36,16 +37,15 @@ class _CourseSectionState extends State<CourseSection> {
             _expanded = value;
           });
         },
-        children:
-            widget.contents
-                .map(
-                  (content) => ListTile(
-                    title: Text(content),
-                    dense: true,
-                    leading: const Icon(Icons.play_circle_outline, size: 20),
-                  ),
-                )
-                .toList(),
+        children: widget.contents
+            .map(
+              (content) => ListTile(
+                title: Text(content),
+                dense: true,
+                leading: Icon(Icons.play_circle_outline, size: 20.sp),
+              ),
+            )
+            .toList(),
       ),
     );
   }

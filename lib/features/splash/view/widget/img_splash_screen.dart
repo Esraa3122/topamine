@@ -5,7 +5,10 @@ class ImgSplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset("img/pngtree-opened-book-isolated-college-literaturebook-png-image_12864221.png",
-          width: 300,height:200);
+    return Image.asset(
+      'img/pngtree-opened-book-isolated-college-literaturebook-png-image_12864221.png',
+      width: 300,
+      height: 200,
+    );
   }
 }

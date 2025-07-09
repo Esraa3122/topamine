@@ -7,33 +7,33 @@ class StudentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<StudentModel> students = [
+    final students = <StudentModel>[
       StudentModel(
-        name: "Sarah Johnson",
+        name: 'Sarah Johnson',
         subject:
-            "Excellent course! The instructor explains complex concepts in a very clear way.",
-        imageUrl: "https://i.pravatar.cc/150?img=1",
+            'Excellent course! The instructor explains complex concepts in a very clear way.',
+        imageUrl: 'https://i.pravatar.cc/150?img=1',
         rating: 4.5,
       ),
       StudentModel(
-        name: "Michael Chen",
+        name: 'Michael Chen',
         subject:
-            "Excellent course! The instructor explains complex concepts in a very clear way.",
-        imageUrl: "https://i.pravatar.cc/150?img=2",
-        rating: 4.0,
+            'Excellent course! The instructor explains complex concepts in a very clear way.',
+        imageUrl: 'https://i.pravatar.cc/150?img=2',
+        rating: 4,
       ),
       StudentModel(
-        name: "Emily Brown",
+        name: 'Emily Brown',
         subject:
-            "Excellent course! The instructor explains complex concepts in a very clear way.",
-        imageUrl: "https://i.pravatar.cc/150?img=3",
+            'Excellent course! The instructor explains complex concepts in a very clear way.',
+        imageUrl: 'https://i.pravatar.cc/150?img=3',
         rating: 4.3,
       ),
     ];
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 16),
       itemCount: students.length,
       itemBuilder: (context, index) {

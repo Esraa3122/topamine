@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/home/presentation/widgets/contanier_all_course.dart';
@@ -19,24 +20,32 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
       title: 'Advanced Mathematics',
       teacher: 'Dr. James Wilson',
       enrolledDate: 'Sept 15, 2023',
+      status: 'Completed 50%',
+      subject: 'Mathematics',
     ),
     CourseModel(
       image: AppImages.logo,
       title: 'AP Physics',
       teacher: 'Prof. Emily Chen',
       enrolledDate: 'Aug 30, 2023',
+      status: 'Completed 80%',
+      subject: 'Physics',
     ),
     CourseModel(
       image: AppImages.logo,
       title: 'SAT Preparation',
       teacher: 'Mr. Robert Brown',
       enrolledDate: 'July 10, 2023',
+      status: 'Completed 60%',
+      subject: 'SAT',
     ),
     CourseModel(
       image: AppImages.logo,
       title: 'English Grammar',
       teacher: 'Ms. Sarah Clark',
       enrolledDate: 'June 5, 2023',
+      status: 'Completed 50%',
+      subject: 'English',
     ),
   ];
 
@@ -61,12 +70,12 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
       body: Column(
         children: [
           SizedBox(
-            height: 50,
+            height: 50.h,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               itemCount: filters.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 10),
+              separatorBuilder: (_, _) => SizedBox(width: 10.w),
               itemBuilder: (context, index) {
                 final filter = filters[index];
                 final isSelected = filter == selectedFilter;
@@ -87,10 +96,10 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
               },
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.h),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: GridView.builder(
                 itemCount: filteredCourses.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

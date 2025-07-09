@@ -15,22 +15,22 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 10), ()async {
-        final prefs = await SharedPreferences.getInstance();
-        final uid = prefs.getString('user_id');
-        final role = prefs.getString('user_role');
+    Future.delayed(const Duration(seconds: 10), () async {
+      final prefs = await SharedPreferences.getInstance();
+      final uid = prefs.getString('user_id');
+      final role = prefs.getString('user_role');
 
-        if (uid != null && role != null) {
-          if (role == 'teacher') {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
-          } else {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
-          }
+      if (uid != null && role != null) {
+        if (role == 'teacher') {
+          await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
         } else {
-          await context.pushNamedAndRemoveUntil(AppRoutes.onBoarding);
+          await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
         }
+      } else {
+        await context.pushNamedAndRemoveUntil(AppRoutes.onBoarding);
       }
-);  }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

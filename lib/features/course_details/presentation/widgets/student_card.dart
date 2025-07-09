@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/course_details/data/model/student_model.dart';
 
 class StudentCard extends StatelessWidget {
+  const StudentCard({required this.student, super.key});
   final StudentModel student;
-
-  const StudentCard({super.key, required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class StudentCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300, width: 1),
-        boxShadow: [BoxShadow(color: Color(0xffF3F4F6), blurRadius: 4)],
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: const [BoxShadow(color: Color(0xffF3F4F6), blurRadius: 4)],
       ),
       child: Row(
         children: [
@@ -23,15 +23,15 @@ class StudentCard extends StatelessWidget {
             radius: 30,
             backgroundImage: NetworkImage(student.imageUrl),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   student.name,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -49,7 +49,7 @@ class StudentCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(width: 6),
+                SizedBox(width: 6.w),
                 Text(
                   student.subject,
                   style: TextStyle(color: Colors.grey[700]),

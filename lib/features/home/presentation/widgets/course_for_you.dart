@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/home/presentation/widgets/contanier_course.dart';
@@ -35,7 +36,7 @@ class CoursesListYou extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 200.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: courses.length,

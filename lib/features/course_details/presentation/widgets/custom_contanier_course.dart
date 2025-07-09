@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomContanierCourse extends StatelessWidget {
+  const CustomContanierCourse({
+    required this.label,
+    required this.backgroundColor,
+    required this.textColor,
+    super.key,
+  });
   final String label;
   final Color backgroundColor;
   final Color textColor;
 
-  const CustomContanierCourse({
-    super.key,
-    required this.label,
-    required this.backgroundColor,
-    required this.textColor,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 2.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: backgroundColor,

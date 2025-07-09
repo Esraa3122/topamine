@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/images/app_images.dart';
@@ -6,6 +7,7 @@ import 'package:test/features/booking/presentation/widgets/course_card.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/search/presentation/widgets/custom_text_search.dart';
 import 'package:test/features/search/presentation/widgets/subject_filter_list.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -63,20 +65,18 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<CourseModel> filteredCourses =
-        selectedSubject == 'All'
-            ? allCourses
-            : allCourses
-                .where((course) => course.subject == selectedSubject)
-                .toList();
+    var filteredCourses = selectedSubject == 'All'
+        ? allCourses
+        : allCourses
+              .where((course) => course.subject == selectedSubject)
+              .toList();
     if (searchQuery.isNotEmpty) {
-      filteredCourses =
-          filteredCourses.where((course) {
-            final lower = searchQuery.toLowerCase();
-            return course.title.toLowerCase().contains(lower) ||
-                course.teacher.toLowerCase().contains(lower) ||
-                (course.subject?.toLowerCase() ?? '').contains(lower);
-          }).toList();
+      filteredCourses = filteredCourses.where((course) {
+        final lower = searchQuery.toLowerCase();
+        return course.title.toLowerCase().contains(lower) ||
+            course.teacher.toLowerCase().contains(lower) ||
+            (course.subject?.toLowerCase() ?? '').contains(lower);
+      }).toList();
     }
 
     return Scaffold(
@@ -103,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             SubjectFilterList(
               selectedSubject: selectedSubject,
               onSubjectSelected: (value) {
@@ -112,17 +112,16 @@ class _SearchPageState extends State<SearchPage> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Expanded(
-              child:
-                  filteredCourses.isEmpty
-                      ? const Center(child: Text('No courses found'))
-                      : ListView.builder(
-                        itemCount: filteredCourses.length,
-                        itemBuilder: (context, index) {
-                          return CourseCard(course: filteredCourses[index]);
-                        },
-                      ),
+              child: filteredCourses.isEmpty
+                  ? const Center(child: Text('No courses found'))
+                  : ListView.builder(
+                      itemCount: filteredCourses.length,
+                      itemBuilder: (context, index) {
+                        return CourseCard(course: filteredCourses[index]);
+                      },
+                    ),
             ),
           ],
         ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/booking/presentation/widgets/BookingCategoryList.dart';
 import 'package:test/features/booking/presentation/widgets/courses_booking_list.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
+import 'package:test/features/search/presentation/widgets/custom_text_search.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
@@ -12,6 +15,7 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
+  final TextEditingController searchController = TextEditingController();
   String selectedFilter = 'all';
   String searchQuery = '';
 
@@ -53,20 +57,18 @@ class _BookingPageState extends State<BookingPage> {
 
   @override
   Widget build(BuildContext context) {
-    var filteredCourses =
-        selectedFilter == 'all'
-            ? allCourses
-            : allCourses
-                .where((course) => course.status == selectedFilter)
-                .toList();
+    var filteredCourses = selectedFilter == 'all'
+        ? allCourses
+        : allCourses
+              .where((course) => course.status == selectedFilter)
+              .toList();
     if (searchQuery.isNotEmpty) {
       final lower = searchQuery.toLowerCase();
-      filteredCourses =
-          filteredCourses.where((course) {
-            return course.title.toLowerCase().contains(lower) ||
-                course.teacher.toLowerCase().contains(lower) ||
-                (course.subject?.toLowerCase() ?? '').contains(lower);
-          }).toList();
+      filteredCourses = filteredCourses.where((course) {
+        return course.title.toLowerCase().contains(lower) ||
+            course.teacher.toLowerCase().contains(lower) ||
+            (course.subject?.toLowerCase() ?? '').contains(lower);
+      }).toList();
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -80,34 +82,33 @@ class _BookingPageState extends State<BookingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'My Courses',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 10),
-            TextField(
-              onChanged: handleSearch,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                filled: true,
-                fillColor: const Color(0xffF3F4F6),
-                labelText: 'Search for courses..',
-                prefixIcon: const Icon(Icons.search),
+            SizedBox(height: 10.h),
+            CustomFadeInLeft(
+              duration: 300,
+              child: CustomTextSearch(
+                searchController: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value!;
+                  });
+                  return null;
+                },
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             BookingCategoryList(
               selectedValue: selectedFilter,
               onChanged: handleFilterChange,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Expanded(
-              child:
-                  filteredCourses.isEmpty
-                      ? const Center(child: Text('No courses found'))
-                      : CoursesBokkingList(courses: filteredCourses),
+              child: filteredCourses.isEmpty
+                  ? const Center(child: Text('No courses found'))
+                  : CoursesBokkingList(courses: filteredCourses),
             ),
           ],
         ),

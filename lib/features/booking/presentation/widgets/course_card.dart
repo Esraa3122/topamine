@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 
 class CourseCard extends StatelessWidget {
+  const CourseCard({required this.course, super.key, this.showStatus = false});
   final CourseModel course;
   final bool showStatus;
-
-  const CourseCard({super.key, required this.course, this.showStatus = false});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin:  EdgeInsets.symmetric(vertical: 8.h),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
       child: Padding(
@@ -22,47 +22,46 @@ class CourseCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
                 course.image,
-                width: 80,
-                height: 80,
+                width: 80.w,
+                height: 80.h,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding:  EdgeInsets.symmetric(vertical: 12.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       course.title,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4.h),
                     Text(
                       course.teacher,
                       style: const TextStyle(color: Colors.black54),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2.h),
                     Text(
                       'Enrolled: ${course.enrolledDate}',
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                     ),
                     if (showStatus) ...[
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Text(
-                        course.status == "completed"
-                            ? "Completed"
-                            : "In Progress",
+                        course.status == 'completed'
+                            ? 'Completed'
+                            : 'In Progress',
                         style: TextStyle(
-                          color:
-                              course.status == "completed"
-                                  ? Colors.green
-                                  : Colors.orange,
-                          fontSize: 12,
+                          color: course.status == 'completed'
+                              ? Colors.green
+                              : Colors.orange,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

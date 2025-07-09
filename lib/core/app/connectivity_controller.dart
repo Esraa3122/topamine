@@ -12,7 +12,7 @@ class ConnectivityController {
 
   Future<void> init() async {
     try {
-      final List<ConnectivityResult> result = await _connectivity
+      final result = await _connectivity
           .checkConnectivity();
       _handleConnectionChange(result);
 

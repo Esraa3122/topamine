@@ -21,6 +21,7 @@ import 'package:test/features/splash/view/screen/splash_screen.dart';
 import 'package:test/features/student/profile/presentation/screens/profile_student_screen.dart';
 import 'package:test/features/student/profile/presentation/screens/student_profile2.dart';
 import 'package:test/features/teacher/profile/presentation/screens/profile_teacher_screen.dart';
+import 'package:test/features/teacher/profile/presentation/screens/teacher_profile2.dart';
 
 class AppRoutes {
   static const String splash = 'splash';
@@ -92,6 +93,8 @@ class AppRoutes {
         return BaseRoute(page: CourseDetails(course: arg! as CourseModel));
       case studentProfile2:
         return BaseRoute(page: const StudentProfile2());
+      case teacherProfile2:
+        return BaseRoute(page: const TeacherProfile2());
       case teacherProfile:
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:

@@ -56,8 +56,8 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: 20.h,
             ),
             //arrow back
             CustomFadeInRight(
@@ -74,8 +74,8 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 100,
+             SizedBox(
+              height: 100.h,
             ),
             Center(
               child: TextApp(

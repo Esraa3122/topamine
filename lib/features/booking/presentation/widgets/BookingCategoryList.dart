@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookingCategoryList extends StatelessWidget {
+  const BookingCategoryList({
+    required this.selectedValue,
+    required this.onChanged,
+    super.key,
+  });
   final String selectedValue;
   // ignore: inference_failure_on_function_return_type
   final Function(String) onChanged;
-
-  const BookingCategoryList({
-    super.key,
-    required this.selectedValue,
-    required this.onChanged,
-  });
 
   final List<String> filters = const ['all', 'inprogress', 'completed'];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 40.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: filters.length,
@@ -27,15 +27,22 @@ class BookingCategoryList extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(filter),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 10.h,
+                ),
                 decoration: BoxDecoration(
-                  color: selectedValue == filter ? Colors.blue : Colors.grey.shade200,
+                  color: selectedValue == filter
+                      ? Colors.blue
+                      : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
                   filter[0].toUpperCase() + filter.substring(1),
                   style: TextStyle(
-                    color: selectedValue == filter ? Colors.white : Colors.black87,
+                    color: selectedValue == filter
+                        ? Colors.white
+                        : Colors.black87,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
