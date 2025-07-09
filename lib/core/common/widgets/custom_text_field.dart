@@ -24,7 +24,7 @@ class CustomTextField extends StatelessWidget {
   });
 
   final String? Function(String?)? validator;
-  final String? Function(String?)? onChanged;
+  final void Function(String)? onChanged;
   final String lable;
   final TextEditingController controller;
   final bool filled;
@@ -59,7 +59,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         label: Text(
           lable,
-          style: TextStyle(fontSize: 15.sp),
+          style: TextStyle(fontSize: 15.sp,color: context.color.textColor,),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -87,7 +87,9 @@ class CustomTextField extends StatelessWidget {
         filled: filled,
         fillColor: fillColour,
         suffixIcon: suffixIcon,
+        suffixIconColor: context.color.textColor,
         prefixIcon: prefixIcon,
+        prefixIconColor: context.color.textColor,
         hintText: hintText,
         hintStyle:
             hintStyle ??

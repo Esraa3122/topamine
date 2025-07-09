@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/booking/data/model/categorey_booking_model.dart';
 import 'package:test/features/booking/presentation/widgets/booking_category_chip.dart';
 
 class CategoryBookingList extends StatefulWidget {
-  // ignore: inference_failure_on_function_return_type
-  final Function(String value) onFilterChanged;
 
   const CategoryBookingList({
-    super.key,
-    required this.onFilterChanged,
+    required this.onFilterChanged, super.key,
   });
+
+  final Function(String value) onFilterChanged;
 
   @override
   State<CategoryBookingList> createState() => _CategoryBookingListState();
@@ -34,7 +34,7 @@ class _CategoryBookingListState extends State<CategoryBookingList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 40.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: filters.length,

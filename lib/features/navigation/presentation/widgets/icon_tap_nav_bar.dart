@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomNavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-
-  const CustomNavItem({
-    super.key,
+class IconTapNavBar extends StatelessWidget {
+  const IconTapNavBar({
     required this.icon,
-    required this.label,
     required this.isSelected,
+    required this.label,
+    super.key,
   });
+
+  final IconData icon;
+  final bool isSelected;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 6.w, horizontal: 16.h),
       decoration: isSelected
           ? BoxDecoration(
               color: Colors.blue.withOpacity(0.1),

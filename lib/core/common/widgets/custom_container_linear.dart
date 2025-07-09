@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test/core/extensions/context_extension.dart';
 
-class CustomContainerLinearDonor extends StatelessWidget {
-  const CustomContainerLinearDonor({
+class CustomContainerLinear extends StatelessWidget {
+  const CustomContainerLinear({
     required this.height,
     required this.width,
     required this.child,

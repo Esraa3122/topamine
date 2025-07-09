@@ -6,13 +6,10 @@ class ProfileTeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile'),),
-      body:  SizedBox(
+    return SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: const ProfileTeacherBody(),
-        )
     );
   }
 }

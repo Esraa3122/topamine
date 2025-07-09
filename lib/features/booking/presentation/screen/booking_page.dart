@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/animations/animate_do.dart';
+import 'package:test/core/common/widgets/custom_text_field.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/booking/presentation/widgets/BookingCategoryList.dart';
 import 'package:test/features/booking/presentation/widgets/courses_booking_list.dart';
@@ -14,6 +20,7 @@ class BookingPage extends StatefulWidget {
 class _BookingPageState extends State<BookingPage> {
   String selectedFilter = 'all';
   String searchQuery = '';
+  TextEditingController searchController = TextEditingController();
 
   List<CourseModel> allCourses = [
     CourseModel(
@@ -68,33 +75,26 @@ class _BookingPageState extends State<BookingPage> {
                 (course.subject?.toLowerCase() ?? '').contains(lower);
           }).toList();
     }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Booking'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'My Courses',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              onChanged: handleSearch,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                filled: true,
-                fillColor: const Color(0xffF3F4F6),
-                labelText: 'Search for courses..',
+            TextApp(text: 'My Courses', theme: context.textStyle.copyWith(
+              color: context.color.textColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeightHelper.medium
+            )),
+            SizedBox(height: 10.h),
+            CustomFadeInLeft(
+              duration: 300,
+              child: CustomTextField(
+                controller: searchController,
+                lable: 'Search',
+                hintText: 'Search for courses..',
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: const Icon(Icons.filter_list),
+                onChanged: handleSearch,
               ),
             ),
             const SizedBox(height: 20),
@@ -111,7 +111,6 @@ class _BookingPageState extends State<BookingPage> {
             ),
           ],
         ),
-      ),
     );
   }
 }

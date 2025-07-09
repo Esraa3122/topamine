@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
-import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/booking/presentation/widgets/course_card.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
@@ -79,14 +79,7 @@ class _SearchPageState extends State<SearchPage> {
           }).toList();
     }
 
-    return Scaffold(
-      backgroundColor: context.color.mainColor,
-      appBar: AppBar(
-        title: const Text('Search'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             SubjectFilterList(
               selectedSubject: selectedSubject,
               onSubjectSelected: (value) {
@@ -112,7 +105,7 @@ class _SearchPageState extends State<SearchPage> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Expanded(
               child:
                   filteredCourses.isEmpty
@@ -126,7 +119,6 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ],
         ),
-      ),
     );
   }
 }

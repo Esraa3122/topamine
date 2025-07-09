@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/home/presentation/widgets/auto_slider.dart';
 import 'package:test/features/home/presentation/widgets/course_for_you.dart';
 import 'package:test/features/home/presentation/widgets/progress_badges.dart';
@@ -17,20 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Text('Topamine'),
-            const Spacer(),
-            Image.asset(AppImages.logo, width: 50, height: 50),
-          ],
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Padding(
+    return  Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
@@ -87,7 +73,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
     );
   }
 }

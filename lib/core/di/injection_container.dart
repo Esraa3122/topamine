@@ -5,12 +5,14 @@ import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:test/features/navigation/cubit/main_cubit_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
 Future<void> setupInjector() async {
   await _initCore();
   await _initAuth();
+  await _initMain();
 }
 
 Future<void> _initCore() async {
@@ -37,4 +39,8 @@ Future<void> _initAuth() async {
   // ..registerFactory(() => AppCubit(sl()))
   // ..registerLazySingleton(() => AuthRepos(sl()))
   // ..registerLazySingleton(() => AuthDataSource(sl()));
+}
+
+Future<void> _initMain() async {
+  sl.registerFactory(MainCubitCubit.new);
 }

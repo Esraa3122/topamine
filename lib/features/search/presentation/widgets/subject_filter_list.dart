@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SubjectFilterList extends StatelessWidget {
 
@@ -20,7 +21,7 @@ class SubjectFilterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 40.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: subjects.length,
@@ -33,7 +34,7 @@ class SubjectFilterList extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onSubjectSelected(subject),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10.w),
                 decoration: BoxDecoration(
                   color: isSelected ? Colors.blue : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(30),

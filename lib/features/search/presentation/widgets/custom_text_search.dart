@@ -6,7 +6,7 @@ class CustomTextSearch extends StatelessWidget {
     required this.searchController, super.key,
     this.onChanged,
   });
-  final String? Function(String?)? onChanged;
+  final void Function(String?)? onChanged;
   final TextEditingController searchController;
 
   @override
@@ -19,17 +19,5 @@ class CustomTextSearch extends StatelessWidget {
       suffixIcon: const Icon(Icons.filter_list),
       onChanged: onChanged,
     );
-
-    //  TextField(
-    //   onChanged: onChanged,
-    //   decoration: InputDecoration(
-    //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-    //     filled: true,
-    //     fillColor: const Color(0xffF3F4F6),
-    //     labelText: label,
-    //     prefixIcon: const Icon(Icons.search),
-    //     suffixIcon: suffixIcon,
-    //   ),
-    // );
   }
 }

@@ -14,7 +14,7 @@ import 'package:test/features/course_details/presentation/screen/course_details.
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/home/presentation/screens/home_page.dart';
 import 'package:test/features/home/presentation/widgets/all_courses_page.dart';
-import 'package:test/features/navigation/view/navigation_screen.dart';
+import 'package:test/features/navigation/presentation/screen/navigation_teacher_app_bar_screen.dart';
 import 'package:test/features/onbording/view/screens/on_boarding_screen.dart';
 import 'package:test/features/search/presentation/screen/search_page.dart';
 import 'package:test/features/splash/view/screen/splash_screen.dart';
