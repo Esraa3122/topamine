@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
@@ -17,7 +18,7 @@ class ContanierCourse extends StatelessWidget {
         );
       },
       child: SizedBox(
-        width: 200,
+        width: 200.w,
         child: Card(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -33,7 +34,7 @@ class ContanierCourse extends StatelessWidget {
                 ),
                 child: Image.asset(
                   course.image,
-                  height: 100,
+                  height: 100.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -45,27 +46,27 @@ class ContanierCourse extends StatelessWidget {
                   children: [
                     Text(
                       course.title,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4.h),
                     Text(
                       course.teacher,
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: TextStyle(
+                        fontSize: 12.sp,
                         color: Colors.black54,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2.h),
                     Text(
                       'Enrolled: ${course.enrolledDate}',
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                     ),
                   ],
                 ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/enums/nav_bar_enum.dart';
-import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/booking/presentation/screen/booking_page.dart';
 import 'package:test/features/home/presentation/screens/home_page.dart';
 import 'package:test/features/navigation/cubit/main_cubit_cubit.dart';

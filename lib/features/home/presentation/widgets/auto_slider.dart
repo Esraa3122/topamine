@@ -47,7 +47,7 @@ class _BannerSlidersState extends State<BannerSliders> {
             );
           }).toList(),
           options: CarouselOptions(
-            height: 180,
+            height: 180.h,
             autoPlay: true,
             enlargeCenterPage: true,
             viewportFraction: 0.9,
@@ -62,14 +62,14 @@ class _BannerSlidersState extends State<BannerSliders> {
             },
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: imageUrls.asMap().entries.map((entry) {
             return Container(
               width: _current == entry.key ? 14.h : 8.h,
               height: 8.h,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: _current == entry.key

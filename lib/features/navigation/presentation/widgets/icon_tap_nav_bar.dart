@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IconTapNavBar extends StatelessWidget {
   const IconTapNavBar({
@@ -24,7 +25,7 @@ class IconTapNavBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             )
           : null,
-      child: Icon(icon, size: 24),
+      child: Icon(icon, size: 24.sp),
     );
   }
 }

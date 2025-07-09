@@ -41,4 +41,3 @@ class CustomLinearButton extends StatelessWidget {
     );
   }
 }
-

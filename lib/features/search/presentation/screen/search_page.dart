@@ -6,6 +6,7 @@ import 'package:test/features/booking/presentation/widgets/course_card.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/search/presentation/widgets/custom_text_search.dart';
 import 'package:test/features/search/presentation/widgets/subject_filter_list.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -63,20 +64,18 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<CourseModel> filteredCourses =
-        selectedSubject == 'All'
-            ? allCourses
-            : allCourses
-                .where((course) => course.subject == selectedSubject)
-                .toList();
+    var filteredCourses = selectedSubject == 'All'
+        ? allCourses
+        : allCourses
+              .where((course) => course.subject == selectedSubject)
+              .toList();
     if (searchQuery.isNotEmpty) {
-      filteredCourses =
-          filteredCourses.where((course) {
-            final lower = searchQuery.toLowerCase();
-            return course.title.toLowerCase().contains(lower) ||
-                course.teacher.toLowerCase().contains(lower) ||
-                (course.subject?.toLowerCase() ?? '').contains(lower);
-          }).toList();
+      filteredCourses = filteredCourses.where((course) {
+        final lower = searchQuery.toLowerCase();
+        return course.title.toLowerCase().contains(lower) ||
+            course.teacher.toLowerCase().contains(lower) ||
+            (course.subject?.toLowerCase() ?? '').contains(lower);
+      }).toList();
     }
 
     return Padding(
@@ -107,15 +106,14 @@ class _SearchPageState extends State<SearchPage> {
             ),
             SizedBox(height: 20.h),
             Expanded(
-              child:
-                  filteredCourses.isEmpty
-                      ? const Center(child: Text('No courses found'))
-                      : ListView.builder(
-                        itemCount: filteredCourses.length,
-                        itemBuilder: (context, index) {
-                          return CourseCard(course: filteredCourses[index]);
-                        },
-                      ),
+              child: filteredCourses.isEmpty
+                  ? const Center(child: Text('No courses found'))
+                  : ListView.builder(
+                      itemCount: filteredCourses.length,
+                      itemBuilder: (context, index) {
+                        return CourseCard(course: filteredCourses[index]);
+                      },
+                    ),
             ),
           ],
         ),

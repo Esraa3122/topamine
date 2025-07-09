@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/features/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/course_details/presentation/widgets/course_info.dart';
 import 'package:test/features/course_details/presentation/widgets/course_section.dart';
@@ -52,11 +56,11 @@ class CourseDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     course!.title,
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: TextStyle(
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -64,15 +68,15 @@ class CourseDetails extends StatelessWidget {
                     'Comprehensive SAT Math Preparation',
                     style: TextStyle(color: Colors.grey),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   Row(
                     children: [
                       CircleAvatar(backgroundImage: AssetImage(course!.image)),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10.h),
                       Text(course!.teacher),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   Row(
                     children: [
                       ...List.generate(
@@ -83,14 +87,14 @@ class CourseDetails extends StatelessWidget {
                           size: 18,
                         ),
                       ),
-                      const SizedBox(width: 6),
-                      const Text(
+                      SizedBox(width: 6.w),
+                      Text(
                         '(2.7 k reviews)',
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   const Text(
                     r'$199.99',
                     style: TextStyle(
@@ -99,7 +103,7 @@ class CourseDetails extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   const Divider(),
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -124,91 +128,103 @@ class CourseDetails extends StatelessWidget {
                     ],
                   ),
                   const Divider(),
-                  const SizedBox(height: 16),
-                  const Text(
+                  SizedBox(height: 16.h),
+                  Text(
                     'About This Course',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   const Text(
                     'Master advanced mathematics concepts and prepare for SAT success with our comprehensive course. Perfect for high school students looking to excel in standardized tests.',
                     style: TextStyle(height: 1.5),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   const BulletItem(text: 'Comprehensive SAT Math preparation'),
                   const BulletItem(
                     text: 'Step-by-step problem-solving techniques',
                   ),
                   const BulletItem(text: 'Practice tests and quizzes'),
                   const BulletItem(text: 'Detailed solution explanations'),
-                  const SizedBox(height: 24),
-                  const Row(
+                  SizedBox(height: 24.h),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Course Content',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text('32 lectures • 24 hours'),
+                      const Text('32 lectures • 24 hours'),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   const CourseSection(
                     title: 'Introduction to Advanced Mathematics',
                     subtitle: '5 lectures • 2h 30m',
                     contents: [
                       'Welcome & Overview',
                       'Key Concepts',
-                      "Tools Needed",
-                      "Getting Started",
-                      "First Practice Set",
+                      'Tools Needed',
+                      'Getting Started',
+                      'First Practice Set',
                     ],
                   ),
                   const CourseSection(
-                    title: "Algebra Fundamentals",
-                    subtitle: "8 lectures • 4h 15m",
+                    title: 'Algebra Fundamentals',
+                    subtitle: '8 lectures • 4h 15m',
                     contents: [
-                      "Variables & Expressions",
-                      "Linear Equations",
-                      "Quadratic Equations",
-                      "Factoring",
-                      "Inequalities",
-                      "Systems of Equations",
-                      "Algebraic Word Problems",
-                      "Algebra Review Quiz",
+                      'Variables & Expressions',
+                      'Linear Equations',
+                      'Quadratic Equations',
+                      'Factoring',
+                      'Inequalities',
+                      'Systems of Equations',
+                      'Algebraic Word Problems',
+                      'Algebra Review Quiz',
                     ],
                   ),
                   const CourseSection(
-                    title: "Geometry and Trigonometry",
-                    subtitle: "12 lectures • 6h 45m",
+                    title: 'Geometry and Trigonometry',
+                    subtitle: '12 lectures • 6h 45m',
                     contents: [
-                      "Angles and Lines",
-                      "Triangles",
-                      "Circles",
-                      "Coordinate Geometry",
-                      "Trigonometric Ratios",
-                      "Trigonometric Identities",
-                      "Unit Circle",
-                      "Graphs of Trig Functions",
-                      "Solving Triangles",
-                      "Applications in Real Life",
-                      "Practice Problems",
-                      "Geometry Review",
+                      'Angles and Lines',
+                      'Triangles',
+                      'Circles',
+                      'Coordinate Geometry',
+                      'Trigonometric Ratios',
+                      'Trigonometric Identities',
+                      'Unit Circle',
+                      'Graphs of Trig Functions',
+                      'Solving Triangles',
+                      'Applications in Real Life',
+                      'Practice Problems',
+                      'Geometry Review',
                     ],
                   ),
                   const Divider(),
-                  const Text(
+                  Text(
                     'Student Reviews',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                     ),
                   ),
                   const StudentList(),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  CustomLinearButton(
+                    height: 40.h,
+                    width: MediaQuery.of(context).size.width,
+                    onPressed: () {},
+                    child: const Text('Entroll Now'),
+                  ),
                 ],
               ),
             ),

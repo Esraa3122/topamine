@@ -60,57 +60,57 @@ class _BookingPageState extends State<BookingPage> {
 
   @override
   Widget build(BuildContext context) {
-    var filteredCourses =
-        selectedFilter == 'all'
-            ? allCourses
-            : allCourses
-                .where((course) => course.status == selectedFilter)
-                .toList();
+    var filteredCourses = selectedFilter == 'all'
+        ? allCourses
+        : allCourses
+              .where((course) => course.status == selectedFilter)
+              .toList();
     if (searchQuery.isNotEmpty) {
       final lower = searchQuery.toLowerCase();
-      filteredCourses =
-          filteredCourses.where((course) {
-            return course.title.toLowerCase().contains(lower) ||
-                course.teacher.toLowerCase().contains(lower) ||
-                (course.subject?.toLowerCase() ?? '').contains(lower);
-          }).toList();
+      filteredCourses = filteredCourses.where((course) {
+        return course.title.toLowerCase().contains(lower) ||
+            course.teacher.toLowerCase().contains(lower) ||
+            (course.subject?.toLowerCase() ?? '').contains(lower);
+      }).toList();
     }
     return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextApp(text: 'My Courses', theme: context.textStyle.copyWith(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextApp(
+            text: 'My Courses',
+            theme: context.textStyle.copyWith(
               color: context.color.textColor,
               fontSize: 18.sp,
-              fontWeight: FontWeightHelper.medium
-            )),
-            SizedBox(height: 10.h),
-            CustomFadeInLeft(
-              duration: 300,
-              child: CustomTextField(
-                controller: searchController,
-                lable: 'Search',
-                hintText: 'Search for courses..',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: const Icon(Icons.filter_list),
-                onChanged: handleSearch,
-              ),
+              fontWeight: FontWeightHelper.medium,
             ),
-            const SizedBox(height: 20),
-            BookingCategoryList(
-              selectedValue: selectedFilter,
-              onChanged: handleFilterChange,
+          ),
+          SizedBox(height: 10.h),
+          CustomFadeInLeft(
+            duration: 300,
+            child: CustomTextField(
+              controller: searchController,
+              lable: 'Search',
+              hintText: 'Search for courses..',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: const Icon(Icons.filter_list),
+              onChanged: handleSearch,
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child:
-                  filteredCourses.isEmpty
-                      ? const Center(child: Text('No courses found'))
-                      : CoursesBokkingList(courses: filteredCourses),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 20.h),
+          BookingCategoryList(
+            selectedValue: selectedFilter,
+            onChanged: handleFilterChange,
+          ),
+          SizedBox(height: 20.h),
+          Expanded(
+            child: filteredCourses.isEmpty
+                ? const Center(child: Text('No courses found'))
+                : CoursesBokkingList(courses: filteredCourses),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
@@ -38,7 +39,7 @@ class ContanierAllCourse extends StatelessWidget {
               ),
               child: Image.asset(
                 course.image,
-                height: 100,
+                height: 100.h,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -50,28 +51,28 @@ class ContanierAllCourse extends StatelessWidget {
                 children: [
                   Text(
                     course.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     'Teacher: ${course.teacher}',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     'Enrolled At: ${course.enrolledDate}',
-                    style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                    style: TextStyle(fontSize: 11.sp, color: Colors.grey[500]),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -85,9 +86,9 @@ class ContanierAllCourse extends StatelessWidget {
                   onTap: () {
                     // context.pushNamed(AppRoutes.payment);
                   },
-                  child: const Text(
+                  child: Text(
                     'Enroll Now',
-                    style: TextStyle(fontSize: 13, color: Colors.white),
+                    style: TextStyle(fontSize: 13.sp, color: Colors.white),
                   ),
                 ),
               ),

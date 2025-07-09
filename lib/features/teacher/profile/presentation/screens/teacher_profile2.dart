@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/profile/presentation/widgets/course_list.dart';
 import 'package:test/features/student/profile/presentation/widgets/custom_shape_profile.dart';
 import 'package:test/features/student/profile/presentation/widgets/profile_property.dart';
@@ -20,7 +22,7 @@ class TeacherProfile2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomShapeProfile(
-              image: 'assets/images/Mathematics-Hero-1600x900.jpg',
+              image: AppImages.logo,
               name: 'Sarah Anderson',
               title: 'Mathematics & Physics Expert',
               properties: [
@@ -32,15 +34,15 @@ class TeacherProfile2 extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+             SizedBox(height: 16.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
                 'My Courses',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30.h),
             CoursesList(),
           ],
         ),

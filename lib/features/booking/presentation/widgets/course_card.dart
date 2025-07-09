@@ -4,7 +4,6 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 
 class CourseCard extends StatelessWidget {
-
   const CourseCard({required this.course, super.key, this.showStatus = false});
   final CourseModel course;
   final bool showStatus;
@@ -53,9 +52,10 @@ class CourseCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 16.w),
+            SizedBox(width: 16.w),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: EdgeInsets.symmetric(vertical: 12.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,26 +67,27 @@ class CourseCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4.h),
+                    SizedBox(height: 4.h),
                     Text(
                       course.teacher,
                       style: const TextStyle(color: Colors.black54),
                     ),
+                    SizedBox(height: 2.h),
                     SizedBox(height: 2.h),
                     Text(
                       'Enrolled: ${course.enrolledDate}',
                       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                     ),
                     if (showStatus) ...[
-                       SizedBox(height: 4.h),
+                      SizedBox(height: 4.h),
                       Text(
                         course.status == 'completed'
                             ? 'Completed'
                             : 'In Progress',
                         style: TextStyle(
-                          color:
-                              course.status == 'completed'
-                                  ? Colors.green
-                                  : Colors.orange,
+                          color: course.status == 'completed'
+                              ? Colors.green
+                              : Colors.orange,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),

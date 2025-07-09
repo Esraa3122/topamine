@@ -15,7 +15,7 @@ class SignUpTextFormTeacher extends StatefulWidget {
     required this.phonecontroller,
     required this.governoratecontroller,
     required this.formKey,
-    super.key, 
+    super.key,
   });
   final TextEditingController namecontroller;
   final TextEditingController emailcontroller;
@@ -29,7 +29,6 @@ class SignUpTextFormTeacher extends StatefulWidget {
 }
 
 class _SignUpTextFormTeacherState extends State<SignUpTextFormTeacher> {
-  
   bool isShowPassword = true;
   String? selectedGender;
   String? selecteGovernorate;
@@ -94,7 +93,8 @@ class _SignUpTextFormTeacherState extends State<SignUpTextFormTeacher> {
                 } else {
                   return null;
                 }
-              }, lable: context.translate(LangKeys.fullName),
+              },
+              lable: context.translate(LangKeys.fullName),
             ),
           ),
           SizedBox(height: 20.h),

@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentTestimonials extends StatelessWidget {
   const StudentTestimonials({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> testimonials = [
+    final testimonials = <Map<String, String>>[
       {
-        "name": "أحمد علي",
-        "image": "https://i.pravatar.cc/150?img=8",
-        "comment": "المنصة ممتازة جدًا، والدروس منظمة وسهلة الفهم.",
-        "rating": "5",
+        'name': 'أحمد علي',
+        'image': 'https://i.pravatar.cc/150?img=8',
+        'comment': 'المنصة ممتازة جدًا، والدروس منظمة وسهلة الفهم.',
+        'rating': '5',
       },
       {
-        "name": "سارة محمد",
-        "image": "https://i.pravatar.cc/150?img=12",
-        "comment": "استفدت كثيرًا من المدرس، كان يشرح ببساطة وتفاعل رائع!",
-        "rating": "4",
+        'name': 'سارة محمد',
+        'image': 'https://i.pravatar.cc/150?img=12',
+        'comment': 'استفدت كثيرًا من المدرس، كان يشرح ببساطة وتفاعل رائع!',
+        'rating': '4',
       },
       {
-        "name": "محمد سمير",
-        "image": "https://i.pravatar.cc/150?img=6",
-        "comment": "خدمة الدعم الفني سريعة جدًا والدورات ممتازة.",
-        "rating": "5",
+        'name': 'محمد سمير',
+        'image': 'https://i.pravatar.cc/150?img=6',
+        'comment': 'خدمة الدعم الفني سريعة جدًا والدورات ممتازة.',
+        'rating': '5',
       },
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Students' opinions",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         SizedBox(
-          height: 170,
+          height: 170.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: testimonials.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => SizedBox(width: 12.w),
             itemBuilder: (context, index) {
               final item = testimonials[index];
               return Container(
-                width: 240,
+                width: 240.w,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -66,7 +67,7 @@ class StudentTestimonials extends StatelessWidget {
                           backgroundImage: NetworkImage(item['image']!),
                           radius: 20,
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: 10.w),
                         Expanded(
                           child: Text(
                             item['name']!,
@@ -75,7 +76,7 @@ class StudentTestimonials extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Row(
                       children: List.generate(
                         5,
@@ -88,11 +89,11 @@ class StudentTestimonials extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Expanded(
                       child: Text(
                         item['comment']!,
-                        style: const TextStyle(fontSize: 13),
+                        style: TextStyle(fontSize: 13.sp),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                       ),

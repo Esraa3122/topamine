@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SubjectFilterList extends StatelessWidget {
-
   const SubjectFilterList({
-    required this.selectedSubject, required this.onSubjectSelected, super.key,
+    required this.selectedSubject,
+    required this.onSubjectSelected,
+    super.key,
     this.subjects = const [
       'All',
       'Mathematics',
       'English',
       'Science',
       'History',
-      'Art'
+      'Art',
     ],
   });
   final List<String> subjects;
@@ -34,7 +35,10 @@ class SubjectFilterList extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onSubjectSelected(subject),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 10.w),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 10.h,
+                ),
                 decoration: BoxDecoration(
                   color: isSelected ? Colors.blue : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(30),

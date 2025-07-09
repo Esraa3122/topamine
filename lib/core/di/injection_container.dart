@@ -32,8 +32,8 @@ Future<void> _initAuth() async {
  sl
   ..registerFactory(() => AuthCubit(sl()))
     ..registerLazySingleton(() => AuthRepos(sl(), sl()))
-    ..registerLazySingleton(() => AuthDataSource())
-    ..registerLazySingleton(() => SharedPrefHelper());
+    ..registerLazySingleton(AuthDataSource.new)
+    ..registerLazySingleton(SharedPrefHelper.new);
   // sl.registerLazySingleton(() => SharedPref());
   // await sl<SharedPref>().init();
   // ..registerFactory(() => AppCubit(sl()))

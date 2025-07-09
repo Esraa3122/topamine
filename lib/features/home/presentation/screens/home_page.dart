@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
   @override
   Widget build(BuildContext context) {
     return  Padding(

@@ -9,20 +9,18 @@ import 'package:test/core/style/fonts/font_weight_helper.dart';
 class ForgetPasswordBotton extends StatefulWidget {
   const ForgetPasswordBotton({required this.onPressed, super.key});
 
-  final  void Function() onPressed;
+  final void Function() onPressed;
 
   @override
   State<ForgetPasswordBotton> createState() => _ForgetPasswordBottonState();
 }
 
 class _ForgetPasswordBottonState extends State<ForgetPasswordBotton> {
-  
-
   @override
   Widget build(BuildContext context) {
     return CustomLinearButton(
       onPressed: widget.onPressed,
-      height: 45,
+      height: 45.h,
       width: 330.w,
       child: TextApp(
         text: context.translate(LangKeys.resetPassword),

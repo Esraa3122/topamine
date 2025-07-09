@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
 
 class GradeSelection extends StatefulWidget {
-
   const GradeSelection({
-    required this.genderController, super.key,
+    required this.genderController,
+    super.key,
   });
   final TextEditingController genderController;
 
@@ -50,26 +51,25 @@ class _GradeSelectionState extends State<GradeSelection> {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: context.color.textFormBorder!),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: context.color.textFormBorder!),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: const BorderSide(color: Colors.red ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: const BorderSide(color: Colors.red),
-      ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: context.color.textFormBorder!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: context.color.textFormBorder!),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       ),
       value: selectedGender,
       hint: const Text('Select Gender'),
@@ -83,7 +83,7 @@ class _GradeSelectionState extends State<GradeSelection> {
       onChanged: (String? newValue) {
         setState(() {
           selectedGender = newValue;
-    
+
           widget.genderController.text = newValue ?? '';
         });
       },

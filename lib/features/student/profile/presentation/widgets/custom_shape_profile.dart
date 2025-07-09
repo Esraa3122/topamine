@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/student/profile/presentation/widgets/profile_property.dart';
 
 class CustomShapeProfile extends StatelessWidget {
+  const CustomShapeProfile({
+    required this.image,
+    required this.name,
+    required this.properties,
+    super.key,
+    this.title,
+  });
   final String image;
   final String name;
   final String? title;
   final List<ProfileProperty> properties;
-
-  const CustomShapeProfile({
-    super.key,
-    required this.image,
-    required this.name,
-    this.title,
-    required this.properties,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +26,23 @@ class CustomShapeProfile extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(minRadius: 50, backgroundImage: AssetImage(image)),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
             ),
             if (title != null) ...[
-              const SizedBox(height: 6),
+              SizedBox(height: 6.h),
               Text(
                 title!,
-                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                style: TextStyle(color: Colors.grey, fontSize: 14.sp),
               ),
             ],
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Column(
-              children:
-                  properties.map((prop) {
-                    return ProfileProperty(icon: prop.icon, text: prop.text);
-                  }).toList(),
+              children: properties.map((prop) {
+                return ProfileProperty(icon: prop.icon, text: prop.text);
+              }).toList(),
             ),
           ],
         ),
