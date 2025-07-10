@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/home/data/model/teacher_model_home.dart';
@@ -25,6 +26,7 @@ class TeacherCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
             radius: 30,
@@ -46,49 +48,28 @@ class TeacherCard extends StatelessWidget {
           SizedBox(height: 6.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...List.generate(
-                5,
-                (index) => Icon(
-                  index < teacher.rating.round()
-                      ? Icons.star
-                      : Icons.star_border,
-                  color: Colors.amber,
-                  size: 14,
-                ),
+            children: List.generate(
+              5,
+              (index) => Icon(
+                index < teacher.rating.round() ? Icons.star : Icons.star_border,
+                color: Colors.amber,
+                size: 14,
               ),
-            ],
+            ),
           ),
           Text(
             '(${teacher.reviews} reviews)',
             style: TextStyle(fontSize: 10.sp),
           ),
-          const Spacer(),
+          SizedBox(height: 5.h),
           SizedBox(
+            height: 30.h,
             width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 8.h,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: InkWell(
-                onTap: () {
-                  context.pushNamed(
-                    AppRoutes.teacherProfile2,
-                  );
-                },
-                child: Text(
-                  'View',
-                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                ),
-              ),
+            child: CustomLinearButton(
+              onPressed: () {
+                context.pushNamed(AppRoutes.teacherProfile2);
+              },
+              child: const Text('View'),
             ),
           ),
         ],

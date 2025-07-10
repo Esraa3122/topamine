@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
@@ -12,10 +13,7 @@ class ContanierAllCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(
-          AppRoutes.courseDetails,
-          arguments: course,
-        );
+        context.pushNamed(AppRoutes.courseDetails, arguments: course);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -31,6 +29,7 @@ class ContanierAllCourse extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade200),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
@@ -53,7 +52,8 @@ class ContanierAllCourse extends StatelessWidget {
                     course.title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
+                      height: 1.2.h,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -68,29 +68,18 @@ class ContanierAllCourse extends StatelessWidget {
                     'Enrolled At: ${course.enrolledDate}',
                     style: TextStyle(fontSize: 11.sp, color: Colors.grey[500]),
                   ),
+                  SizedBox(height: 8.h),
+                  SizedBox(
+                    height: 32.h,
+                    width: double.infinity,
+                    child: CustomLinearButton(
+                      onPressed: () {
+                        // context.pushNamed(AppRoutes.payment);
+                      },
+                      child: const Text('Enroll Now'),
+                    ),
+                  ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  minimumSize: const Size(double.infinity, 36),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    // context.pushNamed(AppRoutes.payment);
-                  },
-                  child: Text(
-                    'Enroll Now',
-                    style: TextStyle(fontSize: 13.sp, color: Colors.white),
-                  ),
-                ),
               ),
             ),
           ],

@@ -17,34 +17,40 @@ class TeacherProfile2 extends StatelessWidget {
         title: const Text('Profile'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomShapeProfile(
-              image: AppImages.logo,
-              name: 'Sarah Anderson',
-              title: 'Mathematics & Physics Expert',
-              properties: [
-                ProfileProperty(icon: Icons.mail, text: 'example@gmail.com'),
-                ProfileProperty(icon: Icons.phone, text: '+1 (555) 123-4567'),
-                ProfileProperty(
-                  icon: Icons.location_on_outlined,
-                  text: 'New York',
-                ),
-              ],
-            ),
-             SizedBox(height: 16.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                'My Courses',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomShapeProfile(
+                image: AppImages.logo,
+                name: 'Sarah Anderson',
+                title: 'Mathematics & Physics Expert',
+                properties: [
+                  ProfileProperty(icon: Icons.mail, text: 'example@gmail.com'),
+                  ProfileProperty(icon: Icons.phone, text: '+1 (555) 123-4567'),
+                  ProfileProperty(
+                    icon: Icons.location_on_outlined,
+                    text: 'New York',
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 30.h),
-            CoursesList(),
-          ],
+              SizedBox(height: 16.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  'My Courses',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.h),
+              CoursesList(),
+            ],
+          ),
         ),
       ),
     );

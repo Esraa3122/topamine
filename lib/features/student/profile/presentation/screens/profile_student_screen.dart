@@ -8,14 +8,14 @@ class ProfileStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Container(
-         height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          border: Border.all(style: BorderStyle.solid, color: context.color.textFormBorder!),
+          border: Border.all(color: context.color.textFormBorder!),
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: [
@@ -41,8 +41,7 @@ class ProfileStudentScreen extends StatelessWidget {
         child: const ProfileStudentBody(),
       ),
     );
-    
-    
+
     // SizedBox(
     //     height: MediaQuery.of(context).size.height,
     //     width: MediaQuery.of(context).size.width,

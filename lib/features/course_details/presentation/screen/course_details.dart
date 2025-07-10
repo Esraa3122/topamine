@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
@@ -72,7 +70,7 @@ class CourseDetails extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(backgroundImage: AssetImage(course!.image)),
-                      SizedBox(width: 10.h),
+                      SizedBox(width: 10.w),
                       Text(course!.teacher),
                     ],
                   ),

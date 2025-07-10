@@ -12,7 +12,7 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 8.w),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       // elevation: 2,
       decoration: BoxDecoration(

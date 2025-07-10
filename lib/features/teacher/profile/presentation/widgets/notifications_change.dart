@@ -38,6 +38,7 @@
 //                 activeColor: Colors.green,
 //                 onChanged: (value) {
 //                   FirebaseCloudMessaging().controllerForUserSubscribe(context);
+
 //                 },
 //               ),
 //             );

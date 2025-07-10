@@ -6,7 +6,6 @@ import 'package:test/core/enums/nav_bar_enum.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/navigation/cubit/main_cubit_cubit.dart';
 
-
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({super.key});
 
@@ -45,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: 60.h,
+          height: 70.h,
           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           decoration: BoxDecoration(
@@ -102,4 +101,3 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 }
-

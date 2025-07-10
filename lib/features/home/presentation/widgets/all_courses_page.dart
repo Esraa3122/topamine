@@ -18,7 +18,7 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
     CourseModel(
       image: AppImages.logo,
       title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
+      teacher: 'Dr.James Wilson',
       enrolledDate: 'Sept 15, 2023',
       status: 'Completed 50%',
       subject: 'Mathematics',
@@ -47,6 +47,22 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
       status: 'Completed 50%',
       subject: 'English',
     ),
+    CourseModel(
+      image: AppImages.logo,
+      title: 'English Grammar',
+      teacher: 'Ms. Sarah Clark',
+      enrolledDate: 'June 5, 2023',
+      status: 'Completed 50%',
+      subject: 'English',
+    ),
+    CourseModel(
+      image: AppImages.logo,
+      title: 'English Grammar',
+      teacher: 'Ms. Sarah Clark',
+      enrolledDate: 'June 5, 2023',
+      status: 'Completed 50%',
+      subject: 'English',
+    ),
   ];
 
   List<String> filters = ['All', 'Mathematics', 'Physics', 'English'];
@@ -61,60 +77,62 @@ class _AllCoursesPageState extends State<AllCoursesPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const Text('All Courses '),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: filters.length,
-              separatorBuilder: (_, _) => SizedBox(width: 10.w),
-              itemBuilder: (context, index) {
-                final filter = filters[index];
-                final isSelected = filter == selectedFilter;
-                return ChoiceChip(
-                  label: Text(filter),
-                  selected: isSelected,
-                  onSelected: (_) {
-                    setState(() {
-                      selectedFilter = filter;
-                    });
-                  },
-                  selectedColor: Colors.blueAccent,
-                  backgroundColor: Colors.grey.shade200,
-                  labelStyle: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black,
-                  ),
-                );
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 50.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                itemCount: filters.length,
+                separatorBuilder: (_, _) => SizedBox(width: 10.w),
+                itemBuilder: (context, index) {
+                  final filter = filters[index];
+                  final isSelected = filter == selectedFilter;
+                  return ChoiceChip(
+                    label: Text(filter),
+                    selected: isSelected,
+                    onSelected: (_) {
+                      setState(() {
+                        selectedFilter = filter;
+                      });
+                    },
+                    selectedColor: Colors.blueAccent,
+                    backgroundColor: Colors.grey.shade200,
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(height: 10.h),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+            SizedBox(height: 10.h),
+            Expanded(
               child: GridView.builder(
                 itemCount: filteredCourses.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.78,
                 ),
                 itemBuilder: (context, index) {
                   return ContanierAllCourse(course: filteredCourses[index]);
                 },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

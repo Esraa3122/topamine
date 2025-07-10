@@ -1,4 +1,4 @@
-enum NavBarEnum{
+enum NavBarEnum {
   home,
   search,
   booking,

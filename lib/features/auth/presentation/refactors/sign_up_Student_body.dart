@@ -83,7 +83,7 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
                         context.pop();
                       },
                       height: 44.h,
-                      width: 50.h,
+                      width: 50.w,
                       child: SvgPicture.asset(AppImages.backButton),
                     ),
                   ),

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IconTapNavBar extends StatelessWidget {
-  const IconTapNavBar({
+class CustomNavItem extends StatelessWidget {
+  const CustomNavItem({
     required this.icon,
-    required this.isSelected,
     required this.label,
+    required this.isSelected,
     super.key,
   });
-
   final IconData icon;
-  final bool isSelected;
   final String label;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class IconTapNavBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             )
           : null,
-      child: Icon(icon, size: 24.sp),
+      child: Icon(icon, size: 24),
     );
   }
 }

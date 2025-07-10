@@ -91,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
                   setState(() {
                     searchQuery = value!;
                   });
-                  return null;
+                  return;
                 },
               ),
             ),
