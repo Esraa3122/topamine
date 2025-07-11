@@ -15,7 +15,7 @@ class ProfileStudentScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          border: Border.all(color: context.color.textFormBorder!),
+          border: Border.all(color: context.color.mainColor!),
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: [
@@ -27,9 +27,9 @@ class ProfileStudentScreen extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: context.color.containerShadow1!.withOpacity(0.3),
-              offset: const Offset(0, 4),
-              blurRadius: 8,
+              color: Colors.grey.withOpacity(0.3),
+              offset: Offset(0, 4),
+              blurRadius: 2,
             ),
             BoxShadow(
               color: context.color.containerShadow2!.withOpacity(0.3),

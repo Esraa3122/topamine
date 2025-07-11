@@ -9,19 +9,20 @@ import 'package:test/features/auth/presentation/screen/login_screen.dart';
 import 'package:test/features/auth/presentation/screen/rule_sign_up_screen.dart';
 import 'package:test/features/auth/presentation/screen/sign_up_student_screen.dart';
 import 'package:test/features/auth/presentation/screen/sign_up_teacher_screen.dart';
-import 'package:test/features/booking/presentation/screen/booking_page.dart';
-import 'package:test/features/course_details/presentation/screen/course_details.dart';
-import 'package:test/features/home/data/model/coures_model.dart';
-import 'package:test/features/home/presentation/screens/home_page.dart';
-import 'package:test/features/home/presentation/widgets/all_courses_page.dart';
-import 'package:test/features/navigation/presentation/screen/navigation_teacher_app_bar_screen.dart';
 import 'package:test/features/onbording/view/screens/on_boarding_screen.dart';
-import 'package:test/features/search/presentation/screen/search_page.dart';
 import 'package:test/features/splash/view/screen/splash_screen.dart';
+import 'package:test/features/student/all_courses/presentation/screen/all_courses_page.dart';
+import 'package:test/features/student/booking/presentation/screen/booking_student_screen.dart';
+import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
+import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/presentation/screens/home_student_screen.dart';
+import 'package:test/features/student/navigation/presentation/screen/navigation_student_screen.dart';
 import 'package:test/features/student/profile/presentation/screens/profile_student_screen.dart';
-import 'package:test/features/student/profile/presentation/screens/student_profile2.dart';
+import 'package:test/features/student/profile_teacher/presentation/screen/view_profile_teacher_screen.dart';
+import 'package:test/features/student/search/presentation/screen/search_page.dart';
+import 'package:test/features/teacher/booking/presentation/screen/booking_teacher_screen.dart';
+import 'package:test/features/teacher/navigation/presentation/screens/navigation_teacher_screen.dart';
 import 'package:test/features/teacher/profile/presentation/screens/profile_teacher_screen.dart';
-import 'package:test/features/teacher/profile/presentation/screens/teacher_profile2.dart';
 
 class AppRoutes {
   static const String splash = 'splash';
@@ -31,13 +32,14 @@ class AppRoutes {
   static const String signUpStudent = 'signUpStudent';
   static const String signUpTeacher = 'signUpTeacher';
   static const String forgetPassword = 'forgetPassword';
-  static const String navigation = 'navigation';
+  static const String navigationStudent = 'navigationStudent';
+  static const String navigationTeacher = 'navigationTeacher';
   static const String homePage = 'homePage';
-  static const String bookingPage = 'bookingPage';
+  static const String bookingStudentScreen = 'bookingStudentScreen';
+  static const String bookingTeacherScreen = 'bookingTeacherScreen';
   static const String courseDetails = 'courseDetails';
   static const String allCoursesPage = 'allCoursesPage';
   static const String searchPage = 'searchPage';
-  static const String studentProfile2 = 'studentProfile2';
   static const String teacherProfile2 = 'teacherProfile2';
   static const String teacherProfile = 'teacherProfile';
   static const String studentProfile = 'studentProfile';
@@ -79,22 +81,24 @@ class AppRoutes {
         );
       case forgetPassword:
         return BaseRoute(page: const ForgetPasswordBody());
-      case navigation:
-        return BaseRoute(page: const NavigationScreen());
+      case navigationStudent:
+        return BaseRoute(page: const NavigationStudentScreen());
+      case navigationTeacher:
+        return BaseRoute(page: const NavigationTeacherScreen());
       case homePage:
         return BaseRoute(page: const HomePage());
       case searchPage:
         return BaseRoute(page: const SearchPage());
-      case bookingPage:
-        return BaseRoute(page: const BookingPage());
+      case bookingStudentScreen:
+        return BaseRoute(page: const BookingStudentScreen());
+      case bookingTeacherScreen:
+        return BaseRoute(page: const BookingTeacherScreen());
       case allCoursesPage:
         return BaseRoute(page: const AllCoursesPage());
       case courseDetails:
-        return BaseRoute(page: CourseDetails(course: arg! as CourseModel));
-      case studentProfile2:
-        return BaseRoute(page: const StudentProfile2());
+        return BaseRoute(page: CourseDetailsScreen(course: arg! as CourseModel));
       case teacherProfile2:
-        return BaseRoute(page: const TeacherProfile2());
+        return BaseRoute(page: const ViewProfileTeacherScreen());
       case teacherProfile:
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:

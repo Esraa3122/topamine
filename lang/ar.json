@@ -55,6 +55,18 @@
     "please_select_grade":"من فضلك اختار الصف الدراسى",
     "account_created_successfully":"تم انشاء الحساب بنجاح",
     "the_account_already_exists_for_that_email":"الحساب موجود بالفعل لهذا البريد الإلكتروني",
+    "courses_for_you":"كورسات مقترحه لك",
+    "view_all": "شاهد الكل",
+    "featured_teachers": "اشهر المدرسين",
+    "top_rated_tutors_this_week":"اعلى تقييم لهذا الاسبوع",
+    "students_opinions":"آراء التلاميذ",
+    "all_courses":"كل الدورات",
+    "course_details":"تفاصيل الدورة",
+    "about_this_course":"حول هذه الدورة",
+    "course_content":"محتوى الكورس",
+    "student_ceviews":"آراء الطلاب",
+    "entroll_now":"سجل الآن",
+    "my_courses":"دوراتى",
 
     "homepage": "الصفحة الرئسيه",
     "search":"البحث",
@@ -82,6 +94,5 @@
     "build_developer": "مطور التطبيق",
     "notifications": "إشعارات",
     "subscribed_to_notifications": "تم الاشتراك في إشعارات",
-    "unsubscribed_to_notifications": "تم إلغاء الاشتراك في إشعارات",
-    "view_all": "شاهد الكل"
+    "unsubscribed_to_notifications": "تم إلغاء الاشتراك في إشعارات"
 }
