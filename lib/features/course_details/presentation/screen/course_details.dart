@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
+import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/course_details/presentation/widgets/course_info.dart';
 import 'package:test/features/course_details/presentation/widgets/course_section.dart';
@@ -220,7 +222,9 @@ class CourseDetails extends StatelessWidget {
                   CustomLinearButton(
                     height: 40.h,
                     width: MediaQuery.of(context).size.width,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushNamed(AppRoutes.paymentDetailsView);
+                    },
                     child: const Text('Entroll Now'),
                   ),
                 ],

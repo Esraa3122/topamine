@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   filled: true,
                   fillColor: const Color(0xffF3F4F6),
-                  labelText: 'Search teacher or subject ',
+                  labelText: 'Search teacher or subject',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: const Icon(Icons.filter_list),
                 ),

@@ -10,6 +10,7 @@ import 'package:test/features/auth/presentation/screen/rule_sign_up_screen.dart'
 import 'package:test/features/auth/presentation/screen/sign_up_student_screen.dart';
 import 'package:test/features/auth/presentation/screen/sign_up_teacher_screen.dart';
 import 'package:test/features/booking/presentation/screen/booking_page.dart';
+import 'package:test/features/checkout/presentation/views/payment_details.dart';
 import 'package:test/features/course_details/presentation/screen/course_details.dart';
 import 'package:test/features/home/data/model/coures_model.dart';
 import 'package:test/features/home/presentation/screens/home_page.dart';
@@ -41,6 +42,7 @@ class AppRoutes {
   static const String teacherProfile2 = 'teacherProfile2';
   static const String teacherProfile = 'teacherProfile';
   static const String studentProfile = 'studentProfile';
+  static const String paymentDetailsView = 'paymentDetailsView';
 
   static Route<void> onGenerateRoute(RouteSettings settings) {
     final arg = settings.arguments;
@@ -99,6 +101,8 @@ class AppRoutes {
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:
         return BaseRoute(page: const ProfileStudentScreen());
+      case paymentDetailsView:
+        return BaseRoute(page: const PaymentDetailsView());
       default:
         return BaseRoute(page: const PageUnderBuildScreen());
     }

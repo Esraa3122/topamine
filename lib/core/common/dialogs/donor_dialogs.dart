@@ -6,7 +6,6 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
-
 class CustomDialog {
   const CustomDialog._();
 
