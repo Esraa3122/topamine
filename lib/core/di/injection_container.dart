@@ -5,7 +5,8 @@ import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
-import 'package:test/features/navigation/cubit/main_cubit_cubit.dart';
+import 'package:test/features/student/navigation/cubit/student_navigation_cubit.dart';
+import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -42,5 +43,7 @@ Future<void> _initAuth() async {
 }
 
 Future<void> _initMain() async {
-  sl.registerFactory(MainCubitCubit.new);
+  sl
+  ..registerFactory(StudentNavigationCubit.new)
+  ..registerFactory(TeacherNavigationCubit.new);
 }

@@ -7,7 +7,8 @@ class AppImages {
   static const String userAvatar = 'assets/images/core/user.png';
 
   // teacher
-  static const String mainPhoto = 'assets/images/student/download.png';
+  static const String mainLight = 'assets/images/student/main_light.jpg';
+  static const String mainDark = 'assets/images/student/home_bg_dark.png';
 
   // Lottie
   static const String onbording1 =

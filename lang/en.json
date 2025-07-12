@@ -55,6 +55,18 @@
     "please_select_grade":"Please select grade",
     "account_created_successfully":"Account created successfully",
     "the_account_already_exists_for_that_email":"The account already exists for that email",
+    "courses_for_you":"Courses For You",
+    "view_all": "View all",
+    "featured_teachers": "Featured Teachers",
+    "top_rated_tutors_this_week":"Top-rated tutors this week",
+    "students_opinions":"Students' opinions",
+    "all_courses":"All Courses",
+    "course_details":"Course Details",
+    "about_this_course":"About This Course",
+    "course_content":"Course Content",
+    "student_ceviews":"Student Reviews",
+    "entroll_now":"Entroll Now",
+    "my_courses":"My Courses",
 
     "homepage":"Admin Home",
     "search":"Research",
@@ -84,7 +96,7 @@
     "build_developer": "Build Developer",
     "notifications": "Notifications",
     "subscribed_to_notifications": "Notifications have been subscribed",
-    "unsubscribed_to_notifications": "Notifications have been unsubscribed",
-    "view_all": "View all"
+    "unsubscribed_to_notifications": "Notifications have been unsubscribed"
+    
 
 }

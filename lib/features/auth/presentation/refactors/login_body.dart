@@ -46,9 +46,9 @@ class _LoginBodyState extends State<LoginBody> {
           );
           final role = await SharedPrefHelper().getUserRole();
           if (role == 'teacher') {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
+            await context.pushNamedAndRemoveUntil(AppRoutes.navigationTeacher);
           } else if (role == 'student') {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
+            await context.pushNamedAndRemoveUntil(AppRoutes.navigationStudent);
           } else {
             ShowToast.showToastErrorTop(
               message: context.translate(LangKeys.roleNotFound),

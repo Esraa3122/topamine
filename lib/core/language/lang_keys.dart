@@ -61,6 +61,18 @@ class LangKeys {
       'account_created_successfully';
   static const String theAccountAlreadyExistsForThatEmail =
       'the_account_already_exists_for_that_email';
+  static const String coursesForYou = 'courses_for_you';
+  static const String viewAll = 'view_all';
+  static const String featuredTeachers = 'featured_teachers';
+  static const String topRatedTutorsThisWeek = 'top_rated_tutors_this_week';
+  static const String studentsOpinions = 'students_opinions';
+  static const String allCourses = 'all_courses';
+  static const String courseDetails = 'course_details';
+  static const String aboutThisCourse = 'about_this_course';
+  static const String courseContent = 'course_content';
+  static const String studentReviews = 'student_ceviews';
+  static const String entrollNow = 'entroll_now';
+  static const String myCourses = 'my_courses';
 
   static const String homepage = 'homepage';
   static const String search = 'search';
@@ -91,5 +103,4 @@ class LangKeys {
   static const String subscribedToNotifications = 'subscribed_to_notifications';
   static const String unsubscribedToNotifications =
       'unsubscribed_to_notifications';
-  static const String viewAll = 'view_all';
 }

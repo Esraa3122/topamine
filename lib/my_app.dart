@@ -61,8 +61,8 @@ class MyApp extends StatelessWidget {
                   onGenerateRoute: AppRoutes.onGenerateRoute,
                   initialRoute: SharedPref().getString(PrefKeys.userId) != null
                       ? SharedPref().getString(PrefKeys.userRole) != 'teacher'
-                            ? AppRoutes.navigation
-                            : AppRoutes.navigation
+                            ? AppRoutes.navigationStudent
+                            : AppRoutes.navigationTeacher
                       : AppRoutes.splash,
                 );
               },

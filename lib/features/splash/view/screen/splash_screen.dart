@@ -22,9 +22,9 @@ class _SplashPageState extends State<SplashPage> {
 
       if (uid != null && role != null) {
         if (role == 'teacher') {
-          await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
+          await context.pushNamedAndRemoveUntil(AppRoutes.navigationTeacher);
         } else {
-          await context.pushNamedAndRemoveUntil(AppRoutes.navigation);
+          await context.pushNamedAndRemoveUntil(AppRoutes.navigationStudent);
         }
       } else {
         await context.pushNamedAndRemoveUntil(AppRoutes.onBoarding);

@@ -238,36 +238,4 @@ as String,
 
 }
 
-/// @nodoc
-
-
-class ChooseImage implements AuthState {
-  const ChooseImage();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChooseImage);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'AuthState.chooseImage()';
-}
-
-
-}
-
-
-
-
 // dart format on
