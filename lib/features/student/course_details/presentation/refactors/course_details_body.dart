@@ -4,6 +4,7 @@ import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/course_info.dart';
@@ -175,21 +176,21 @@ class CourseDetailsBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextApp(
-                  text: context.translate(LangKeys.courseContent),
-                  theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.textColor,
-                  ),
-                ),
-                TextApp(
-                  text: '32 lectures • 24 hours',
-                  theme: context.textStyle.copyWith(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeightHelper.regular,
-                    color: context.color.textColor,
-                  ),
-                ),
+                      text: context.translate(LangKeys.courseContent),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                      ),
+                    ),
+                    TextApp(
+                      text: '32 lectures • 24 hours',
+                      theme: context.textStyle.copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                        color: context.color.textColor,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -252,7 +253,9 @@ class CourseDetailsBody extends StatelessWidget {
                 CustomLinearButton(
                   height: 50.h,
                   width: MediaQuery.of(context).size.width,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.paymentDetailsView);
+                  },
                   child: TextApp(
                     text: context.translate(LangKeys.entrollNow),
                     theme: context.textStyle.copyWith(
