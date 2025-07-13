@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test/core/app/app_cubit/app_cubit.dart';
+import 'package:test/core/service/rest_api/api_service.dart';
+import 'package:test/core/service/rest_api/dio_factory.dart';
 import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
@@ -17,11 +19,11 @@ Future<void> setupInjector() async {
 }
 
 Future<void> _initCore() async {
-  // final dio = DioFactory.getDio();
+  final dio = DioFactory.getDio();
   final navigatorKey = GlobalKey<NavigatorState>();
   sl
   ..registerFactory(AppCubit.new)
-  // ..registerLazySingleton<ApiService>(() => ApiService(dio))
+  ..registerLazySingleton<ApiService>(() => ApiService(dio))
   ..registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
   // ..registerFactory(() => UploadImageCubit(sl()))
   // // ..registerFactory(ShareCubit.new)
