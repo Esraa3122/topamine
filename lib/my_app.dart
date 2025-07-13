@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<AppCubit>()
             ..changeAppThemeMode(
               sharedMode: SharedPref().getBoolean(PrefKeys.themeMode),
-            ),
+            )
+            ..getSavedLanguage(),
           child: ScreenUtilInit(
             designSize: const Size(375, 812),
             minTextAdapt: true,

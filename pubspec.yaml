@@ -74,6 +74,11 @@ dependencies:
   provider: ^6.1.5
   flutter_credit_card: ^4.1.0
 
+  # Api
+  dio: ^5.8.0+1
+  pretty_dio_logger: ^1.4.0
+  retrofit: ^4.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,6 +91,8 @@ dev_dependencies:
   freezed: ^3.0.6
   # modle
   json_serializable: ^6.9.5
+  # Api
+  retrofit_generator: ^9.7.0
 
 flutter_icons:
   android: true

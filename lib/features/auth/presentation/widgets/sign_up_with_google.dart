@@ -19,7 +19,6 @@ class SigninWithGoogle extends StatelessWidget {
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
-      // تسجيل الدخول باستخدام Google
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
 
@@ -31,9 +30,12 @@ class SigninWithGoogle extends StatelessWidget {
         idToken: googleAuth.idToken,
       );
 
-      // تسجيل الدخول في Firebase
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
+      final idToken = await userCredential.user?.getIdToken();
+      print("###########################################################");
+      print("ID Token: $idToken");
+      print("###########################################################");
 
       User? user = userCredential.user;
 
@@ -41,7 +43,6 @@ class SigninWithGoogle extends StatelessWidget {
         throw Exception('فشل تسجيل الدخول: المستخدم غير موجود');
       }
 
-      // تأكد من وجود اسم المستخدم
       if (user.displayName == null || user.displayName!.isEmpty) {
         await user.updateDisplayName(googleUser.displayName ?? 'New User');
         await user.reload();
@@ -75,7 +76,7 @@ class SigninWithGoogle extends StatelessWidget {
       }
       await sl<SharedPrefHelper>().saveUserSession(user.uid, 'teacher');
 
-      await context.pushReplacementNamed(AppRoutes.teacherProfile);
+      await context.pushReplacementNamed(AppRoutes.navigationTeacher);
     } catch (e) {
       debugPrint(' Google Sign-In failed: $e');
       buildAwesomeDialogError(
