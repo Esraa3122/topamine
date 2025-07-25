@@ -4,7 +4,7 @@ import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/course_info.dart';
@@ -12,11 +12,12 @@ import 'package:test/features/student/course_details/presentation/widgets/course
 import 'package:test/features/student/course_details/presentation/widgets/custom_contanier_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/vertical_validator.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CourseDetailsBody extends StatelessWidget {
   const CourseDetailsBody({required this.course, super.key});
-  final CourseModel course;
+  final CoursesModel course;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,12 @@ class CourseDetailsBody extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.asset(course.image),
+              Image.asset(
+                course.imageUrl ?? '',
+                width: double.infinity,
+                height: 200.h,
+                fit: BoxFit.cover,
+              ),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -74,12 +80,12 @@ class CourseDetailsBody extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(course.image),
+                      backgroundImage: AssetImage(course.imageUrl ?? ''),
                       backgroundColor: context.color.mainColor,
                     ),
                     SizedBox(width: 10.w),
                     TextApp(
-                      text: course.teacher,
+                      text: course.teacherName,
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.regular,
@@ -253,9 +259,7 @@ class CourseDetailsBody extends StatelessWidget {
                 CustomLinearButton(
                   height: 50.h,
                   width: MediaQuery.of(context).size.width,
-                  onPressed: () {
-                    context.pushNamed(AppRoutes.paymentDetailsView);
-                  },
+                  onPressed: _pay,
                   child: TextApp(
                     text: context.translate(LangKeys.entrollNow),
                     theme: context.textStyle.copyWith(
@@ -271,5 +275,15 @@ class CourseDetailsBody extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _pay() async {
+    PaymobManager().getPaymentKey(10, 'EGP').then((String paymentKey) {
+      launchUrl(
+        Uri.parse(
+          'https://accept.paymob.com/api/acceptance/iframes/940163?payment_token=$paymentKey',
+        ),
+      );
+    });
   }
 }

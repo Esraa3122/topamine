@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +36,8 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final governorateController = TextEditingController();
+  final subjectController = TextEditingController();
+  File? uploadedImageUrl;
 
   // File? _selectedImage;
 
@@ -53,9 +57,10 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
         role: UserRole.teacher,
-        // imageFile: _selectedImage,
+        imageFile: uploadedImageUrl,
         phone: phoneController.text.trim(),
         governorate: governorateController.text.trim(),
+        subject: subjectController.text.trim(),
       );
     }
   }
@@ -115,7 +120,9 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
                   height: 10.h,
                 ),
                 //User Avatar image
-                const UserAvararImage(),
+                UserAvatarImage(onImageUploaded: (imageUrl) {
+                  uploadedImageUrl = imageUrl;
+                }),
 
                 SizedBox(
                   height: 15.h,
@@ -128,7 +135,7 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
                   passwordcontroller: passwordController,
                   phonecontroller: phoneController,
                   governoratecontroller: governorateController,
-                  formKey: _formKey,
+                  formKey: _formKey, subjectcontroller: subjectController,
                 ),
 
                 SizedBox(

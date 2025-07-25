@@ -17,14 +17,13 @@ class ProfileStudentInfo extends StatelessWidget {
     return Column(
       children: [
         // User Profile image
-        ClipRRect(
+       ClipRRect(
           borderRadius: BorderRadius.circular(45),
           child: CachedNetworkImage(
             height: 80.h,
             width: 80.w,
-            fit: BoxFit.fill,
-            imageUrl:
-                'https://plus.unsplash.com/premium_photo-1750343360238-b6861fc1f95b?q=80&w=418&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            fit: BoxFit.cover,
+            imageUrl: '${user.userImage}',
             errorWidget: (context, url, error) => const Icon(
               Icons.error,
               color: Colors.red,

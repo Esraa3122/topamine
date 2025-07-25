@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/toast/show_toast.dart';
 import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
@@ -40,6 +41,12 @@ class _LoginBodyState extends State<LoginBody> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) async {
+        if (state is WaitingApproval) {
+          await context.pushNamedAndRemoveUntil(AppRoutes.waitingApproval);
+          ShowToast.showToastInfoTop(message: 'حسابك قيد المراجعة');
+          return;
+        }
+
         if (state is Success) {
           ShowToast.showToastSuccessTop(
             message: context.translate(state.successMessage),
@@ -61,6 +68,7 @@ class _LoginBodyState extends State<LoginBody> {
           );
         }
       },
+
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -115,7 +123,7 @@ class _LoginBodyState extends State<LoginBody> {
                     ),
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 10.h,
                 ),
 

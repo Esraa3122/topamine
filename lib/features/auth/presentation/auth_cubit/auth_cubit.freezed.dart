@@ -238,4 +238,36 @@ as String,
 
 }
 
+/// @nodoc
+
+
+class WaitingApproval implements AuthState {
+  const WaitingApproval();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WaitingApproval);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.waitingApproval()';
+}
+
+
+}
+
+
+
+
 // dart format on

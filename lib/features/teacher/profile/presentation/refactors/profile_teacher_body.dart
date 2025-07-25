@@ -7,6 +7,8 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
+import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
+import 'package:test/features/teacher/profile/presentation/refactors/list_chat.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/dark_mode_change.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/language_change.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/logout_widget.dart';
@@ -52,7 +54,76 @@ class _ProfileTeacherBodyState extends State<ProfileTeacherBody> {
                     return const Center(child: Text('No user data found.'));
                   }
 
-                  return TeacherProfileInfo(user: snapshot.data!);
+                  return Column(
+                    children: [
+                      TeacherProfileInfo(user: snapshot.data!),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.color.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          maximumSize: Size(200.w, 50.h),
+                        ),
+                        onPressed: () async {
+                          final updatedUser = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditProfileTeacherScreen(
+                                user: snapshot.data!,
+                              ),
+                            ),
+                          );
+
+                          if (updatedUser != null) {
+                            setState(() {}); // reload user data
+                          }
+                        },
+                        
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              size: 20,
+                              color: context.color.textColor,
+                            ),
+                            SizedBox(width: 10.w),
+                            TextApp(
+                              text: 'تعديل البيانات',
+                              theme: context.textStyle.copyWith(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeightHelper.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.color.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          maximumSize: Size(200.w, 50.h),
+                        ),
+                        onPressed: () async {
+                          final updatedUser = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const StudentsListScreen(),
+                            ),
+                          );
+
+                          if (updatedUser != null) {
+                            setState(() {}); // reload user data
+                          }
+                        }, child: null,),
+                    ],
+                  );
                 },
               ),
             ),

@@ -32,4 +32,6 @@ class ShowToast {
         textColor: Colors.white,
         fontSize: 16.sp,
       );
+
+  static void showToastInfoTop({required String message}) {}
 }
