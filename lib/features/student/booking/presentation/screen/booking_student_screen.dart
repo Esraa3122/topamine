@@ -5,7 +5,6 @@ import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_statuse_list_student.dart';
 import 'package:test/features/student/booking/presentation/widgets/courses_booking_list_student.dart';
 import 'package:test/features/student/home/data/model/courses_model.dart';
@@ -22,6 +21,7 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 
+<<<<<<< HEAD
   List<CoursesModel> allCourses = [
     CoursesModel(
       imageUrl: AppImages.logo,
@@ -44,6 +44,30 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
       enrolledDate: 'July 10, 2023',
       status: 'completed', id: '1',
     ),
+=======
+  List<CourseModel> allCourses = [
+    // CourseModel(
+    //   image: AppImages.logo,
+    //   title: 'Advanced Mathematics',
+    //   teacher: 'Dr. James Wilson',
+    //   enrolledDate: 'Sept 15, 2023',
+    //   status: 'inprogress',
+    // ),
+    // CourseModel(
+    //   image: AppImages.logo,
+    //   title: 'AP Physics',
+    //   teacher: 'Prof. Emily Chen',
+    //   enrolledDate: 'Aug 30, 2023',
+    //   status: 'completed',
+    // ),
+    // CourseModel(
+    //   image: AppImages.logo,
+    //   title: 'SAT Preparation',
+    //   teacher: 'Mr. Robert Brown',
+    //   enrolledDate: 'July 10, 2023',
+    //   status: 'completed',
+    // ),
+>>>>>>> ahmed
   ];
 
   void handleFilterChange(String value) {
@@ -68,9 +92,15 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
     if (searchQuery.isNotEmpty) {
       final lower = searchQuery.toLowerCase();
       filteredCourses = filteredCourses.where((course) {
+<<<<<<< HEAD
         return course.title.toLowerCase().contains(lower) ||
             course.teacherName.toLowerCase().contains(lower) ||
             (course.subject?.toLowerCase() ?? '').contains(lower);
+=======
+        return course.title.toLowerCase().contains(lower);
+        // course.teacher.toLowerCase().contains(lower) ||
+        // (course.subject?.toLowerCase() ?? '').contains(lower);
+>>>>>>> ahmed
       }).toList();
     }
     return Padding(

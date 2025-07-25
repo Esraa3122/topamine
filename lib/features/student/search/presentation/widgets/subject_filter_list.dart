@@ -3,21 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SubjectFilterList extends StatelessWidget {
   const SubjectFilterList({
+    required this.sections,
     required this.selectedSubject,
     required this.onSubjectSelected,
     super.key,
-    this.subjects = const [
-      'All',
-      'Mathematics',
-      'English',
-      'Science',
-      'History',
-      'Art',
-    ],
   });
-  final List<String> subjects;
+  final List<String> sections;
   final String selectedSubject;
-  final ValueChanged<String> onSubjectSelected;
+  final Function(String) onSubjectSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +18,9 @@ class SubjectFilterList extends StatelessWidget {
       height: 40.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: subjects.length,
+        itemCount: sections.length,
         itemBuilder: (context, index) {
-          final subject = subjects[index];
+          final subject = sections[index];
           final isSelected = selectedSubject == subject;
 
           return Padding(

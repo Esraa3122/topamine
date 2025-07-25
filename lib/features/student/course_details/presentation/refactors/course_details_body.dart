@@ -8,8 +8,8 @@ import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/course_info.dart';
-import 'package:test/features/student/course_details/presentation/widgets/course_section.dart';
 import 'package:test/features/student/course_details/presentation/widgets/custom_contanier_course.dart';
+import 'package:test/features/student/course_details/presentation/widgets/lecture_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/vertical_validator.dart';
 import 'package:test/features/student/home/data/model/courses_model.dart';
@@ -27,24 +27,19 @@ class CourseDetailsBody extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.asset(
-                course.imageUrl ?? '',
-                width: double.infinity,
-                height: 200.h,
-                fit: BoxFit.cover,
-              ),
+              Image.network(course.imageUrl),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomContanierCourse(
-                      label: course.subject ?? 'Subject',
+                      label: course.title,
                       backgroundColor: const Color(0xffDBEAFE),
                       textColor: const Color(0xff2563EB),
                     ),
                     CustomContanierCourse(
-                      label: course.status ?? 'Status',
+                      label: course.status,
                       backgroundColor: const Color(0xffDCFCE7),
                       textColor: const Color(0xff16A34A),
                     ),
@@ -69,7 +64,7 @@ class CourseDetailsBody extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 TextApp(
-                  text: 'Comprehensive SAT Math Preparation',
+                  text: course.subTitle,
                   theme: context.textStyle.copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeightHelper.regular,
@@ -80,7 +75,7 @@ class CourseDetailsBody extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(course.imageUrl ?? ''),
+                      backgroundImage: NetworkImage(course.imageUrl),
                       backgroundColor: context.color.mainColor,
                     ),
                     SizedBox(width: 10.w),
@@ -117,13 +112,25 @@ class CourseDetailsBody extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 12.h),
-                TextApp(
-                  text: r'$199.99',
-                  theme: context.textStyle.copyWith(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.bluePinkLight,
-                  ),
+                Row(
+                  children: [
+                    TextApp(
+                      text: r'$ ',
+                      theme: context.textStyle.copyWith(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.bluePinkLight,
+                      ),
+                    ),
+                    TextApp(
+                      text: course.price.toString(),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.bluePinkLight,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 16.h),
                 const Divider(),
@@ -200,49 +207,57 @@ class CourseDetailsBody extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.h),
-                const CourseSection(
-                  title: 'Introduction to Advanced Mathematics',
-                  subtitle: '5 lectures • 2h 30m',
-                  contents: [
-                    'Welcome & Overview',
-                    'Key Concepts',
-                    'Tools Needed',
-                    'Getting Started',
-                    'First Practice Set',
-                  ],
-                ),
-                const CourseSection(
-                  title: 'Algebra Fundamentals',
-                  subtitle: '8 lectures • 4h 15m',
-                  contents: [
-                    'Variables & Expressions',
-                    'Linear Equations',
-                    'Quadratic Equations',
-                    'Factoring',
-                    'Inequalities',
-                    'Systems of Equations',
-                    'Algebraic Word Problems',
-                    'Algebra Review Quiz',
-                  ],
-                ),
-                const CourseSection(
-                  title: 'Geometry and Trigonometry',
-                  subtitle: '12 lectures • 6h 45m',
-                  contents: [
-                    'Angles and Lines',
-                    'Triangles',
-                    'Circles',
-                    'Coordinate Geometry',
-                    'Trigonometric Ratios',
-                    'Trigonometric Identities',
-                    'Unit Circle',
-                    'Graphs of Trig Functions',
-                    'Solving Triangles',
-                    'Applications in Real Life',
-                    'Practice Problems',
-                    'Geometry Review',
-                  ],
-                ),
+                if (course.lectures.isEmpty)
+                  TextApp(
+                    text: 'No lectures available',
+                    theme: context.textStyle.copyWith(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                    ),
+                  )
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: course.lectures.map((lecture) {
+                      return LectureItem(
+                        lecture: lecture,
+                        course: course,
+                      );
+                    }).toList(),
+                  ),
+
+                // const CourseSection(
+                //   title: 'Algebra Fundamentals',
+                //   subtitle: '8 lectures • 4h 15m',
+                //   contents: [
+                //     'Variables & Expressions',
+                //     'Linear Equations',
+                //     'Quadratic Equations',
+                //     'Factoring',
+                //     'Inequalities',
+                //     'Systems of Equations',
+                //     'Algebraic Word Problems',
+                //     'Algebra Review Quiz',
+                //   ],
+                // ),
+                // const CourseSection(
+                //   title: 'Geometry and Trigonometry',
+                //   subtitle: '12 lectures • 6h 45m',
+                //   contents: [
+                //     'Angles and Lines',
+                //     'Triangles',
+                //     'Circles',
+                //     'Coordinate Geometry',
+                //     'Trigonometric Ratios',
+                //     'Trigonometric Identities',
+                //     'Unit Circle',
+                //     'Graphs of Trig Functions',
+                //     'Solving Triangles',
+                //     'Applications in Real Life',
+                //     'Practice Problems',
+                //     'Geometry Review',
+                //   ],
+                // ),
                 const Divider(),
                 TextApp(
                   text: context.translate(LangKeys.studentReviews),

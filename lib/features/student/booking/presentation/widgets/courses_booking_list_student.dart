@@ -11,7 +11,10 @@ class CoursesBookingListStudent extends StatelessWidget {
     return ListView.builder(
       itemCount: courses.length,
       itemBuilder: (context, index) {
-        return BookingCourseCardStudent(course: courses[index], showStatus: true);
+        return BookingCourseCardStudent(
+          course: courses[index],
+          showStatus: true,
+        );
       },
     );
   }

@@ -4,8 +4,17 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/student/home/data/model/courses_model.dart';
 
 class BookingCourseCardStudent extends StatelessWidget {
+<<<<<<< HEAD
   const BookingCourseCardStudent({required this.course, super.key, this.showStatus = false});
   final CoursesModel course;
+=======
+  const BookingCourseCardStudent({
+    required this.course,
+    super.key,
+    this.showStatus = false,
+  });
+  final CourseModel course;
+>>>>>>> ahmed
   final bool showStatus;
 
   @override
@@ -44,8 +53,17 @@ class BookingCourseCardStudent extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
+<<<<<<< HEAD
               child: Image.asset(
                 course.imageUrl ?? '',
+=======
+              child: Image.network(
+                course.imageUrl.isNotEmpty
+                    ? course.imageUrl
+                    : 'https://via.placeholder.com/150',
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.error),
+>>>>>>> ahmed
                 width: 80.w,
                 height: 80.h,
                 fit: BoxFit.cover,
@@ -69,13 +87,17 @@ class BookingCourseCardStudent extends StatelessWidget {
                     SizedBox(height: 4.h),
                     SizedBox(height: 4.h),
                     Text(
+<<<<<<< HEAD
                       course.teacherName,
+=======
+                      course.teacherEmail,
+>>>>>>> ahmed
                       style: const TextStyle(color: Colors.black54),
                     ),
                     SizedBox(height: 2.h),
                     SizedBox(height: 2.h),
                     Text(
-                      'Enrolled: ${course.enrolledDate}',
+                      'Created At: ${course.createdAt}',
                       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                     ),
                     if (showStatus) ...[
