@@ -1,44 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:test/core/style/images/app_images.dart';
-import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
+import 'package:test/features/student/profile_teacher/data/repo/view_profile_teacher_repo.dart';
+import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_cubit.dart';
+import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_state.dart';
+import 'package:test/features/student/profile_teacher/presentation/widgets/card_view_teacher.dart';
 
 class CoursesList extends StatelessWidget {
-  CoursesList({super.key});
+  const CoursesList({required this.teacher, super.key});
 
-  final List<CourseModel> courses = [
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
-      enrolledDate: 'Sept 15, 2023',
-      status: 'inprogress',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'AP Physics',
-      teacher: 'Prof. Emily Chen',
-      enrolledDate: 'Aug 30, 2023',
-      status: 'complated',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'SAT Preparation',
-      teacher: 'Mr. Robert Brown',
-      enrolledDate: 'July 10, 2023',
-      status: 'complated',
-    ),
-  ];
+  final UserModel teacher;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: courses.length,
-      itemBuilder: (context, index) {
-        return BookingCourseCardStudent(course: courses[index]);
-      },
+    return BlocProvider(
+      create: (_) => ViewTeacherProfileCubit(
+        CourseRepository(firestore: FirebaseFirestore.instance),
+      )..fetchCoursesByTeacher(teacher.userEmail),
+      child: BlocBuilder<ViewTeacherProfileCubit, ViewTeacherProfileState>(
+        builder: (context, state) {
+          if (state is LoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is LoadedState) {
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.courses.length,
+              itemBuilder: (context, index) {
+                return CardViewTeacher(course: state.courses[index]);
+              },
+            );
+          }
+
+          if (state is ErrorState) {
+            return Center(child: Text(state.message));
+          }
+
+          return const Center(child: Text('No courses available.'));
+        },
+      ),
     );
   }
 }

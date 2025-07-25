@@ -70,10 +70,11 @@ class _LoginTextFormState extends State<LoginTextForm> {
               keyboardType: TextInputType.visiblePassword,
               obscureText: isShowPassword ,
               validator: (value) {
-                if (value == null || value.isEmpty || value.length < 6) {
+                if (!AppRegex.isPasswordValid(widget.passwordcontroller.text)) {
                   return context.translate(LangKeys.validPassword);
+                } else {
+                  return null;
                 }
-                return null;
               },
               suffixIcon: IconButton(
                 onPressed: () {

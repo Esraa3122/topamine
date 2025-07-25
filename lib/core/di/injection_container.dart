@@ -1,12 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test/core/app/app_cubit/app_cubit.dart';
-import 'package:test/core/service/rest_api/api_service.dart';
-import 'package:test/core/service/rest_api/dio_factory.dart';
 import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:test/features/student/home/presentation/cubit/teacher_cards_cubit.dart';
 import 'package:test/features/student/navigation/cubit/student_navigation_cubit.dart';
 import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
 
@@ -16,15 +15,16 @@ Future<void> setupInjector() async {
   await _initCore();
   await _initAuth();
   await _initMain();
+  await _initHome();
 }
 
 Future<void> _initCore() async {
-  final dio = DioFactory.getDio();
+  // final dio = DioFactory.getDio();
   final navigatorKey = GlobalKey<NavigatorState>();
   sl
-  ..registerFactory(AppCubit.new)
-  ..registerLazySingleton<ApiService>(() => ApiService(dio))
-  ..registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
+    ..registerFactory(AppCubit.new)
+    // ..registerLazySingleton<ApiService>(() => ApiService(dio))
+    ..registerSingleton<GlobalKey<NavigatorState>>(navigatorKey);
   // ..registerFactory(() => UploadImageCubit(sl()))
   // // ..registerFactory(ShareCubit.new)
   // ..registerLazySingleton(() => UploadImageRepo(sl()))
@@ -32,8 +32,8 @@ Future<void> _initCore() async {
 }
 
 Future<void> _initAuth() async {
- sl
-  ..registerFactory(() => AuthCubit(sl()))
+  sl
+    ..registerFactory(() => AuthCubit(sl()))
     ..registerLazySingleton(() => AuthRepos(sl(), sl()))
     ..registerLazySingleton(AuthDataSource.new)
     ..registerLazySingleton(SharedPrefHelper.new);
@@ -46,6 +46,10 @@ Future<void> _initAuth() async {
 
 Future<void> _initMain() async {
   sl
-  ..registerFactory(StudentNavigationCubit.new)
-  ..registerFactory(TeacherNavigationCubit.new);
+    ..registerFactory(StudentNavigationCubit.new)
+    ..registerFactory(TeacherNavigationCubit.new);
+}
+
+Future<void> _initHome() async {
+  sl.registerFactory(TeacherCardsCubit.new);
 }

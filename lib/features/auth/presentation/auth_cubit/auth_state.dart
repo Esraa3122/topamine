@@ -6,4 +6,5 @@ class AuthState with _$AuthState {
   const factory AuthState.loading() = Loading;
   const factory AuthState.success({required String successMessage}) = Success;
   const factory AuthState.failure({required String errorMessage}) = Failure;
+  const factory AuthState.waitingApproval() = WaitingApproval; 
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/all_courses/presentation/widget/contanier_all_course.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 
 class AllCoursesBody extends StatefulWidget {
   const AllCoursesBody({super.key});
@@ -12,59 +12,28 @@ class AllCoursesBody extends StatefulWidget {
 }
 
 class _AllCoursesBodyState extends State<AllCoursesBody> {
-   String selectedFilter = 'All';
 
-  List<CourseModel> allCourses = [
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Advanced Mathematics',
-      teacher: 'Dr.James Wilson',
-      enrolledDate: 'Sept 15, 2023',
-      status: 'Completed 50%',
-      subject: 'Mathematics',
+  final List<CoursesModel> allCourses = [
+    CoursesModel(
+      id: '1',
+      title: 'Mathematics',
+      teacherName: 'Dr. Ahmed',
+      imageUrl: AppImages.backButton,
     ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'AP Physics',
-      teacher: 'Prof. Emily Chen',
-      enrolledDate: 'Aug 30, 2023',
-      status: 'Completed 80%',
-      subject: 'Physics',
+    CoursesModel(
+      id: '2',
+      title: 'Physics',
+      teacherName: 'Dr. Sara',
+      imageUrl: AppImages.backButton,
     ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'SAT Preparation',
-      teacher: 'Mr. Robert Brown',
-      enrolledDate: 'July 10, 2023',
-      status: 'Completed 60%',
-      subject: 'SAT',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'English Grammar',
-      teacher: 'Ms. Sarah Clark',
-      enrolledDate: 'June 5, 2023',
-      status: 'Completed 50%',
-      subject: 'English',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'English Grammar',
-      teacher: 'Ms. Sarah Clark',
-      enrolledDate: 'June 5, 2023',
-      status: 'Completed 50%',
-      subject: 'English',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'English Grammar',
-      teacher: 'Ms. Sarah Clark',
-      enrolledDate: 'June 5, 2023',
-      status: 'Completed 50%',
-      subject: 'English',
+    CoursesModel(
+      id: '3',
+      title: 'English Literature',
+      teacherName: 'Mr. John',
+      imageUrl: AppImages.backButton,
     ),
   ];
-
+  String selectedFilter = 'All';
   List<String> filters = ['All', 'Mathematics', 'Physics', 'English'];
   @override
   Widget build(BuildContext context) {

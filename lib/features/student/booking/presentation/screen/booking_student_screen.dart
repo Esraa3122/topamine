@@ -8,7 +8,7 @@ import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_statuse_list_student.dart';
 import 'package:test/features/student/booking/presentation/widgets/courses_booking_list_student.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 
 class BookingStudentScreen extends StatefulWidget {
   const BookingStudentScreen({super.key});
@@ -22,27 +22,27 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 
-  List<CourseModel> allCourses = [
-    CourseModel(
-      image: AppImages.logo,
+  List<CoursesModel> allCourses = [
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
+      teacherName: 'Dr. James Wilson',
       enrolledDate: 'Sept 15, 2023',
-      status: 'inprogress',
+      status: 'inprogress', id: '3',
     ),
-    CourseModel(
-      image: AppImages.logo,
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'AP Physics',
-      teacher: 'Prof. Emily Chen',
+      teacherName: 'Prof. Emily Chen',
       enrolledDate: 'Aug 30, 2023',
-      status: 'completed',
+      status: 'completed', id: '2',
     ),
-    CourseModel(
-      image: AppImages.logo,
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'SAT Preparation',
-      teacher: 'Mr. Robert Brown',
+      teacherName: 'Mr. Robert Brown',
       enrolledDate: 'July 10, 2023',
-      status: 'completed',
+      status: 'completed', id: '1',
     ),
   ];
 
@@ -69,7 +69,7 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
       final lower = searchQuery.toLowerCase();
       filteredCourses = filteredCourses.where((course) {
         return course.title.toLowerCase().contains(lower) ||
-            course.teacher.toLowerCase().contains(lower) ||
+            course.teacherName.toLowerCase().contains(lower) ||
             (course.subject?.toLowerCase() ?? '').contains(lower);
       }).toList();
     }

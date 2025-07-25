@@ -58,6 +58,13 @@ class TeacherProfileInfo extends StatelessWidget {
             fontSize: 14.sp,
             fontWeight: FontWeightHelper.regular
         )),
+        SizedBox(height: 7.h,),
+        TextApp(
+          text: 'مدرس : ${user.subject}', 
+          theme: context.textStyle.copyWith(
+            fontSize: 14.sp,
+            fontWeight: FontWeightHelper.regular
+        )),
       ],
     );
   }

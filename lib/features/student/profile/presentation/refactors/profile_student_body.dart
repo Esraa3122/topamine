@@ -7,6 +7,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
+import 'package:test/features/student/edit_profile/presentation/screen/edit_profile_student_screen.dart';
 import 'package:test/features/student/profile/presentation/widgets/profile_student_info.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/dark_mode_change.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/language_change.dart';
@@ -52,7 +53,48 @@ class _ProfileStudentBodyState extends State<ProfileStudentBody> {
                     return const Center(child: Text('No user data found.'));
                   }
 
-                  return ProfileStudentInfo(user: snapshot.data!);
+               return Column(
+                children: [
+                  ProfileStudentInfo(user: snapshot.data!),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.color.mainColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      maximumSize: Size(200.w, 50.h),
+                    ),
+                    onPressed: () async {
+                      final updatedUser = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EditProfileStudentScreen(user: snapshot.data!),
+                        ),
+                      );
+
+                      if (updatedUser != null) {
+                        setState(() {}); // reload user data
+                      }
+                    },
+                    child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.edit, size: 20,color: context.color.textColor),
+                        SizedBox(width: 10.w),
+                        TextApp(
+                          text: 'تعديل البيانات',
+                          theme: context.textStyle.copyWith(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeightHelper.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
                 },
               ),
             ),

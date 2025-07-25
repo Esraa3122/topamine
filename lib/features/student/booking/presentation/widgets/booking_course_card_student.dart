@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 
 class BookingCourseCardStudent extends StatelessWidget {
   const BookingCourseCardStudent({required this.course, super.key, this.showStatus = false});
-  final CourseModel course;
+  final CoursesModel course;
   final bool showStatus;
 
   @override
@@ -45,7 +45,7 @@ class BookingCourseCardStudent extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                course.image,
+                course.imageUrl ?? '',
                 width: 80.w,
                 height: 80.h,
                 fit: BoxFit.cover,
@@ -69,7 +69,7 @@ class BookingCourseCardStudent extends StatelessWidget {
                     SizedBox(height: 4.h),
                     SizedBox(height: 4.h),
                     Text(
-                      course.teacher,
+                      course.teacherName,
                       style: const TextStyle(color: Colors.black54),
                     ),
                     SizedBox(height: 2.h),

@@ -1,3 +1,5 @@
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +11,13 @@ import 'package:test/core/service/shared_pref/shared_pref.dart';
 import 'package:test/firebase_options.dart';
 import 'package:test/my_app.dart';
 
+
 void main() async {
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: 'duljb1fz3');
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

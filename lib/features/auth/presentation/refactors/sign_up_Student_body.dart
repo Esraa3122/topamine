@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/toast/show_toast.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
@@ -25,6 +28,7 @@ class SignUpStudentBody extends StatefulWidget {
 
 class _SignUpStudentBodyState extends State<SignUpStudentBody> {
   final _formKey = GlobalKey<FormState>();
+  final picker = ImagePicker();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -32,6 +36,7 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
   final gradeController = TextEditingController();
   final phoneController = TextEditingController();
   final governorateController = TextEditingController();
+  File? uploadedImageUrl;
 
   void _registerStudent() {
     if (_formKey.currentState!.validate()) {
@@ -43,6 +48,7 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
         grade: gradeController.text.trim(),
         phone: phoneController.text.trim(),
         governorate: governorateController.text.trim(),
+        imageFile: uploadedImageUrl,
       );
     }
   }
@@ -102,7 +108,9 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
                   height: 10.h,
                 ),
                 //User Avatar image
-                const UserAvararImage(),
+                UserAvatarImage(onImageUploaded: (imageUrl) {
+                  uploadedImageUrl = imageUrl;
+                }),
 
                 SizedBox(
                   height: 15.h,

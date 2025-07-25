@@ -4,11 +4,11 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 
 class ContanierCourse extends StatelessWidget {
   const ContanierCourse({required this.course, super.key});
-  final CourseModel course;
+  final CoursesModel course;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ContanierCourse extends StatelessWidget {
                   top: Radius.circular(16),
                 ),
                 child: Image.asset(
-                  course.image,
+                  course.imageUrl ?? '',
                   height: 100.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class ContanierCourse extends StatelessWidget {
                   ),
                     SizedBox(height: 4.h),
                     TextApp(
-                    text: course.teacher,
+                    text: course.teacherName,
                     theme: context.textStyle.copyWith(
                       fontSize: 12.sp,
                       fontWeight: FontWeightHelper.medium,

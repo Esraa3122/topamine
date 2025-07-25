@@ -14,6 +14,7 @@ class SignUpTextFormTeacher extends StatefulWidget {
     required this.passwordcontroller,
     required this.phonecontroller,
     required this.governoratecontroller,
+    required this.subjectcontroller,  
     required this.formKey,
     super.key,
   });
@@ -22,6 +23,7 @@ class SignUpTextFormTeacher extends StatefulWidget {
   final TextEditingController passwordcontroller;
   final TextEditingController phonecontroller;
   final TextEditingController governoratecontroller;
+  final TextEditingController subjectcontroller;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -156,10 +158,11 @@ class _SignUpTextFormTeacherState extends State<SignUpTextFormTeacher> {
               keyboardType: TextInputType.visiblePassword,
               obscureText: isShowPassword,
               validator: (value) {
-                if (value == null || value.isEmpty || value.length < 6) {
+                if (!AppRegex.isPasswordValid(widget.passwordcontroller.text)) {
                   return context.translate(LangKeys.validPassword);
+                } else {
+                  return null;
                 }
-                return null;
               },
               suffixIcon: IconButton(
                 onPressed: () {
@@ -191,6 +194,26 @@ class _SignUpTextFormTeacherState extends State<SignUpTextFormTeacher> {
                 } else {
                   return null;
                 }
+              },
+            ),
+          ),
+
+          SizedBox(height: 20.h),
+
+          // subject
+          CustomFadeInRight(
+            duration: 200,
+            child: CustomTextField(
+              controller: widget.subjectcontroller,
+              lable: context.translate('LangKeys.subject'),
+              hintText: context.translate('LangKeys.enterSubject'),
+              prefixIcon: const Icon(Icons.subject),
+              keyboardType: TextInputType.text,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return context.translate('LangKeys.pleaseEnterYourSubject');
+                }
+                return null;
               },
             ),
           ),

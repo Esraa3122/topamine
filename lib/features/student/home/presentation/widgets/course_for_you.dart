@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/style/images/app_images.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/home/presentation/widgets/contanier_course.dart';
 class CoursesListYou extends StatelessWidget {
   CoursesListYou({super.key});
 
-  final List<CourseModel> courses = [
-    CourseModel(
-      image: AppImages.logo,
+  final List<CoursesModel> courses = [
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
+      teacherName: 'Dr. James Wilson',
       enrolledDate: 'Sept 15, 2023',
       status: 'Completed 80%',
       subject: 'Mathematics',
     ),
-    CourseModel(
-      image: AppImages.logo,
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'AP Physics',
-      teacher: 'Prof. Emily Chen',
+      teacherName: 'Prof. Emily Chen',
       enrolledDate: 'Aug 30, 2023',
       status: 'Completed 50%',
       subject: 'Physics',
     ),
-    CourseModel(
-      image: AppImages.logo,
+    CoursesModel(
+      imageUrl: AppImages.logo,
       title: 'SAT Preparation',
-      teacher: 'Mr. Robert Brown',
+      teacherName: 'Mr. Robert Brown',
       enrolledDate: 'July 10, 2023',
       status: 'Completed 30%',
       subject: 'Preparation',

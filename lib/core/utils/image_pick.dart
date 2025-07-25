@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -12,21 +14,18 @@ class PickImageUtils {
 
   static const PickImageUtils _instance = PickImageUtils._();
 
-  Future<XFile?> pickImage() async {
+  Future<File?> pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (image != null) {
-        // final bytes = await File(image.path).readAsBytes();
-        // return base64Encode(bytes);
-        return XFile(image.path);
+        return File(image.path);
       }
       return null;
     } catch (e) {
       final permissionStatus = await Permission.photos.status;
 
       if (permissionStatus.isDenied) {
-        // show dialog
         await _showAlertPermissionsDialog();
       } else {
         debugPrint('Image Exception ==> $e');

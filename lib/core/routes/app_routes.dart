@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/common/screens/under_build_screen.dart';
+import 'package:test/core/common/screens/waiting_approval_screen.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/routes/base_routes.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:test/features/auth/presentation/refactors/forget_password_body.dart';
 import 'package:test/features/auth/presentation/screen/login_screen.dart';
@@ -15,7 +17,7 @@ import 'package:test/features/splash/view/screen/splash_screen.dart';
 import 'package:test/features/student/all_courses/presentation/screen/all_courses_page.dart';
 import 'package:test/features/student/booking/presentation/screen/booking_student_screen.dart';
 import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/home/presentation/screens/home_student_screen.dart';
 import 'package:test/features/student/navigation/presentation/screen/navigation_student_screen.dart';
 import 'package:test/features/student/profile/presentation/screens/profile_student_screen.dart';
@@ -45,6 +47,7 @@ class AppRoutes {
   static const String teacherProfile = 'teacherProfile';
   static const String studentProfile = 'studentProfile';
   static const String paymentDetailsView = 'paymentDetailsView';
+  static const String waitingApproval = 'waitingApproval';
 
   static Route<void> onGenerateRoute(RouteSettings settings) {
     final arg = settings.arguments;
@@ -83,6 +86,8 @@ class AppRoutes {
         );
       case forgetPassword:
         return BaseRoute(page: const ForgetPasswordBody());
+      case waitingApproval:
+        return BaseRoute(page: const WaitingApprovalScreen());
       case navigationStudent:
         return BaseRoute(page: const NavigationStudentScreen());
       case navigationTeacher:
@@ -98,9 +103,15 @@ class AppRoutes {
       case allCoursesPage:
         return BaseRoute(page: const AllCoursesPage());
       case courseDetails:
-        return BaseRoute(page: CourseDetailsScreen(course: arg! as CourseModel));
+        return BaseRoute(
+          page: CourseDetailsScreen(course: arg! as CoursesModel),
+        );
       case teacherProfile2:
-        return BaseRoute(page: const ViewProfileTeacherScreen());
+        return BaseRoute(
+          page: ViewProfileTeacherScreen(
+            userModel: arg! as UserModel,
+          ),
+        );
       case teacherProfile:
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:

@@ -35,7 +35,7 @@ class AppCubit extends Cubit<AppState> {
   void getSavedLanguage() {
     final result = SharedPref().containPreference(PrefKeys.language)
         ? SharedPref().getString(PrefKeys.language)
-        : 'en';
+        : 'ar';
 
     currentLangCode = result!;
     emit(AppState.languageChange(locale: Locale(currentLangCode)));

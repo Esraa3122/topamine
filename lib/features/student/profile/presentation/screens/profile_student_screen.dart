@@ -15,12 +15,12 @@ class ProfileStudentScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          border: Border.all(color: context.color.mainColor!),
+          // border: Border.all(color: context.color.mainColor!),
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
             colors: [
               context.color.mainColor!.withOpacity(0.8),
-              context.color.mainColor!.withOpacity(0.8),
+              Colors.grey.withOpacity(0.8),
             ],
             begin: const Alignment(0.36, 0.27),
             end: const Alignment(0.58, 0.85),
@@ -31,7 +31,7 @@ class ProfileStudentScreen extends StatelessWidget {
               offset: Offset(0, 4),
               blurRadius: 2,
             ),
-            BoxShadow(
+             BoxShadow(
               color: context.color.containerShadow2!.withOpacity(0.3),
               offset: const Offset(0, 4),
               blurRadius: 2,
