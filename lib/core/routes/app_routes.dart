@@ -11,7 +11,6 @@ import 'package:test/features/auth/presentation/screen/login_screen.dart';
 import 'package:test/features/auth/presentation/screen/rule_sign_up_screen.dart';
 import 'package:test/features/auth/presentation/screen/sign_up_student_screen.dart';
 import 'package:test/features/auth/presentation/screen/sign_up_teacher_screen.dart';
-import 'package:test/features/checkout/presentation/views/payment_details.dart';
 import 'package:test/features/onbording/view/screens/on_boarding_screen.dart';
 import 'package:test/features/splash/view/screen/splash_screen.dart';
 import 'package:test/features/student/all_courses/presentation/screen/all_courses_page.dart';
@@ -116,8 +115,6 @@ class AppRoutes {
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:
         return BaseRoute(page: const ProfileStudentScreen());
-      case paymentDetailsView:
-        return BaseRoute(page: const PaymentDetailsView());
       default:
         return BaseRoute(page: const PageUnderBuildScreen());
     }
