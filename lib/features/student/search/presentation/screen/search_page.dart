@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
-import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
 import 'package:test/features/student/home/data/model/coures_model.dart';
 import 'package:test/features/student/search/presentation/widgets/custom_text_search.dart';
@@ -9,7 +9,6 @@ import 'package:test/features/student/search/presentation/widgets/subject_filter
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
-
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
@@ -19,106 +18,102 @@ class _SearchPageState extends State<SearchPage> {
   String selectedSubject = 'All';
   String searchQuery = '';
 
-  final List<CourseModel> allCourses = [
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
-      enrolledDate: 'Sept 15, 2023',
-      status: 'inprogress',
-      subject: 'Mathematics',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'English Writing',
-      teacher: 'Mr. John Smith',
-      enrolledDate: 'Aug 10, 2023',
-      status: 'completed',
-      subject: 'English',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Science Basics',
-      teacher: 'Prof. Emily Chen',
-      enrolledDate: 'Jul 5, 2023',
-      status: 'inprogress',
-      subject: 'Science',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'World History',
-      teacher: 'Dr. Alan Rickman',
-      enrolledDate: 'Jul 1, 2023',
-      status: 'completed',
-      subject: 'History',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Art Theory',
-      teacher: 'Ms. Lisa Rivera',
-      enrolledDate: 'Jun 20, 2023',
-      status: 'inprogress',
-      subject: 'Art',
-    ),
-  ];
+  List<CourseModel> allCourses = [];
+  List<String> sectionTitles = ['All'];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCoursesFromFirestore();
+  }
+
+  Future<void> fetchCoursesFromFirestore() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('courses')
+          .get();
+
+      final loadedCourses = snapshot.docs
+          .map((doc) => CourseModel.fromJson(doc.data(), doc.id))
+          .toList();
+
+      final sections = loadedCourses
+          .map((course) => course.sectionTitle)
+          .where((title) => title.isNotEmpty)
+          .toSet()
+          .toList();
+
+      setState(() {
+        allCourses = loadedCourses;
+        sectionTitles = ['All', ...sections];
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      debugPrint('Error fetching courses: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var filteredCourses = selectedSubject == 'All'
-        ? allCourses
-        : allCourses
-              .where((course) => course.subject == selectedSubject)
-              .toList();
-    if (searchQuery.isNotEmpty) {
-      filteredCourses = filteredCourses.where((course) {
-        final lower = searchQuery.toLowerCase();
-        return course.title.toLowerCase().contains(lower) ||
-            course.teacher.toLowerCase().contains(lower) ||
-            (course.subject?.toLowerCase() ?? '').contains(lower);
-      }).toList();
-    }
+    List<CourseModel> filteredCourses = allCourses.where((course) {
+      final lowerSearch = searchQuery.toLowerCase();
+      final matchSearch =
+          course.title.toLowerCase().contains(lowerSearch) ||
+          course.teacherEmail.toLowerCase().contains(lowerSearch) ||
+          course.sectionTitle.toLowerCase().contains(lowerSearch);
+      final matchSection =
+          selectedSubject == 'All' || course.sectionTitle == selectedSubject;
 
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomFadeInLeft(
-            duration: 300,
-            child: CustomTextSearch(
-              searchController: searchController,
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value!;
-                });
-                return;
-              },
-            ),
-          ),
-          SizedBox(height: 20.h),
-          SubjectFilterList(
-            selectedSubject: selectedSubject,
-            onSubjectSelected: (value) {
-              setState(() {
-                selectedSubject = value;
-              });
-            },
-          ),
-          SizedBox(height: 20.h),
-          Expanded(
-            child: filteredCourses.isEmpty
-                ? const Center(child: Text('No courses found'))
-                : ListView.builder(
-                    itemCount: filteredCourses.length,
-                    itemBuilder: (context, index) {
-                      return BookingCourseCardStudent(
-                        course: filteredCourses[index],
-                      );
+      return matchSearch && matchSection;
+    }).toList();
+
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomFadeInLeft(
+                  duration: 300,
+                  child: CustomTextSearch(
+                    searchController: searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value ?? '';
+                      });
                     },
                   ),
-          ),
-        ],
-      ),
-    );
+                ),
+                SizedBox(height: 20.h),
+                SubjectFilterList(
+                  sections: sectionTitles,
+                  selectedSubject: selectedSubject,
+                  onSubjectSelected: (value) {
+                    setState(() {
+                      selectedSubject = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.h),
+                Expanded(
+                  child: filteredCourses.isEmpty
+                      ? const Center(child: Text('No courses found'))
+                      : ListView.builder(
+                          itemCount: filteredCourses.length,
+                          itemBuilder: (context, index) {
+                            return BookingCourseCardStudent(
+                              course: filteredCourses[index],
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          );
   }
 }

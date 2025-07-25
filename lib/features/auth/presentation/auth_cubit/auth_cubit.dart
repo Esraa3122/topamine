@@ -59,31 +59,37 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await repository.loginUser(email, password);
       final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) {
-      emit(const Failure(errorMessage: 'Unable to get user ID'));
-      return;
-    }
+      if (uid == null) {
+        emit(const Failure(errorMessage: 'Unable to get user ID'));
+        return;
+      }
 
-    final userData = await repository.getUserData(uid);
-    if (userData == null) {
-      emit(const Failure(errorMessage: 'User data not found'));
-      return;
-    }
+      final userData = await repository.getUserData(uid);
+      if (userData == null) {
+        emit(const Failure(errorMessage: 'User data not found'));
+        return;
+      }
 
       final user = UserModel.fromJson(userData);
-      await repository.sharedPref.saveUserSession(user.userId, user.userRole.name);
-      emit(const Success(successMessage: LangKeys.loggedSuccessfully,));
+      await repository.sharedPref.saveUserSession(
+        user.userId,
+        user.userRole.name,
+      );
+      emit(
+        const Success(
+          successMessage: LangKeys.loggedSuccessfully,
+        ),
+      );
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'user-not-found') {
         emit(const Failure(errorMessage: 'user not found'));
       } else if (ex.code == 'wrong-password') {
         emit(const Failure(errorMessage: 'wrong password'));
-      }else{
+      } else {
         emit(const Failure(errorMessage: LangKeys.loggedError));
       }
     } catch (e) {
       emit(Failure(errorMessage: e.toString()));
     }
   }
-  
 }

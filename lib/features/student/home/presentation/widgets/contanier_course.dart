@@ -34,11 +34,12 @@ class ContanierCourse extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  course.image,
+                child: Image.network(
+                  course.imageUrl,
                   height: 100.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => const Icon(Icons.broken_image),
                 ),
               ),
               Padding(
@@ -47,32 +48,32 @@ class ContanierCourse extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextApp(
-                    text: course.title,
-                    theme: context.textStyle.copyWith(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: context.color.textColor
+                      text: course.title,
+                      theme: context.textStyle.copyWith(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                      ),
                     ),
-                  ),
                     SizedBox(height: 4.h),
                     TextApp(
-                    text: course.teacher,
-                    theme: context.textStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeightHelper.medium,
-                      color: context.color.textColor
+                      text: course.teacherEmail,
+                      theme: context.textStyle.copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.medium,
+                        color: context.color.textColor,
+                      ),
                     ),
-                  ),
                     SizedBox(height: 2.h),
 
                     TextApp(
-                    text: 'Enrolled: ${course.enrolledDate}',
-                    theme: context.textStyle.copyWith(
-                      color: Colors.grey,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeightHelper.regular,
+                      text: 'Created At: ${course.createdAt}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
                     ),
-                  ),
                   ],
                 ),
               ),

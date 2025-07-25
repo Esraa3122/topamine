@@ -46,23 +46,23 @@ class CustomShapeProfile extends StatelessWidget {
           child: Column(
             children: [
               TextApp(
-                    text: name,
-                    theme: context.textStyle.copyWith(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: context.color.textColor
-                    ),
-                  ),
+                text: name,
+                theme: context.textStyle.copyWith(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeightHelper.bold,
+                  color: context.color.textColor,
+                ),
+              ),
               if (title != null) ...[
                 SizedBox(height: 6.h),
                 TextApp(
-                    text: title!,
-                    theme: context.textStyle.copyWith(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeightHelper.regular,
-                      color: Colors.grey
-                    ),
+                  text: title!,
+                  theme: context.textStyle.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeightHelper.regular,
+                    color: Colors.grey,
                   ),
+                ),
               ],
               SizedBox(height: 12.h),
               Column(

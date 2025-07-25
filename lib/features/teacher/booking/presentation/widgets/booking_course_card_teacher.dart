@@ -4,7 +4,11 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/student/home/data/model/coures_model.dart';
 
 class BookingCourseCardTeacher extends StatelessWidget {
-  const BookingCourseCardTeacher({required this.course, super.key, this.showStatus = false});
+  const BookingCourseCardTeacher({
+    required this.course,
+    super.key,
+    this.showStatus = false,
+  });
   final CourseModel course;
   final bool showStatus;
 
@@ -45,7 +49,7 @@ class BookingCourseCardTeacher extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                course.image,
+                course.imageUrl,
                 width: 80.w,
                 height: 80.h,
                 fit: BoxFit.cover,
@@ -69,13 +73,13 @@ class BookingCourseCardTeacher extends StatelessWidget {
                     SizedBox(height: 4.h),
                     SizedBox(height: 4.h),
                     Text(
-                      course.teacher,
+                      course.teacherEmail,
                       style: const TextStyle(color: Colors.black54),
                     ),
                     SizedBox(height: 2.h),
                     SizedBox(height: 2.h),
                     Text(
-                      'Enrolled: ${course.enrolledDate}',
+                      'Created At: ${course.createdAt}',
                       style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                     ),
                     if (showStatus) ...[

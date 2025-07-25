@@ -37,13 +37,13 @@ class ViewProfileTeacherBody extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: TextApp(
-            text: context.translate(LangKeys.myCourses),
-            theme: context.textStyle.copyWith(
-              fontSize: 20.sp,
-              fontWeight: FontWeightHelper.bold,
-              color: context.color.textColor,
-            ),
-          ),
+                text: context.translate(LangKeys.myCourses),
+                theme: context.textStyle.copyWith(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeightHelper.bold,
+                  color: context.color.textColor,
+                ),
+              ),
             ),
             SizedBox(height: 30.h),
             CoursesList(),

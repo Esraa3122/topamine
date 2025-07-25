@@ -23,59 +23,59 @@ class _HomeStudentBodyState extends State<HomeStudentBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const BannerSliders(),
-              SizedBox(height: 20.h),
-              // CategoryList(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextApp(
-                    text: context.translate(LangKeys.coursesForYou),
-                    theme: context.textStyle.copyWith(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeightHelper.bold,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(AppRoutes.allCoursesPage);
-                    },
-                    child: TextApp(
-                    text: context.translate(LangKeys.viewAll),
-                    theme: context.textStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: context.color.bluePinkLight
-                    ),
-                  ),
-                  ),
-                ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const BannerSliders(),
+        SizedBox(height: 20.h),
+        // CategoryList(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextApp(
+              text: context.translate(LangKeys.coursesForYou),
+              theme: context.textStyle.copyWith(
+                fontSize: 20.sp,
+                fontWeight: FontWeightHelper.bold,
               ),
-              SizedBox(height: 12.h),
-              CoursesListYou(),
-              SizedBox(height: 20.h),
-              TextApp(
-                    text: context.translate(LangKeys.featuredTeachers),
-                    theme: context.textStyle.copyWith(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeightHelper.bold,
-                    ),
-                  ),
-              TextApp(
-                    text: context.translate(LangKeys.topRatedTutorsThisWeek),
-                    theme: context.textStyle.copyWith(
-                      color: Colors.grey,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeightHelper.regular,
-                    ),
-                  ),
-              SizedBox(height: 16.h),
-              const TeachersList(),
-              SizedBox(height: 24.h),
-              const StudentTestimonials(),
-            ],
-          );
+            ),
+            GestureDetector(
+              onTap: () {
+                context.pushNamed(AppRoutes.allCoursesPage);
+              },
+              child: TextApp(
+                text: context.translate(LangKeys.viewAll),
+                theme: context.textStyle.copyWith(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeightHelper.bold,
+                  color: context.color.bluePinkLight,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        const CoursesListYou(),
+        SizedBox(height: 20.h),
+        TextApp(
+          text: context.translate(LangKeys.featuredTeachers),
+          theme: context.textStyle.copyWith(
+            fontSize: 20.sp,
+            fontWeight: FontWeightHelper.bold,
+          ),
+        ),
+        TextApp(
+          text: context.translate(LangKeys.topRatedTutorsThisWeek),
+          theme: context.textStyle.copyWith(
+            color: Colors.grey,
+            fontSize: 12.sp,
+            fontWeight: FontWeightHelper.regular,
+          ),
+        ),
+        SizedBox(height: 16.h),
+        const TeachersList(),
+        SizedBox(height: 24.h),
+        const StudentTestimonials(),
+      ],
+    );
   }
 }

@@ -68,11 +68,13 @@ class LangKeys {
   static const String studentsOpinions = 'students_opinions';
   static const String allCourses = 'all_courses';
   static const String courseDetails = 'course_details';
+  static const String videoPlayer = 'video_player';
   static const String aboutThisCourse = 'about_this_course';
   static const String courseContent = 'course_content';
   static const String studentReviews = 'student_ceviews';
   static const String entrollNow = 'entroll_now';
   static const String myCourses = 'my_courses';
+  static const String payment = 'payment';
 
   static const String homepage = 'homepage';
   static const String search = 'search';

@@ -1,48 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/features/student/all_courses/data/course_service.dart';
 import 'package:test/features/student/home/data/model/coures_model.dart';
 import 'package:test/features/student/home/presentation/widgets/contanier_course.dart';
-class CoursesListYou extends StatelessWidget {
-  CoursesListYou({super.key});
 
-  final List<CourseModel> courses = [
-    CourseModel(
-      image: AppImages.logo,
-      title: 'Advanced Mathematics',
-      teacher: 'Dr. James Wilson',
-      enrolledDate: 'Sept 15, 2023',
-      status: 'Completed 80%',
-      subject: 'Mathematics',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'AP Physics',
-      teacher: 'Prof. Emily Chen',
-      enrolledDate: 'Aug 30, 2023',
-      status: 'Completed 50%',
-      subject: 'Physics',
-    ),
-    CourseModel(
-      image: AppImages.logo,
-      title: 'SAT Preparation',
-      teacher: 'Mr. Robert Brown',
-      enrolledDate: 'July 10, 2023',
-      status: 'Completed 30%',
-      subject: 'Preparation',
-    ),
-  ];
+class CoursesListYou extends StatefulWidget {
+  const CoursesListYou({super.key});
+
+  @override
+  State<CoursesListYou> createState() => _CoursesListYouState();
+}
+
+class _CoursesListYouState extends State<CoursesListYou> {
+  late Future<List<CourseModel>> _suggestedCoursesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _suggestedCoursesFuture = CourseService().getSuggestedCourses();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 200.h,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => SizedBox(width: 10.w,),
-        scrollDirection: Axis.horizontal,
-        itemCount: courses.length,
-        itemBuilder: (context, index) {
-          return ContanierCourse(course: courses[index]);
+      child: FutureBuilder<List<CourseModel>>(
+        future: _suggestedCoursesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final courses = snapshot.data ?? [];
+
+          if (courses.isEmpty) {
+            return const Center(
+              child: Text(
+                'No courses available.',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+            );
+          }
+
+          return ListView.separated(
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) => SizedBox(width: 10.w),
+            itemCount: courses.length,
+            itemBuilder: (context, index) {
+              return ContanierCourse(course: courses[index]);
+            },
+          );
         },
       ),
     );

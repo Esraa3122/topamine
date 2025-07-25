@@ -28,7 +28,7 @@ class ProfileStudentScreen extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
               blurRadius: 2,
             ),
             BoxShadow(
