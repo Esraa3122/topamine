@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test/features/student/home/data/model/courses_model.dart';
-import 'package:test/features/student/home/data/model/lecture_model.dart';
 
 class LectureListWidget extends StatelessWidget {
   const LectureListWidget({
@@ -16,13 +15,15 @@ class LectureListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lectures = course.lectures ?? [];
+
     return ListView.separated(
       padding: const EdgeInsets.all(12),
-      itemCount: course.lecturesModel!.videoUrl.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 8),
+      itemCount: lectures.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
-        final lecture = course.lecturesModel!.title[index];
-        final isCurrent = lecture == selectedLecture.title;
+        final lecture = lectures[index];
+        final isCurrent = lecture.title == selectedLecture.title;
 
         return Container(
           decoration: BoxDecoration(
@@ -63,14 +64,14 @@ class LectureListWidget extends StatelessWidget {
               size: 30,
             ),
             title: Text(
-              lecture,
+              lecture.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 color: isCurrent ? Colors.blue.shade800 : Colors.black,
               ),
             ),
-            onTap: () => onLectureSelected(lecture as LectureModel),
+            onTap: () => onLectureSelected(lecture),
           ),
         );
       },

@@ -1,6 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/core/enums/status_register.dart';
-import 'package:test/core/service/shared_pref/pref_keys.dart';
 
 class SharedPrefHelper {
   static const String keyUserId = 'id';
