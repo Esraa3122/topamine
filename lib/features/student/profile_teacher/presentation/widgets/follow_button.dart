@@ -18,7 +18,8 @@ class FollowButton extends StatefulWidget {
   State<FollowButton> createState() => _FollowButtonState();
 }
 
-class _FollowButtonState extends State<FollowButton> with SingleTickerProviderStateMixin {
+class _FollowButtonState extends State<FollowButton>
+    with SingleTickerProviderStateMixin {
   bool isFollowing = false;
   int followersCount = 0;
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -119,7 +120,7 @@ class _FollowButtonState extends State<FollowButton> with SingleTickerProviderSt
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      isFollowing ? "✓ متابع" : "متابعة",
+                      isFollowing ? '✓ متابع' : 'متابعة',
                       style: const TextStyle(fontSize: 13),
                     ),
                   ),

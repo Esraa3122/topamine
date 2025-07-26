@@ -1,8 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'courses_model.g.dart';
 
-@JsonSerializable()
+DateTime? _fromTimestamp(dynamic timestamp) {
+  if (timestamp == null) return null;
+  if (timestamp is DateTime) return timestamp;
+  if (timestamp is Timestamp) return timestamp.toDate();
+  return null;
+}
+
+dynamic _toTimestamp(DateTime? date) {
+  return date;
+}
+
+@JsonSerializable(explicitToJson: true)
 class CoursesModel {
   CoursesModel({
     required this.title,
@@ -22,50 +34,71 @@ class CoursesModel {
     this.price,
     this.endDate,
     this.createdAt,
-    this.lecturesModel,
+    this.lectures,
+    this.capacity,
   });
 
   factory CoursesModel.fromJson(Map<String, dynamic> json) =>
       _$CoursesModelFromJson(json);
 
+  Map<String, dynamic> toJson() => _$CoursesModelToJson(this);
+
   @JsonKey(name: 'id')
   final String? id;
+
   @JsonKey(name: 'title')
   final String title;
+
   @JsonKey(name: 'teacherName')
   final String teacherName;
+
   @JsonKey(name: 'enrolled_date')
   final String? enrolledDate;
+
   @JsonKey(name: 'gradeLevel')
   final String? gradeLevel;
+
   @JsonKey(name: 'subject')
   final String? subject;
+
   @JsonKey(name: 'imageUrl')
   final String? imageUrl;
+
   @JsonKey(name: 'enrolledCount')
   final int? enrolledCount;
-  @JsonKey(name: 'teacherid')
+
+  @JsonKey(name: 'teacherId')
   final String? teacherId;
+
   @JsonKey(name: 'teacherEmail')
   final String? teacherEmail;
+
   @JsonKey(name: 'term')
   final String? term;
+
   @JsonKey(name: 'subTitle')
   final String? subTitle;
+
   @JsonKey(name: 'status')
   final String? status;
-  @JsonKey(name: 'startDate')
-  final String? startDate;
-  @JsonKey(name: 'price')
-  final String? price;
-  @JsonKey(name: 'endDate')
-  final String? endDate;
-  @JsonKey(name: 'createdAt')
-  final String? createdAt;
-  @JsonKey(name: 'lecturesModel')
-  final LecturesModel? lecturesModel;
 
-  Map<String, dynamic> toJson() => _$CoursesModelToJson(this);
+  @JsonKey(name: 'startDate', fromJson: _fromTimestamp, toJson: _toTimestamp)
+  final DateTime? startDate;
+
+  @JsonKey(name: 'price')
+  final num? price;
+
+  @JsonKey(name: 'endDate', fromJson: _fromTimestamp, toJson: _toTimestamp)
+  final DateTime? endDate;
+
+  @JsonKey(name: 'createdAt', fromJson: _fromTimestamp, toJson: _toTimestamp)
+  final DateTime? createdAt;
+
+  @JsonKey(name: 'capacity')
+  final int? capacity;
+
+  @JsonKey(name: 'lectures')
+  final List<LectureModel>? lectures;
 
   CoursesModel copyWith({
     String? id,
@@ -79,13 +112,14 @@ class CoursesModel {
     String? teacherEmail,
     String? term,
     String? subTitle,
-    String? startDate,
-    String? price,
-    String? endDate,
-    String? createdAt,
-    LecturesModel? lecturesModel,
     String? status,
+    DateTime? startDate,
+    num? price,
+    DateTime? endDate,
+    DateTime? createdAt,
+    int? capacity,
     String? subject,
+    List<LectureModel>? lectures,
   }) {
     return CoursesModel(
       id: id ?? this.id,
@@ -99,51 +133,55 @@ class CoursesModel {
       teacherEmail: teacherEmail ?? this.teacherEmail,
       term: term ?? this.term,
       subTitle: subTitle ?? this.subTitle,
+      status: status ?? this.status,
       startDate: startDate ?? this.startDate,
       price: price ?? this.price,
       endDate: endDate ?? this.endDate,
       createdAt: createdAt ?? this.createdAt,
-      lecturesModel: lecturesModel ?? this.lecturesModel,
-      status: status ?? this.status,
+      capacity: capacity ?? this.capacity,
       subject: subject ?? this.subject,
+      lectures: lectures ?? this.lectures,
     );
   }
 }
 
 @JsonSerializable()
-class LecturesModel {
-  LecturesModel({
-    required this.pdfUrl,
+class LectureModel {
+  LectureModel({
     required this.title,
-    required this.txtUrl,
     required this.videoUrl,
+    required this.txtUrl,
+    required this.docUrl,
   });
 
-  factory LecturesModel.fromJson(Map<String, dynamic> json) =>
-      _$LecturesModelFromJson(json);
+  factory LectureModel.fromJson(Map<String, dynamic> json) =>
+      _$LectureModelFromJson(json);
 
-  @JsonKey(name: 'pdfUrl')
-  final String pdfUrl;
+  Map<String, dynamic> toJson() => _$LectureModelToJson(this);
+
   @JsonKey(name: 'title')
   final String title;
-  @JsonKey(name: 'txtUrl')
-  final String txtUrl;
+
   @JsonKey(name: 'videoUrl')
   final String videoUrl;
 
-  Map<String, dynamic> toJson() => _$LecturesModelToJson(this);
+  @JsonKey(name: 'txtUrl')
+  final String txtUrl;
 
-  LecturesModel copyWith({
-    String? pdfUrl,
+  @JsonKey(name: 'docUrl')
+  final String docUrl;
+
+  LectureModel copyWith({
     String? title,
-    String? txtUrl,
     String? videoUrl,
+    String? txtUrl,
+    String? docUrl,
   }) {
-    return LecturesModel(
-      pdfUrl: pdfUrl ?? this.pdfUrl,
+    return LectureModel(
       title: title ?? this.title,
-      txtUrl: txtUrl ?? this.txtUrl,
       videoUrl: videoUrl ?? this.videoUrl,
+      txtUrl: txtUrl ?? this.txtUrl,
+      docUrl: docUrl ?? this.docUrl,
     );
   }
 }

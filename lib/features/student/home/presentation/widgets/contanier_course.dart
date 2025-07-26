@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
@@ -9,6 +10,11 @@ import 'package:test/features/student/home/data/model/courses_model.dart';
 class ContanierCourse extends StatelessWidget {
   const ContanierCourse({required this.course, super.key});
   final CoursesModel course;
+
+  String _formatTime(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +63,17 @@ class ContanierCourse extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     TextApp(
-                      text: course.teacherName,
+                      text: course.subTitle ?? '',
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.medium,
                         color: context.color.textColor,
                       ),
+                      maxLines: 2,
                     ),
-                    SizedBox(height: 2.h),
-
+                    SizedBox(height: 6.h),
                     TextApp(
-                      text: 'Created At: ${course.createdAt}',
+                      text: 'Created at: ${_formatTime(course.createdAt)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,

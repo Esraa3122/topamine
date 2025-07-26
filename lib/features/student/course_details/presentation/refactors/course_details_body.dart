@@ -207,7 +207,7 @@ class CourseDetailsBody extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.h),
-                if (course.lecturesModel!.videoUrl.isEmpty)
+                if (course.lectures == null || course.lectures!.isEmpty)
                   TextApp(
                     text: 'No lectures available',
                     theme: context.textStyle.copyWith(
@@ -216,14 +216,16 @@ class CourseDetailsBody extends StatelessWidget {
                     ),
                   )
                 else
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        LectureItem(
-                          course: course,
-                        ),
-                      ],
-                    ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: course.lectures!.length,
+                    itemBuilder: (context, index) {
+                      return LectureItem(
+                        lecture: course.lectures![index],
+                        course: course,
+                      );
+                    },
                   ),
 
                 // const CourseSection(

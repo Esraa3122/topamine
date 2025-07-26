@@ -15,18 +15,19 @@ CoursesModel _$CoursesModelFromJson(Map<String, dynamic> json) => CoursesModel(
   enrolledCount: (json['enrolledCount'] as num?)?.toInt(),
   imageUrl: json['imageUrl'] as String?,
   subject: json['subject'] as String?,
-  teacherId: json['teacherid'] as String?,
+  teacherId: json['teacherId'] as String?,
   teacherEmail: json['teacherEmail'] as String?,
   term: json['term'] as String?,
   subTitle: json['subTitle'] as String?,
   status: json['status'] as String?,
-  startDate: json['startDate'] as String?,
-  price: json['price'] as String?,
-  endDate: json['endDate'] as String?,
-  createdAt: json['createdAt'] as String?,
-  lecturesModel: json['lecturesModel'] == null
-      ? null
-      : LecturesModel.fromJson(json['lecturesModel'] as Map<String, dynamic>),
+  startDate: _fromTimestamp(json['startDate']),
+  price: json['price'] as num?,
+  endDate: _fromTimestamp(json['endDate']),
+  createdAt: _fromTimestamp(json['createdAt']),
+  lectures: (json['lectures'] as List<dynamic>?)
+      ?.map((e) => LectureModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  capacity: (json['capacity'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$CoursesModelToJson(CoursesModel instance) =>
@@ -39,30 +40,30 @@ Map<String, dynamic> _$CoursesModelToJson(CoursesModel instance) =>
       'subject': instance.subject,
       'imageUrl': instance.imageUrl,
       'enrolledCount': instance.enrolledCount,
-      'teacherid': instance.teacherId,
+      'teacherId': instance.teacherId,
       'teacherEmail': instance.teacherEmail,
       'term': instance.term,
       'subTitle': instance.subTitle,
       'status': instance.status,
-      'startDate': instance.startDate,
+      'startDate': _toTimestamp(instance.startDate),
       'price': instance.price,
-      'endDate': instance.endDate,
-      'createdAt': instance.createdAt,
-      'lecturesModel': instance.lecturesModel,
+      'endDate': _toTimestamp(instance.endDate),
+      'createdAt': _toTimestamp(instance.createdAt),
+      'capacity': instance.capacity,
+      'lectures': instance.lectures?.map((e) => e.toJson()).toList(),
     };
 
-LecturesModel _$LecturesModelFromJson(Map<String, dynamic> json) =>
-    LecturesModel(
-      pdfUrl: json['pdfUrl'] as String,
-      title: json['title'] as String,
-      txtUrl: json['txtUrl'] as String,
-      videoUrl: json['videoUrl'] as String,
-    );
+LectureModel _$LectureModelFromJson(Map<String, dynamic> json) => LectureModel(
+  title: json['title'] as String,
+  videoUrl: json['videoUrl'] as String,
+  txtUrl: json['txtUrl'] as String,
+  docUrl: json['docUrl'] as String,
+);
 
-Map<String, dynamic> _$LecturesModelToJson(LecturesModel instance) =>
+Map<String, dynamic> _$LectureModelToJson(LectureModel instance) =>
     <String, dynamic>{
-      'pdfUrl': instance.pdfUrl,
       'title': instance.title,
-      'txtUrl': instance.txtUrl,
       'videoUrl': instance.videoUrl,
+      'txtUrl': instance.txtUrl,
+      'docUrl': instance.docUrl,
     };

@@ -8,7 +8,6 @@ class BookingStatusListStudent extends StatelessWidget {
     super.key,
   });
   final String selectedValue;
-  // ignore: inference_failure_on_function_return_type
   final Function(String) onChanged;
 
   final List<String> filters = const ['all', 'inprogress', 'completed'];

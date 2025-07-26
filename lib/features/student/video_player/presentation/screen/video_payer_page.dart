@@ -3,7 +3,6 @@ import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/features/student/home/data/model/courses_model.dart';
-import 'package:test/features/student/home/data/model/lecture_model.dart';
 import 'package:test/features/student/video_player/presentation/widgets/lecture_list_widget.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_dialog.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_tab_widget.dart';
@@ -29,7 +28,17 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-    selectedLecture = widget.course.lecturesModel! as LectureModel;
+    if (widget.course.lectures != null && widget.course.lectures!.isNotEmpty) {
+      selectedLecture = widget.course.lectures!.first;
+    } else {
+      selectedLecture = LectureModel(
+        title: 'لا توجد محاضرات',
+        videoUrl: '',
+        txtUrl: '',
+        docUrl: '',
+      );
+    }
+
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
@@ -58,6 +67,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
                 selectedLecture.title,
               ),
               tooltip: 'أضف تقييم',
+              backgroundColor: context.color.mainColor,
               child: const Icon(Icons.rate_review),
             )
           : null,
@@ -67,40 +77,48 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
         backgroundColor: context.color.mainColor,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VideoPlayerWidget(videoUrl: selectedLecture.videoUrl),
           const SizedBox(height: 10),
           TabBar(
             controller: _tabController,
-            indicatorColor: Colors.blue,
-            labelColor: Colors.blue,
-            unselectedLabelColor: Colors.grey,
-            onTap: (_) => setState(() {}),
+            indicatorColor: Colors.blueAccent,
+            indicatorWeight: 3,
+            labelColor: Colors.blueAccent,
+            unselectedLabelColor: Colors.grey.shade800,
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
             tabs: const [
               Tab(text: 'المحاضرات'),
               Tab(text: 'الآراء'),
             ],
           ),
           Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              child: IndexedStack(
-                key: ValueKey<int>(_tabController.index),
-                index: _tabController.index,
-                children: [
-                  LectureListWidget(
-                    course: widget.course,
-                    selectedLecture: selectedLecture,
-                    onLectureSelected: _changeLecture,
-                  ),
-                  RatingTabWidget(lectureTitle: selectedLecture.title),
-                ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: IndexedStack(
+                  key: ValueKey<int>(_tabController.index),
+                  index: _tabController.index,
+                  children: [
+                    LectureListWidget(
+                      course: widget.course,
+                      selectedLecture: selectedLecture,
+                      onLectureSelected: _changeLecture,
+                    ),
+                    RatingTabWidget(lectureTitle: selectedLecture.title),
+                  ],
+                ),
               ),
             ),
           ),
