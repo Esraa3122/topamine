@@ -17,7 +17,6 @@ class BookingTeacherScreen extends StatefulWidget {
 
 class _BookingTeacherScreenState extends State<BookingTeacherScreen> {
   String selectedFilter = 'all';
-  String selectedFilter = 'all';
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 

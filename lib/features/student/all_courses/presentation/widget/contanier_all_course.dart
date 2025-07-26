@@ -38,11 +38,7 @@ class ContanierAllCourse extends StatelessWidget {
                   top: Radius.circular(16),
                 ),
                 child: Image.network(
-<<<<<<< HEAD
                   course.imageUrl!,
-=======
-                  course.imageUrl,
->>>>>>> ahmed
                   height: 100.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -64,20 +60,12 @@ class ContanierAllCourse extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     TextApp(
-<<<<<<< HEAD
-                    text: course.teacherName,
-                    theme: context.textStyle.copyWith(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeightHelper.medium,
-                      color: context.color.textColor
-=======
-                      text: course.teacherEmail,
+                      text: course.teacherName,
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.medium,
                         color: context.color.textColor,
                       ),
->>>>>>> ahmed
                     ),
                     SizedBox(height: 2.h),
 

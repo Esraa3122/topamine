@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/home/data/model/lecture_model.dart';
 
 class LectureListWidget extends StatelessWidget {
@@ -10,7 +10,7 @@ class LectureListWidget extends StatelessWidget {
     super.key,
   });
 
-  final CourseModel course;
+  final CoursesModel course;
   final LectureModel selectedLecture;
   final Function(LectureModel) onLectureSelected;
 
@@ -18,11 +18,11 @@ class LectureListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(12),
-      itemCount: course.lectures.length,
+      itemCount: course.lecturesModel!.videoUrl.length,
       separatorBuilder: (_, _) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
-        final lecture = course.lectures[index];
-        final isCurrent = lecture.title == selectedLecture.title;
+        final lecture = course.lecturesModel!.title[index];
+        final isCurrent = lecture == selectedLecture.title;
 
         return Container(
           decoration: BoxDecoration(
@@ -63,14 +63,14 @@ class LectureListWidget extends StatelessWidget {
               size: 30,
             ),
             title: Text(
-              lecture.title,
+              lecture,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 color: isCurrent ? Colors.blue.shade800 : Colors.black,
               ),
             ),
-            onTap: () => onLectureSelected(lecture),
+            onTap: () => onLectureSelected(lecture as LectureModel),
           ),
         );
       },

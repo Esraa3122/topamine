@@ -12,34 +12,9 @@ class AllCoursesBody extends StatefulWidget {
 }
 
 class _AllCoursesBodyState extends State<AllCoursesBody> {
-<<<<<<< HEAD
-
-  final List<CoursesModel> allCourses = [
-    CoursesModel(
-      id: '1',
-      title: 'Mathematics',
-      teacherName: 'Dr. Ahmed',
-      imageUrl: AppImages.backButton,
-    ),
-    CoursesModel(
-      id: '2',
-      title: 'Physics',
-      teacherName: 'Dr. Sara',
-      imageUrl: AppImages.backButton,
-    ),
-    CoursesModel(
-      id: '3',
-      title: 'English Literature',
-      teacherName: 'Mr. John',
-      imageUrl: AppImages.backButton,
-    ),
-  ];
-  String selectedFilter = 'All';
-  List<String> filters = ['All', 'Mathematics', 'Physics', 'English'];
-=======
   String selectedFilter = 'All';
 
-  late final Future<List<CourseModel>> _coursesFuture;
+  late final Future<List<CoursesModel>> _coursesFuture;
 
   @override
   void initState() {
@@ -47,10 +22,9 @@ class _AllCoursesBodyState extends State<AllCoursesBody> {
     _coursesFuture = CourseService().getAllCourses();
   }
 
->>>>>>> ahmed
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CourseModel>>(
+    return FutureBuilder<List<CoursesModel>>(
       future: _coursesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -64,13 +38,13 @@ class _AllCoursesBodyState extends State<AllCoursesBody> {
           'All',
           ...{
             for (final c in courses)
-              if (c.sectionTitle.isNotEmpty) c.sectionTitle,
+              if (c.gradeLevel!.isNotEmpty) c.gradeLevel!,
           },
         ];
         final filteredCourses = selectedFilter == 'All'
             ? courses
             : courses
-                  .where((course) => course.sectionTitle == selectedFilter)
+                  .where((course) => course.gradeLevel == selectedFilter)
                   .toList();
 
         return Padding(
