@@ -21,31 +21,7 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 
-<<<<<<< HEAD
   List<CoursesModel> allCourses = [
-    CoursesModel(
-      imageUrl: AppImages.logo,
-      title: 'Advanced Mathematics',
-      teacherName: 'Dr. James Wilson',
-      enrolledDate: 'Sept 15, 2023',
-      status: 'inprogress', id: '3',
-    ),
-    CoursesModel(
-      imageUrl: AppImages.logo,
-      title: 'AP Physics',
-      teacherName: 'Prof. Emily Chen',
-      enrolledDate: 'Aug 30, 2023',
-      status: 'completed', id: '2',
-    ),
-    CoursesModel(
-      imageUrl: AppImages.logo,
-      title: 'SAT Preparation',
-      teacherName: 'Mr. Robert Brown',
-      enrolledDate: 'July 10, 2023',
-      status: 'completed', id: '1',
-    ),
-=======
-  List<CourseModel> allCourses = [
     // CourseModel(
     //   image: AppImages.logo,
     //   title: 'Advanced Mathematics',
@@ -67,7 +43,6 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
     //   enrolledDate: 'July 10, 2023',
     //   status: 'completed',
     // ),
->>>>>>> ahmed
   ];
 
   void handleFilterChange(String value) {
@@ -92,15 +67,9 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
     if (searchQuery.isNotEmpty) {
       final lower = searchQuery.toLowerCase();
       filteredCourses = filteredCourses.where((course) {
-<<<<<<< HEAD
         return course.title.toLowerCase().contains(lower) ||
             course.teacherName.toLowerCase().contains(lower) ||
             (course.subject?.toLowerCase() ?? '').contains(lower);
-=======
-        return course.title.toLowerCase().contains(lower);
-        // course.teacher.toLowerCase().contains(lower) ||
-        // (course.subject?.toLowerCase() ?? '').contains(lower);
->>>>>>> ahmed
       }).toList();
     }
     return Padding(

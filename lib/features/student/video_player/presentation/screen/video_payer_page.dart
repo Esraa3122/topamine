@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/home/data/model/lecture_model.dart';
 import 'package:test/features/student/video_player/presentation/widgets/lecture_list_widget.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_dialog.dart';
@@ -11,12 +11,10 @@ import 'package:test/features/student/video_player/presentation/widgets/video_pl
 
 class VideoPlayerPage extends StatefulWidget {
   const VideoPlayerPage({
-    required this.lecture,
     required this.course,
     super.key,
   });
 
-  final LectureModel lecture;
   final CoursesModel course;
 
   @override
@@ -31,7 +29,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-    selectedLecture = widget.lecture;
+    selectedLecture = widget.course.lecturesModel! as LectureModel;
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {

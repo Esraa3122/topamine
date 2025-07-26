@@ -81,12 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(const Failure(errorMessage: 'User data not found'));
         return;
       }
-      final userData = await repository.getUserData(uid);
-      if (userData == null) {
-        emit(const Failure(errorMessage: 'User data not found'));
-        return;
-      }
-
+      
       final user = UserModel.fromJson(userData);
       await repository.sharedPref.saveUserSession(
         user.userId,
@@ -121,7 +116,7 @@ class AuthCubit extends Cubit<AuthState> {
       } else if (ex.code == 'wrong-password') {
         emit(const Failure(errorMessage: 'wrong password'));
       } else {
-      } else {
+      
         emit(const Failure(errorMessage: LangKeys.loggedError));
       }
     } catch (e) {

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/features/student/home/data/model/coures_model.dart';
-import 'package:test/features/student/home/data/model/lecture_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/video_player/cubit/video_cubit.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LectureItem extends StatelessWidget {
-  const LectureItem({required this.lecture, required this.course, super.key});
-  final LectureModel lecture;
-  final CourseModel course;
+  const LectureItem({required this.course, super.key});
+  // final LectureModel lecture;
+  final CoursesModel course;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class LectureItem extends StatelessWidget {
           size: 30,
         ),
         title: TextApp(
-          text: lecture.title,
+          text: course.lecturesModel!.title,
           theme: context.textStyle.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: 14,
@@ -35,23 +34,23 @@ class LectureItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextApp(
-              text: lecture.videoUrl,
+              text: course.lecturesModel!.videoUrl,
               theme: context.textStyle.copyWith(
                 fontSize: 12,
                 color: Colors.grey,
               ),
             ),
-            if (lecture.pdfUrl.isNotEmpty)
+            if (course.lecturesModel!.pdfUrl.isNotEmpty)
               TextButton(
                 onPressed: () {
-                  launchUrlString(lecture.pdfUrl);
+                  launchUrlString(course.lecturesModel!.pdfUrl);
                 },
                 child: const Text('عرض PDF'),
               ),
-            if (lecture.txtUrl.isNotEmpty)
+            if (course.lecturesModel!.txtUrl.isNotEmpty)
               TextButton(
                 onPressed: () {
-                  launchUrlString(lecture.txtUrl);
+                  launchUrlString(course.lecturesModel!.txtUrl);
                 },
                 child: const Text('عرض TXT'),
               ),
@@ -64,7 +63,6 @@ class LectureItem extends StatelessWidget {
               builder: (context) => BlocProvider(
                 create: (_) => VideoCubit(),
                 child: VideoPlayerPage(
-                  lecture: lecture,
                   course: course,
                 ),
               ),

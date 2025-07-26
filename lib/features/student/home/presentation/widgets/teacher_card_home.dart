@@ -32,17 +32,10 @@ class TeacherCard extends StatelessWidget {
             ListTile(
               leading: CircleAvatar(
                 radius: 30,
-<<<<<<< HEAD
                 backgroundImage: NetworkImage(teacher.userImage ?? ''),
               ),
               title: TextApp(
                 text: teacher.userName,
-=======
-                backgroundImage: NetworkImage(teacher.avatarUrl),
-              ),
-              title: TextApp(
-                text: teacher.name,
->>>>>>> ahmed
                 maxLines: 1,
                 theme: context.textStyle.copyWith(
                   fontSize: 15.sp,
@@ -51,11 +44,7 @@ class TeacherCard extends StatelessWidget {
                 ),
               ),
               subtitle: TextApp(
-<<<<<<< HEAD
                 text: teacher.subject ?? 'No Subject',
-=======
-                text: teacher.subject,
->>>>>>> ahmed
                 maxLines: 1,
                 theme: context.textStyle.copyWith(
                   fontSize: 12.sp,
@@ -81,7 +70,6 @@ class TeacherCard extends StatelessWidget {
             ),
 
             // SizedBox(height: 8.h),
-<<<<<<< HEAD
 
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,33 +95,6 @@ class TeacherCard extends StatelessWidget {
             //           ),),
             //   ],
             // ),
-=======
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    5,
-                    (index) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                      size: 14,
-                    ),
-                  ),
-                ),
-                TextApp(
-                  text: '20',
-                  maxLines: 1,
-                  theme: context.textStyle.copyWith(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeightHelper.regular,
-                    color: context.color.textColor,
-                  ),
-                ),
-              ],
-            ),
->>>>>>> ahmed
           ],
         ),
       ),

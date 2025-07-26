@@ -35,18 +35,18 @@ class _SearchPageState extends State<SearchPage> {
           .get();
 
       final loadedCourses = snapshot.docs
-          .map((doc) => CoursesModel.fromJson(doc.data(), doc.id))
+          .map((doc) => CoursesModel.fromJson(doc.data(),))
           .toList();
 
       final sections = loadedCourses
-          .map((course) => course.sectionTitle)
-          .where((title) => title.isNotEmpty)
+          .map((course) => course.gradeLevel)
+          .where((title) => title!.isNotEmpty)
           .toSet()
           .toList();
 
       setState(() {
         allCourses = loadedCourses;
-        sectionTitles = ['All', ...sections];
+        // sectionTitles = ['All', ...sections];
         isLoading = false;
       });
     } catch (e) {
@@ -59,14 +59,14 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<CourseModel> filteredCourses = allCourses.where((course) {
+    List<CoursesModel> filteredCourses = allCourses.where((course) {
       final lowerSearch = searchQuery.toLowerCase();
       final matchSearch =
           course.title.toLowerCase().contains(lowerSearch) ||
-          course.teacherEmail.toLowerCase().contains(lowerSearch) ||
-          course.sectionTitle.toLowerCase().contains(lowerSearch);
+          course.teacherEmail!.toLowerCase().contains(lowerSearch) ||
+          course.gradeLevel!.toLowerCase().contains(lowerSearch);
       final matchSection =
-          selectedSubject == 'All' || course.sectionTitle == selectedSubject;
+          selectedSubject == 'All' || course.gradeLevel == selectedSubject;
 
       return matchSearch && matchSection;
     }).toList();

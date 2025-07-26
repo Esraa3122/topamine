@@ -110,7 +110,6 @@ class CoursesModel {
   }
 }
 
-
 @JsonSerializable()
 class LecturesModel {
   LecturesModel({

@@ -27,7 +27,7 @@ class CourseDetailsBody extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Image.network(course.imageUrl),
+              Image.network(course.imageUrl ?? ''),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -39,7 +39,7 @@ class CourseDetailsBody extends StatelessWidget {
                       textColor: const Color(0xff2563EB),
                     ),
                     CustomContanierCourse(
-                      label: course.status,
+                      label: course.status ?? '',
                       backgroundColor: const Color(0xffDCFCE7),
                       textColor: const Color(0xff16A34A),
                     ),
@@ -64,7 +64,7 @@ class CourseDetailsBody extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 TextApp(
-                  text: course.subTitle,
+                  text: course.subTitle ?? '',
                   theme: context.textStyle.copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeightHelper.regular,
@@ -75,7 +75,7 @@ class CourseDetailsBody extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(course.imageUrl),
+                      backgroundImage: NetworkImage(course.imageUrl ?? ''),
                       backgroundColor: context.color.mainColor,
                     ),
                     SizedBox(width: 10.w),
@@ -207,7 +207,7 @@ class CourseDetailsBody extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.h),
-                if (course.lectures.isEmpty)
+                if (course.lecturesModel!.videoUrl.isEmpty)
                   TextApp(
                     text: 'No lectures available',
                     theme: context.textStyle.copyWith(
@@ -216,14 +216,14 @@ class CourseDetailsBody extends StatelessWidget {
                     ),
                   )
                 else
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: course.lectures.map((lecture) {
-                      return LectureItem(
-                        lecture: lecture,
-                        course: course,
-                      );
-                    }).toList(),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        LectureItem(
+                          course: course,
+                        ),
+                      ],
+                    ),
                   ),
 
                 // const CourseSection(
