@@ -55,6 +55,7 @@ class LectureItem extends StatelessWidget {
                 create: (_) => VideoCubit(),
                 child: VideoPlayerPage(
                   course: course,
+                  initialLecture: lecture,
                 ),
               ),
             ),

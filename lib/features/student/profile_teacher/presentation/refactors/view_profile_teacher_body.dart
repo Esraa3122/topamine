@@ -7,7 +7,6 @@ import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/profile_teacher/presentation/widgets/course_list.dart';
 import 'package:test/features/student/profile_teacher/presentation/widgets/custom_shape_profile.dart';
-import 'package:test/features/student/profile_teacher/presentation/widgets/follow_button.dart';
 
 class ViewProfileTeacherBody extends StatelessWidget {
   const ViewProfileTeacherBody({

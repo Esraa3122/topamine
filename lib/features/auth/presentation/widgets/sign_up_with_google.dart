@@ -19,10 +19,10 @@ class SigninWithGoogle extends StatelessWidget {
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
 
-      final GoogleSignInAuthentication googleAuth =
+      final googleAuth =
           await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
@@ -30,14 +30,14 @@ class SigninWithGoogle extends StatelessWidget {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await FirebaseAuth.instance
+      final userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
       final idToken = await userCredential.user?.getIdToken();
-      print("###########################################################");
-      print("ID Token: $idToken");
-      print("###########################################################");
+      print('###########################################################');
+      print('ID Token: $idToken');
+      print('###########################################################');
 
-      User? user = userCredential.user;
+      var user = userCredential.user;
 
       if (user == null) {
         throw Exception('فشل تسجيل الدخول: المستخدم غير موجود');
@@ -49,7 +49,7 @@ class SigninWithGoogle extends StatelessWidget {
         user = FirebaseAuth.instance.currentUser;
       }
 
-      final String uid = user!.uid;
+      final uid = user!.uid;
 
       final userData = {
         'id': uid,

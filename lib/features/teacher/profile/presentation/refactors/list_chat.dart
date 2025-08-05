@@ -50,8 +50,8 @@ class StudentsListScreen extends StatelessWidget {
                     .limit(1)
                     .get(),
                 builder: (context, chatSnapshot) {
-                  String lastMessage = 'ابدأ المحادثة';
-                  String timeAgo = '';
+                  var lastMessage = 'ابدأ المحادثة';
+                  var timeAgo = '';
 
                   if (chatSnapshot.hasData &&
                       chatSnapshot.data!.docs.isNotEmpty) {

@@ -15,7 +15,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final List<Message> _messages = [
     const Message(
       message: 'Hi, What can I help you',
-      isUser: false,
     ),
   ];
   final TextEditingController _textEditingController = TextEditingController();
@@ -47,7 +46,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       setState(() {
         _messages.add(
           Message(
-            isUser: false,
             message: response.text != null ? response.text!.trim() : '',
           ),
         );

@@ -5,14 +5,14 @@ import 'package:test/core/service/shared_pref/pref_keys.dart';
 class PaymobManager {
   Future<String> getPaymentKey(int amount, String currency) async {
     try {
-      String authenticationToken = await _getAuthenticationToken();
-      int orderId = await _getOrderId(
+      var authenticationToken = await _getAuthenticationToken();
+      var orderId = await _getOrderId(
         amount: (100 * amount).toString(),
         authenticationToken: authenticationToken,
         currency: currency,
       );
 
-      String paymentKey = await _getPaymentKey(
+      var paymentKey = await _getPaymentKey(
         authenticationToken: authenticationToken,
         orderId: orderId.toString(),
         amount: (100 * amount).toString(),
@@ -34,7 +34,7 @@ class PaymobManager {
   }
 
   Future<String> _getAuthenticationToken() async {
-    final Response response = await Dio().post(
+    final response = await Dio().post(
       'https://accept.paymob.com/api/auth/tokens',
       data: {
         'api_key': PrefKeys.apiKey,
@@ -48,7 +48,7 @@ class PaymobManager {
     required String amount,
     required String currency,
   }) async {
-    final Response response = await Dio().post(
+    final response = await Dio().post(
       'https://accept.paymob.com/api/ecommerce/orders',
       data: {
         'auth_token': authenticationToken,
@@ -71,7 +71,7 @@ class PaymobManager {
     required String amount,
     required String currency,
   }) async {
-    final Response response = await Dio().post(
+    final response = await Dio().post(
       'https://accept.paymob.com/api/acceptance/payment_keys',
       data: {
         'expiration': 3600,

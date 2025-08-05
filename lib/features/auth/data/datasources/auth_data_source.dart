@@ -29,7 +29,7 @@ class AuthDataSource {
 
   // upload image
   Future<String?> uploadProfileImage(File file) async {
-    return await CloudinaryService.uploadImageToCloudinary(file);
+    return CloudinaryService.uploadImageToCloudinary(file);
   }
 
   // store user data

@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/toast/show_toast.dart';
 import 'package:test/core/common/widgets/text_app.dart';
-import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';

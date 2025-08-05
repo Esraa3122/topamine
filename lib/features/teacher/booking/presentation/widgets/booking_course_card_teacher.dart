@@ -52,7 +52,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
         }
 
         final filteredDocs = snapshot.data!.docs.where((doc) {
-          final course = doc.data() as Map<String, dynamic>;
+          final course = doc.data()! as Map<String, dynamic>;
           final query = widget.searchQuery.toLowerCase();
 
           return course['subTitle'].toString().toLowerCase().contains(query) ||
@@ -61,14 +61,14 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
         }).toList();
 
         if (filteredDocs.isEmpty) {
-          return const Center(child: Text("No courses found."));
+          return const Center(child: Text('No courses found.'));
         }
 
         return SizedBox(
           height: 600.h,
           child: ListView(
             children: filteredDocs.map((DocumentSnapshot document) {
-              Map<String, dynamic> course =
+              var course =
                   document.data()! as Map<String, dynamic>;
 
               return Container(

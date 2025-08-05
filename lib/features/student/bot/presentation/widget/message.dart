@@ -12,17 +12,17 @@ class Message extends StatelessWidget {
     return Align(
       alignment:  isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: isUser ? context.color.bluePinkDark : context.color.bluePinkLight,
           borderRadius: BorderRadius.only(
-            topLeft: isUser ? Radius.circular(10) : Radius.circular(0),
-            topRight: isUser ? Radius.circular(0) : Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)
+            topLeft: isUser ? const Radius.circular(10) : const Radius.circular(0),
+            topRight: isUser ? const Radius.circular(0) : const Radius.circular(10),
+            bottomLeft: const Radius.circular(10),
+            bottomRight: const Radius.circular(10)
           )
         ),
-        child: Text(message, style: TextStyle(fontSize: 16),),
+        child: Text(message, style: const TextStyle(fontSize: 16),),
       ),
     );
   }

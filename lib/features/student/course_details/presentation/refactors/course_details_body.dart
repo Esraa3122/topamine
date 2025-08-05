@@ -216,16 +216,9 @@ class CourseDetailsBody extends StatelessWidget {
                     ),
                   )
                 else
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: course.lectures!.length,
-                    itemBuilder: (context, index) {
-                      return LectureItem(
-                        lecture: course.lectures![index],
-                        course: course,
-                      );
-                    },
+                  LectureItem(
+                    lecture: course.lectures!.first,
+                    course: course,
                   ),
 
                 // const CourseSection(

@@ -31,7 +31,6 @@ class ContanierAllCourse extends StatelessWidget {
           elevation: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(

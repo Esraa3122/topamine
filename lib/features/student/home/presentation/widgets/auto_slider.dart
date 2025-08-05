@@ -51,10 +51,7 @@ class _BannerSlidersState extends State<BannerSliders> {
             autoPlay: true,
             enlargeCenterPage: true,
             viewportFraction: 0.9,
-            aspectRatio: 16 / 9,
             autoPlayInterval: const Duration(seconds: 3),
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;

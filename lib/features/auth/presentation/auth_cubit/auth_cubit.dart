@@ -71,10 +71,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(const Failure(errorMessage: 'Unable to get user ID'));
         return;
       }
-      if (uid == null) {
-        emit(const Failure(errorMessage: 'Unable to get user ID'));
-        return;
-      }
 
       final userData = await repository.getUserData(uid);
       if (userData == null) {
