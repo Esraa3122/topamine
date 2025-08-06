@@ -7,37 +7,42 @@ class RatingTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (lectureTitle.isEmpty) {
+    if (lectureTitle.isEmpty || lectureTitle == 'There are no lectures.') {
       return const Center(
         child: Text(
-          'Opinions cannot be loaded because the lecture title is missing.',
+          'Opinions cannot be uploaded due to lack of a valid lecture title.',
         ),
       );
     }
+
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('lectures')
-          .doc(lectureTitle)
+          .doc(lectureTitle.trim())
           .collection('ratings')
           .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'An error occurred while loading the opinions: ${snapshot.error}',
+            ),
+          );
+        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-
         final docs = snapshot.data?.docs ?? [];
-
         if (docs.isEmpty) {
-          return const Center(child: Text('لا يوجد آراء بعد.'));
+          return const Center(child: Text('There are no reviews yet.'));
         }
-
         return ListView.separated(
           padding: const EdgeInsets.all(12),
           itemCount: docs.length,
-          separatorBuilder: (_, _) => const Divider(),
+          separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (context, index) {
-            final data = docs[index].data()! as Map<String, dynamic>;
+            final data = docs[index].data() as Map<String, dynamic>? ?? {};
             final rating = data['rating'] ?? 0;
             final name = data['name'] ?? 'طالب مجهول';
             final comment = data['comment']?.toString() ?? '';
@@ -45,9 +50,7 @@ class RatingTabWidget extends StatelessWidget {
 
             return ListTile(
               leading: avatarUrl.isNotEmpty
-                  ? CircleAvatar(
-                      backgroundImage: NetworkImage(avatarUrl),
-                    )
+                  ? CircleAvatar(backgroundImage: NetworkImage(avatarUrl))
                   : const CircleAvatar(
                       backgroundColor: Colors.blue,
                       child: Icon(Icons.person, color: Colors.white),

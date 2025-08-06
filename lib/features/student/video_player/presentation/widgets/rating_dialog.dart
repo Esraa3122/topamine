@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
   final commentController = TextEditingController();
-  int selectedRating = 3;
+  var selectedRating = 3;
   final currentUser = FirebaseAuth.instance.currentUser;
 
   if (currentUser == null) {
@@ -71,20 +71,27 @@ Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
                   maxLines: 3,
                 ),
                 const SizedBox(height: 20),
-                Wrap(
-                  alignment: WrapAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(5, (index) {
-                    return IconButton(
-                      iconSize: 32,
-                      icon: Icon(
-                        index < selectedRating ? Icons.star : Icons.star_border,
-                        color: Colors.amber,
-                      ),
-                      onPressed: () {
+                    return GestureDetector(
+                      onTap: () {
                         setDialogState(() {
                           selectedRating = index + 1;
                         });
                       },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                        child: Icon(
+                          index < selectedRating
+                              ? Icons.star
+                              : Icons.star_border,
+                          color: Colors.amber,
+                          size: 32,
+                        ),
+                      ),
                     );
                   }),
                 ),

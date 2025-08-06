@@ -1,8 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:label="topamine"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+                  android:enabled="true"
+                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

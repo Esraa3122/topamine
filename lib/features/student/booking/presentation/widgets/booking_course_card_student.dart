@@ -18,7 +18,6 @@ class BookingCourseCardStudent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // الانتقال إلى صفحة الفيديو
         Navigator.push(
           context,
           MaterialPageRoute(

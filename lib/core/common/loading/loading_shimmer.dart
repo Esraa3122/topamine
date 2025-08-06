@@ -17,9 +17,6 @@ class LoadingShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer(
       duration: const Duration(seconds: 2),
-      interval: const Duration(seconds: 0),
-      color: Colors.white,
-      colorOpacity: 0.3,
       child: Container(
         height: height,
         width: width,

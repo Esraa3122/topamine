@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
+import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
@@ -43,6 +44,9 @@ class AuthRepos {
     await user.reload();
 
     String? imageUrl;
+    if (imageFile != null) {
+      imageUrl = await _dataSource.uploadProfileImage(imageFile);
+    }
     if (imageFile != null) {
       imageUrl = await _dataSource.uploadProfileImage(imageFile);
     }

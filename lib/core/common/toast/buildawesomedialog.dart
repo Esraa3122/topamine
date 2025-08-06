@@ -5,7 +5,6 @@ void buildAwesomeDialogError(String title, String desc, BuildContext context) {
   AwesomeDialog(
     context: context,
     dialogType: DialogType.error,
-    animType: AnimType.scale,
     title: title,
     desc: desc,
     btnOkText: 'OK',
@@ -18,7 +17,6 @@ void buildAwesomeDialogSucces(String title, String desc, BuildContext context) {
   AwesomeDialog(
     context: context,
     dialogType: DialogType.success,
-    animType: AnimType.scale,
     title: title,
     desc: desc,
     btnOkText: 'OK',

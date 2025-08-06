@@ -60,3 +60,4 @@ class SharedPrefHelper {
     await prefs.remove(keyStatus);
   }
 }
+

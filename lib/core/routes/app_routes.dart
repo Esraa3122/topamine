@@ -2,8 +2,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/common/screens/under_build_screen.dart';
 import 'package:test/core/common/screens/waiting_approval_screen.dart';
+import 'package:test/core/common/screens/waiting_approval_screen.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/routes/base_routes.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:test/features/auth/presentation/refactors/forget_password_body.dart';
@@ -101,6 +103,8 @@ class AppRoutes {
         return BaseRoute(page: const ForgetPasswordBody());
       case waitingApproval:
         return BaseRoute(page: const WaitingApprovalScreen());
+      case waitingApproval:
+        return BaseRoute(page: const WaitingApprovalScreen());
       case navigationStudent:
         return BaseRoute(page: const NavigationStudentScreen());
       case navigationTeacher:
@@ -130,6 +134,11 @@ class AppRoutes {
           ),
         );
       case teacherProfile2:
+        return BaseRoute(
+          page: ViewProfileTeacherScreen(
+            userModel: arg! as UserModel,
+          ),
+        );
         return BaseRoute(
           page: ViewProfileTeacherScreen(
             userModel: arg! as UserModel,

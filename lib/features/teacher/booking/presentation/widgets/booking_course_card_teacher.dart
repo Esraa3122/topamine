@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
@@ -33,7 +35,6 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -138,12 +139,14 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                       ),
                     ],
                   ),
+                  ),
                 ),
               );
             }).toList(),
-          ),
+               ),
         );
       },
     );
   }
 }
+

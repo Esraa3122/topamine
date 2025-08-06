@@ -12,7 +12,6 @@ class Message extends StatelessWidget {
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
           color: isUser
               ? context.color.bluePinkDark
               : context.color.bluePinkLight,
@@ -31,7 +30,7 @@ class Message extends StatelessWidget {
           message,
           style: const TextStyle(fontSize: 16),
         ),
-      ),
-    );
+      );
   }
 }
+

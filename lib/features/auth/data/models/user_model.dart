@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
+import 'package:test/core/enums/status_register.dart';
 
 part 'user_model.g.dart';
 
@@ -25,6 +26,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
+  @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
   @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
   final UserRole userRole;
 

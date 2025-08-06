@@ -5,14 +5,22 @@ import 'package:test/features/student/video_player/cubit/video_cubit.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class LectureItem extends StatelessWidget {
-  const LectureItem({required this.lecture, required this.course, super.key});
+class LectureItem extends StatefulWidget {
+  const LectureItem({
+    required this.lecture,
+    required this.course,
+    super.key,
+  });
+
   final LectureModel lecture;
   final CoursesModel course;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
+      elevation: 4,
+      shadowColor: Colors.grey[300],
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(

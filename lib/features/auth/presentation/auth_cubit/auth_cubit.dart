@@ -6,8 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
-import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
 

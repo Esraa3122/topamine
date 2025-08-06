@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/search/presentation/widgets/custom_text_search.dart';
 import 'package:test/features/student/search/presentation/widgets/subject_filter_list.dart';
 
@@ -41,7 +42,11 @@ void dispose() {
           .get();
 
       final loadedCourses = snapshot.docs
-          .map((doc) => CoursesModel.fromJson(doc.data(),))
+          .map(
+            (doc) => CoursesModel.fromJson(
+              doc.data(),
+            ),
+          )
           .toList();
 
       final sections = loadedCourses
@@ -69,7 +74,7 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
-    List<CoursesModel> filteredCourses = allCourses.where((course) {
+    var filteredCourses = allCourses.where((course) {
       final lowerSearch = searchQuery.toLowerCase();
       final matchSearch =
           course.title.toLowerCase().contains(lowerSearch) ||
@@ -116,8 +121,18 @@ void dispose() {
                       : ListView.builder(
                           itemCount: filteredCourses.length,
                           itemBuilder: (context, index) {
-                            return BookingCourseCardStudent(
-                              course: filteredCourses[index],
+                            final course = filteredCourses[index];
+                            return InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.courseDetails,
+                                  arguments: course,
+                                );
+                              },
+                              child: BookingCourseCardStudent(
+                                course: course,
+                              ),
                             );
                           },
                         ),

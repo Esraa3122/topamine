@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+import 'package:test/features/student/home/data/model/courses_model.dart';
 import 'package:test/features/student/video_player/presentation/widgets/lecture_list_widget.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_dialog.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_tab_widget.dart';
@@ -11,10 +11,12 @@ import 'package:test/features/student/video_player/presentation/widgets/video_pl
 class VideoPlayerPage extends StatefulWidget {
   const VideoPlayerPage({
     required this.course,
+    this.initialLecture,
     super.key,
   });
 
   final CoursesModel course;
+  final LectureModel? initialLecture;
 
   @override
   State<VideoPlayerPage> createState() => _VideoPlayerPageState();
@@ -28,7 +30,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   void initState() {
     super.initState();
-    if (widget.course.lectures != null && widget.course.lectures!.isNotEmpty) {
+    if (widget.initialLecture != null) {
+      selectedLecture = widget.initialLecture!;
+    } else if (widget.course.lectures != null &&
+        widget.course.lectures!.isNotEmpty) {
       selectedLecture = widget.course.lectures!.first;
     } else {
       selectedLecture = LectureModel(
@@ -60,7 +65,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _tabController.index == 1
+      floatingActionButton:
+          _tabController.index == 1 &&
+              selectedLecture.title != 'لا توجد محاضرات'
           ? FloatingActionButton(
               onPressed: () => showRatingDialog(
                 context,
@@ -79,7 +86,14 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          VideoPlayerWidget(videoUrl: selectedLecture.videoUrl),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.25,
+              child: VideoPlayerWidget(videoUrl: selectedLecture.videoUrl),
+            ),
+          ),
           const SizedBox(height: 10),
           TabBar(
             controller: _tabController,
@@ -105,20 +119,16 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
-                transitionBuilder: (child, animation) =>
-                    FadeTransition(opacity: animation, child: child),
-                child: IndexedStack(
-                  key: ValueKey<int>(_tabController.index),
-                  index: _tabController.index,
-                  children: [
-                    LectureListWidget(
-                      course: widget.course,
-                      selectedLecture: selectedLecture,
-                      onLectureSelected: _changeLecture,
-                    ),
-                    RatingTabWidget(lectureTitle: selectedLecture.title),
-                  ],
-                ),
+                child: _tabController.index == 0
+                    ? LectureListWidget(
+                        course: widget.course,
+                        selectedLecture: selectedLecture,
+                        onLectureSelected: _changeLecture,
+                      )
+                    : RatingTabWidget(
+                        key: ValueKey(selectedLecture.title),
+                        lectureTitle: selectedLecture.title,
+                      ),
               ),
             ),
           ),

@@ -4,20 +4,24 @@ import 'package:flutter/material.dart';
 
 class ConnectivityController {
   ConnectivityController._();
+
   static final ConnectivityController instance = ConnectivityController._();
 
   final ValueNotifier<bool> isConnected = ValueNotifier(true);
   final Connectivity _connectivity = Connectivity();
-  late final StreamSubscription<List<ConnectivityResult>> _subscription;
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   Future<void> init() async {
     try {
-      final result = await _connectivity
-          .checkConnectivity();
+      // التحقق من الاتصال أول مرة
+      final result = await _connectivity.checkConnectivity();
       _handleConnectionChange(result);
 
-      _subscription = _connectivity.onConnectivityChanged.listen(
-        _handleConnectionChange,
+      // الاشتراك في تغيّر الاتصال
+      _subscription ??= _connectivity.onConnectivityChanged.listen(
+        (List<ConnectivityResult> results) {
+          _handleConnectionChange(results);
+        },
       );
     } catch (e) {
       debugPrint('Error checking connectivity: $e');
@@ -33,6 +37,7 @@ class ConnectivityController {
   }
 
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
+    _subscription = null;
   }
 }

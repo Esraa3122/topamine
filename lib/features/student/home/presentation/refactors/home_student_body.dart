@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/service/firebase/notifications/notification_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/home/presentation/widgets/auto_slider.dart';
 import 'package:test/features/student/home/presentation/widgets/course_for_you.dart';
@@ -20,6 +23,38 @@ class HomeStudentBody extends StatefulWidget {
 class _HomeStudentBodyState extends State<HomeStudentBody> {
   final TextEditingController searchController = TextEditingController();
   // String searchQuery = '';
+  @override
+  void initState() {
+    super.initState();
+    listenForNewCourses();
+  }
+
+  void listenForNewCourses() {
+    FirebaseFirestore.instance.collection('courses').snapshots().listen((
+      snapshot,
+    ) {
+      for (final change in snapshot.docChanges) {
+        if (change.type == DocumentChangeType.added) {
+          final course = change.doc.data();
+          final courseTitle = course?['title'] ?? 'كورس جديد';
+          flutterLocalNotificationsPlugin.show(
+            0,
+            '📚 كورس جديد',
+            'تم إضافة الكورس "$courseTitle" للتو!',
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+                'high_importance_channel',
+                'إشعارات مهمة',
+                importance: Importance.high,
+              ),
+            ),
+            payload: change.doc.id,
+          );
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
