@@ -20,6 +20,7 @@ import 'package:test/features/student/course_details/presentation/widgets/vertic
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
+
 class CourseDetailsBody extends StatefulWidget {
   const CourseDetailsBody({required this.course, super.key});
   final CoursesModel course;

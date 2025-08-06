@@ -14,10 +14,11 @@ import 'package:test/features/student/course_details/presentation/widgets/bullet
 import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/vertical_validator.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/course_info_teacher_profile.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/custom_contanier_course_teacher_profile.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/lecture_item_teacher_profile.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+
 
 class CourseDetailsTeacherProfileBody extends StatefulWidget {
   const CourseDetailsTeacherProfileBody({required this.course, super.key});
