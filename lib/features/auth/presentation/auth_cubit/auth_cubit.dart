@@ -2,18 +2,17 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
-
-part 'auth_state.dart';
-part 'auth_cubit.freezed.dart';
+import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this.repository) : super(const AuthState.initial());
+  AuthCubit(this.repository) : super(AuthInitial());
   final AuthRepos repository;
 
   Future<void> register({
@@ -27,9 +26,8 @@ class AuthCubit extends Cubit<AuthState> {
     File? imageFile,
     String? grade,
     String? subject,
-    File? imageFil,
   }) async {
-    emit(const Loading());
+    emit(AuthLoading());
 
     try {
       await repository.registerUser(
@@ -45,82 +43,96 @@ class AuthCubit extends Cubit<AuthState> {
         status: status,
       );
 
-      emit(const Success(successMessage: LangKeys.accountCreatedSuccessfully));
+      emit(
+        AuthSuccess(
+          successMessage: LangKeys.accountCreatedSuccessfully,
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        emit(const Failure(errorMessage: 'The password provided is too weak.'));
+        emit(AuthFailure(errorMessage: 'The password provided is too weak.'));
       } else if (e.code == 'email-already-in-use') {
         emit(
-          const Failure(
+          AuthFailure(
             errorMessage: LangKeys.theAccountAlreadyExistsForThatEmail,
           ),
         );
       }
     } catch (e) {
-      emit(Failure(errorMessage: e.toString()));
+      emit(AuthFailure(errorMessage: e.toString()));
     }
   }
 
   Future<void> login(String email, String password) async {
-    emit(const Loading());
+    emit(AuthLoading());
 
     try {
       await repository.loginUser(email, password);
+
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) {
-        emit(const Failure(errorMessage: 'Unable to get user ID'));
-        return;
-      }
-      if (uid == null) {
-        emit(const Failure(errorMessage: 'Unable to get user ID'));
+        emit(AuthFailure(errorMessage: 'Unable to get user ID'));
         return;
       }
 
       final userData = await repository.getUserData(uid);
       if (userData == null) {
-        emit(const Failure(errorMessage: 'User data not found'));
+        emit(AuthFailure(errorMessage: 'User data not found'));
         return;
       }
-      
-      final user = UserModel.fromJson(userData);
-      await repository.sharedPref.saveUserSession(
-        user.userId,
-        user.userRole.name,
-      );
 
-      if (user.userRole == UserRole.teacher) {
-        if (user.status == AccountStatus.accepted) {
-          print('تم الدخول بنجاح');
-          emit(
-            const Success(
-              successMessage: LangKeys.loggedSuccessfully,
-            ),
-          );
-        } else if (user.status == AccountStatus.pending) {
-          print('🚨 الحساب قيد المراجعة');
-          emit(const AuthState.waitingApproval());
+      if (userData.blocked == true) {
+        await FirebaseAuth.instance.signOut();
+        emit(AuthFailure(errorMessage: 'تم حظر حسابك، لا يمكنك تسجيل الدخول.'));
+        return;
+      }
+
+      if (userData.userRole == UserRole.teacher) {
+        if (userData.status == AccountStatus.pending) {
+          emit(AuthWaitingApproval());
           return;
-        } else if (user.status == AccountStatus.rejected) {
-          throw Exception('تم رفض طلبك، لا يمكنك تسجيل الدخول.');
+        } else if (userData.status == AccountStatus.rejected) {
+          emit(
+            AuthFailure(errorMessage: 'تم رفض طلبك، لا يمكنك تسجيل الدخول.'),
+          );
+          return;
         }
       }
-      print('تم الدخول بنجاح');
+
       emit(
-        const Success(
+        AuthSuccess(
           successMessage: LangKeys.loggedSuccessfully,
+          user: userData,
         ),
       );
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'user-not-found') {
-        emit(const Failure(errorMessage: 'user not found'));
+        emit(AuthFailure(errorMessage: 'user not found'));
       } else if (ex.code == 'wrong-password') {
-        emit(const Failure(errorMessage: 'wrong password'));
+        emit(AuthFailure(errorMessage: 'wrong password'));
       } else {
-      
-        emit(const Failure(errorMessage: LangKeys.loggedError));
+        emit(AuthFailure(errorMessage: LangKeys.loggedError));
       }
     } catch (e) {
-      emit(Failure(errorMessage: e.toString()));
+      emit(AuthFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> logout() async {
+    emit(AuthLoading());
+
+    try {
+      
+      await GoogleSignIn().signOut();
+      await GoogleSignIn().disconnect();
+
+      await FirebaseAuth.instance.signOut();
+
+      await repository.sharedPref.clearSession();
+
+      emit(AuthSuccess(successMessage: 'تم تسجيل الخروج بنجاح.'));
+    } catch (e) {
+      emit(AuthFailure(errorMessage: 'فشل تسجيل الخروج: ${e.toString()}'));
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
@@ -7,7 +9,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_statuse_list_student.dart';
 import 'package:test/features/student/booking/presentation/widgets/courses_booking_list_student.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class BookingStudentScreen extends StatefulWidget {
   const BookingStudentScreen({super.key});
@@ -21,29 +23,39 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
   String searchQuery = '';
   TextEditingController searchController = TextEditingController();
 
-  List<CoursesModel> allCourses = [
-    // CourseModel(
-    //   image: AppImages.logo,
-    //   title: 'Advanced Mathematics',
-    //   teacher: 'Dr. James Wilson',
-    //   enrolledDate: 'Sept 15, 2023',
-    //   status: 'inprogress',
-    // ),
-    // CourseModel(
-    //   image: AppImages.logo,
-    //   title: 'AP Physics',
-    //   teacher: 'Prof. Emily Chen',
-    //   enrolledDate: 'Aug 30, 2023',
-    //   status: 'completed',
-    // ),
-    // CourseModel(
-    //   image: AppImages.logo,
-    //   title: 'SAT Preparation',
-    //   teacher: 'Mr. Robert Brown',
-    //   enrolledDate: 'July 10, 2023',
-    //   status: 'completed',
-    // ),
-  ];
+  List<CoursesModel> allCourses = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEnrolledCourses();
+  }
+
+  Future<void> fetchEnrolledCourses() async {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    final enrollmentSnapshot = await FirebaseFirestore.instance
+        .collection('enrollments')
+        .where('userId', isEqualTo: currentUserId)
+        .get();
+
+    final enrolledCourseIds = enrollmentSnapshot.docs
+        .map((doc) => doc['courseId'] as String)
+        .toList();
+
+    final courseSnapshot =
+        await FirebaseFirestore.instance.collection('courses').get();
+
+    allCourses = courseSnapshot.docs
+        .map((doc) => CoursesModel.fromJson({...doc.data(), 'id': doc.id}))
+        .where((course) => enrolledCourseIds.contains(course.id))
+        .toList();
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   void handleFilterChange(String value) {
     setState(() {
@@ -59,11 +71,18 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var filteredCourses = selectedFilter == 'all'
-        ? allCourses
-        : allCourses
-              .where((course) => course.status == selectedFilter)
-              .toList();
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    var filteredCourses = allCourses;
+
+    if (selectedFilter != 'all') {
+      filteredCourses = filteredCourses
+          .where((course) => course.status == selectedFilter)
+          .toList();
+    }
+
     if (searchQuery.isNotEmpty) {
       final lower = searchQuery.toLowerCase();
       filteredCourses = filteredCourses.where((course) {
@@ -72,6 +91,7 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
             (course.subject?.toLowerCase() ?? '').contains(lower);
       }).toList();
     }
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -104,9 +124,9 @@ class _BookingStudentScreenState extends State<BookingStudentScreen> {
           ),
           SizedBox(height: 20.h),
           Expanded(
-            child: filteredCourses.isEmpty
-                ? const Center(child: Text('No courses found'))
-                : CoursesBookingListStudent(courses: filteredCourses),
+            child: CoursesBookingListStudent(
+              courses: filteredCourses,
+            ),
           ),
         ],
       ),

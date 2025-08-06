@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
               },
               builder: (context, state) {
                 final cubit = context.read<AppCubit>();
+
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Topamin',
@@ -60,11 +61,8 @@ class MyApp extends StatelessWidget {
                   },
                   navigatorKey: sl<GlobalKey<NavigatorState>>(),
                   onGenerateRoute: AppRoutes.onGenerateRoute,
-                  initialRoute: SharedPref().getString(PrefKeys.userId) != null
-                      ? SharedPref().getString(PrefKeys.userRole) != 'teacher'
-                            ? AppRoutes.navigationStudent
-                            : AppRoutes.navigationTeacher
-                      : AppRoutes.splash,
+                  
+                  initialRoute: AppRoutes.splash
                 );
               },
             ),

@@ -30,7 +30,7 @@ class _ProfileStudentBodyState extends State<ProfileStudentBody> {
     final data = await authRepo.getUserData(uid);
     if (data == null) return null;
 
-    return UserModel.fromJson(data);
+    return data;
   }
 
   @override
@@ -53,48 +53,53 @@ class _ProfileStudentBodyState extends State<ProfileStudentBody> {
                     return const Center(child: Text('No user data found.'));
                   }
 
-               return Column(
-                children: [
-                  ProfileStudentInfo(user: snapshot.data!),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: context.color.mainColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      maximumSize: Size(200.w, 50.h),
-                    ),
-                    onPressed: () async {
-                      final updatedUser = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EditProfileStudentScreen(user: snapshot.data!),
-                        ),
-                      );
-
-                      if (updatedUser != null) {
-                        setState(() {}); // reload user data
-                      }
-                    },
-                    child:  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.edit, size: 20,color: context.color.textColor),
-                        SizedBox(width: 10.w),
-                        TextApp(
-                          text: 'تعديل البيانات',
-                          theme: context.textStyle.copyWith(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeightHelper.bold,
+                  return Column(
+                    children: [
+                      ProfileStudentInfo(user: snapshot.data!),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.color.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
+                          maximumSize: Size(200.w, 50.h),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
+                        onPressed: () async {
+                          final updatedUser = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => EditProfileStudentScreen(
+                                user: snapshot.data!,
+                              ),
+                            ),
+                          );
+
+                          if (updatedUser != null) {
+                            setState(() {}); // reload user data
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              size: 20,
+                              color: context.color.textColor,
+                            ),
+                            SizedBox(width: 10.w),
+                            TextApp(
+                              text: 'تعديل البيانات',
+                              theme: context.textStyle.copyWith(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeightHelper.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
                 },
               ),
             ),

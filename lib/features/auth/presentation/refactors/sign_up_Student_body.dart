@@ -14,6 +14,7 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
 import 'package:test/features/auth/presentation/widgets/auth_title_info.dart';
 import 'package:test/features/auth/presentation/widgets/sign_up/sign_up_button.dart';
 import 'package:test/features/auth/presentation/widgets/sign_up/sign_up_text_form_student.dart';
@@ -62,12 +63,12 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is Success) {
+        if (state is AuthSuccess) {
           ShowToast.showToastSuccessTop(
             message: context.translate(state.successMessage),
           );
           context.pushNamedAndRemoveUntil(AppRoutes.login);
-        } else if (state is Failure) {
+        } else if (state is AuthFailure) {
           ShowToast.showToastErrorTop(
             message: context.translate(state.errorMessage),
           );

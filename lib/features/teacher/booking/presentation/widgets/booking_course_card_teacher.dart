@@ -21,13 +21,13 @@ class BookingCourseCardTeacher extends StatefulWidget {
 class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
   Stream<QuerySnapshot> getCoursesStream() {
     final courses = FirebaseFirestore.instance.collection('courses');
-    final currentEmail = FirebaseAuth.instance.currentUser!.email;
+    final currentId = FirebaseAuth.instance.currentUser!.uid;
 
     if (widget.selectedFilter == 'all') {
-      return courses.where('teacherEmail', isEqualTo: currentEmail).snapshots();
+      return courses.where('teacherId', isEqualTo: currentId).snapshots();
     } else {
       return courses
-          .where('teacherEmail', isEqualTo: currentEmail)
+          .where('teacherId', isEqualTo: currentId)
           .where('gradeLevel', isEqualTo: widget.selectedFilter)
           .snapshots();
     }
@@ -61,7 +61,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
         }).toList();
 
         if (filteredDocs.isEmpty) {
-          return const Center(child: Text("No courses found."));
+          return const Center(child: Text('No courses found.'));
         }
 
         return SizedBox(

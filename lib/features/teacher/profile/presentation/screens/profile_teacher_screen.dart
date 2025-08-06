@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/teacher/profile/presentation/refactors/profile_teacher_body.dart';
 
 class ProfileTeacherScreen extends StatefulWidget {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:test/core/extensions/context_extension.dart';
@@ -52,9 +53,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           ),
         );
       });
-      print(response.text);
+      if (kDebugMode) {
+        print(response.text);
+      }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     } finally {
       setState(() {
         _isLoading = false;
@@ -66,13 +71,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gemini Chatbot', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Gemini Chatbot',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         leading: const Padding(
-          padding: EdgeInsets.only(
-            left: 6,
-            top: 6,
-            bottom: 6
-          ),
+          padding: EdgeInsets.only(left: 6, top: 6, bottom: 6),
           child: CircleAvatar(
             backgroundImage: AssetImage(AppImages.logo),
           ),

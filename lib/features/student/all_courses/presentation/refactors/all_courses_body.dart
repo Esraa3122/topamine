@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/student/all_courses/data/course_service.dart';
 import 'package:test/features/student/all_courses/presentation/widget/contanier_all_course.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class AllCoursesBody extends StatefulWidget {
   const AllCoursesBody({super.key});

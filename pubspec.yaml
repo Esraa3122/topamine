@@ -93,6 +93,8 @@ dependencies:
 
   # Chat-Bot
   google_generative_ai: ^0.4.7
+  file_picker: ^10.2.0
+  dotted_border: ^3.1.0
   
  
 

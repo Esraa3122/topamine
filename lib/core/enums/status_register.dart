@@ -4,7 +4,6 @@ enum AccountStatus {
   rejected,
 }
 
-// تحويل من String (مخزّن في Firestore بالعربية) إلى AccountStatus
 AccountStatus mapStringToAccountStatus(String status) {
   switch (status.trim()) {
     case 'قيد المراجعة':
@@ -14,11 +13,10 @@ AccountStatus mapStringToAccountStatus(String status) {
     case 'تم الرفض':
       return AccountStatus.rejected;
     default:
-      return AccountStatus.pending; // fallback
+      return AccountStatus.pending; 
   }
 }
 
-// تحويل من Enum إلى String لتخزينه في Firestore
 String? mapAccountStatusToString(AccountStatus? status) {
   switch (status) {
     case AccountStatus.pending:

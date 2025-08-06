@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/student/all_courses/data/course_service.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/home/presentation/widgets/contanier_course.dart';
 
 class CoursesListYou extends StatefulWidget {

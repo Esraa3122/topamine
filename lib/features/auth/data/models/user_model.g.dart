@@ -14,13 +14,17 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
   phone: json['phone'] as String,
   governorate: json['governorate'] as String,
   userImage: json['avatar'] as String?,
+  blocked: json['blocked'] as bool? ?? false,
   grade: json['grade'] as String?,
   subject: json['subject'] as String?,
   status: mapStringToAccountStatus(json['status'] as String),
+  experiance: json['experiance'] as String?,
+  info: json['info'] as String?,
 );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
   'role': _roleToJson(instance.userRole),
+  'blocked': instance.blocked,
   'id': instance.userId,
   'name': instance.userName,
   'email': instance.userEmail,
@@ -29,5 +33,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
   'phone': instance.phone,
   'grade': instance.grade,
   'subject': instance.subject,
+  'experiance': instance.experiance,
+  'info': instance.info,
   'status': mapAccountStatusToString(instance.status),
 };

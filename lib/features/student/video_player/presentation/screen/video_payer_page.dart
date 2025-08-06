@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/video_player/presentation/widgets/lecture_list_widget.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_dialog.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_tab_widget.dart';

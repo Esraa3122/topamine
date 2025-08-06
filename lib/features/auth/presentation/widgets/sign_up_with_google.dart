@@ -79,11 +79,6 @@ class SigninWithGoogle extends StatelessWidget {
       await context.pushReplacementNamed(AppRoutes.navigationTeacher);
     } catch (e) {
       debugPrint(' Google Sign-In failed: $e');
-      buildAwesomeDialogError(
-        'Error',
-        'فشل تسجيل الدخول بواسطة Google:\n$e',
-        context,
-      );
     }
   }
 

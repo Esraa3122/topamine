@@ -10,9 +10,7 @@ CoursesModel _$CoursesModelFromJson(Map<String, dynamic> json) => CoursesModel(
   title: json['title'] as String,
   teacherName: json['teacherName'] as String,
   id: json['id'] as String?,
-  enrolledDate: json['enrolled_date'] as String?,
   gradeLevel: json['gradeLevel'] as String?,
-  enrolledCount: (json['enrolledCount'] as num?)?.toInt(),
   imageUrl: json['imageUrl'] as String?,
   subject: json['subject'] as String?,
   teacherId: json['teacherId'] as String?,
@@ -27,7 +25,6 @@ CoursesModel _$CoursesModelFromJson(Map<String, dynamic> json) => CoursesModel(
   lectures: (json['lectures'] as List<dynamic>?)
       ?.map((e) => LectureModel.fromJson(e as Map<String, dynamic>))
       .toList(),
-  capacity: (json['capacity'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$CoursesModelToJson(CoursesModel instance) =>
@@ -35,11 +32,9 @@ Map<String, dynamic> _$CoursesModelToJson(CoursesModel instance) =>
       'id': instance.id,
       'title': instance.title,
       'teacherName': instance.teacherName,
-      'enrolled_date': instance.enrolledDate,
       'gradeLevel': instance.gradeLevel,
       'subject': instance.subject,
       'imageUrl': instance.imageUrl,
-      'enrolledCount': instance.enrolledCount,
       'teacherId': instance.teacherId,
       'teacherEmail': instance.teacherEmail,
       'term': instance.term,
@@ -49,15 +44,14 @@ Map<String, dynamic> _$CoursesModelToJson(CoursesModel instance) =>
       'price': instance.price,
       'endDate': _toTimestamp(instance.endDate),
       'createdAt': _toTimestamp(instance.createdAt),
-      'capacity': instance.capacity,
       'lectures': instance.lectures?.map((e) => e.toJson()).toList(),
     };
 
 LectureModel _$LectureModelFromJson(Map<String, dynamic> json) => LectureModel(
   title: json['title'] as String,
   videoUrl: json['videoUrl'] as String,
-  txtUrl: json['txtUrl'] as String,
-  docUrl: json['docUrl'] as String,
+  txtUrl: json['txtUrl'] as String?,
+  docUrl: json['docUrl'] as String?,
 );
 
 Map<String, dynamic> _$LectureModelToJson(LectureModel instance) =>

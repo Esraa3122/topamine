@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/toast/show_toast.dart';
 import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
@@ -11,6 +12,7 @@ import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
 import 'package:test/features/auth/presentation/widgets/auth_title_info.dart';
 import 'package:test/features/auth/presentation/widgets/dark_and_lang_buttons.dart';
 import 'package:test/features/auth/presentation/widgets/login/login_button.dart';
@@ -38,31 +40,51 @@ class _LoginBodyState extends State<LoginBody> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) async {
-        if (state is WaitingApproval) {
+        if (state is AuthWaitingApproval) {
           await context.pushNamedAndRemoveUntil(AppRoutes.waitingApproval);
           ShowToast.showToastInfoTop(message: 'حسابك قيد المراجعة');
           return;
         }
 
-        if (state is Success) {
+        if (state is AuthSuccess) {
           ShowToast.showToastSuccessTop(
             message: context.translate(state.successMessage),
           );
-          final role = await SharedPrefHelper().getUserRole();
-          if (role == 'teacher') {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigationTeacher);
-          } else if (role == 'student') {
-            await context.pushNamedAndRemoveUntil(AppRoutes.navigationStudent);
-          } else {
-            ShowToast.showToastErrorTop(
-              message: context.translate(LangKeys.roleNotFound),
-            );
+
+          final user = state.user;
+
+          if (user!.blocked == true) {
+            ShowToast.showToastErrorTop(message: 'هذا المستخدم محظور.');
             await SharedPrefHelper().clearSession();
+            return;
           }
-        } else if (state is Failure) {
+
+
+          if (user.status == AccountStatus.accepted) {
+            if (user.userRole == UserRole.teacher) {
+              await context.pushNamedAndRemoveUntil(
+                AppRoutes.navigationTeacher,
+              );
+            } else if (user.userRole == UserRole.student) {
+              await context.pushNamedAndRemoveUntil(
+                AppRoutes.navigationStudent,
+              );
+            } else {
+              ShowToast.showToastErrorTop(message: LangKeys.roleNotFound);
+              await SharedPrefHelper().clearSession();
+            }
+          }
+        } else if (state is AuthFailure) {
           ShowToast.showToastErrorTop(
             message: context.translate(state.errorMessage),
           );

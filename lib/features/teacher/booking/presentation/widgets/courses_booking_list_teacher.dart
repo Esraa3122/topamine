@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/booking/presentation/widgets/booking_course_card_teacher.dart';
 
 class CoursesBookingListTeacher extends StatelessWidget {

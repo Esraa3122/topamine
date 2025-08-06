@@ -51,6 +51,11 @@ class _FollowButtonState extends State<FollowButton>
   }
 
   Future<void> toggleFollow() async {
+    final user = FirebaseAuth.instance.currentUser;
+final studentId = user?.uid;
+final studentName = user?.displayName ?? '';
+final studentEmail = user?.email ?? '';
+
     final ref = FirebaseFirestore.instance
         .collection('users')
         .doc(widget.teacherId)
@@ -60,7 +65,12 @@ class _FollowButtonState extends State<FollowButton>
     setState(() => isFollowing = !isFollowing);
 
     if (isFollowing) {
-      await ref.set({'followedAt': Timestamp.now()});
+      await ref.set({
+        'studentId': studentId,
+        'studentName': studentName,
+        'studentEmail': studentEmail,
+        'followedAt': Timestamp.now(),
+        });
       setState(() => followersCount++);
     } else {
       await ref.delete();

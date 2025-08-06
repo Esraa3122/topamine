@@ -1,4 +1,4 @@
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 abstract class ViewTeacherProfileState {}
 
