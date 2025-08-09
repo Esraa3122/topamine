@@ -277,32 +277,32 @@ class _CourseDetailsTeacherProfileBodyState
                   ),
                 ),
                 const StudentList(),
-                SizedBox(height: 20.h),
-                CustomLinearButton(
-                  height: 50.h,
-                  width: MediaQuery.of(context).size.width,
-                  onPressed: () {
-                    if (_isEnrolled) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              VideoPlayerPage(course: widget.course),
-                        ),
-                      );
-                    } else {
-                      _pay(context, widget.course);
-                    }
-                  },
+                // SizedBox(height: 20.h),
+                // CustomLinearButton(
+                //   height: 50.h,
+                //   width: MediaQuery.of(context).size.width,
+                //   onPressed: () {
+                //     if (_isEnrolled) {
+                //       Navigator.of(context).push(
+                //         MaterialPageRoute(
+                //           builder: (_) =>
+                //               VideoPlayerPage(course: widget.course),
+                //         ),
+                //       );
+                //     } else {
+                //       _pay(context, widget.course);
+                //     }
+                //   },
 
-                  child: TextApp(
-                    text: _isEnrolled ? 'Go to Course' : 'اشترك الآن',
-                    theme: context.textStyle.copyWith(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                //   child: TextApp(
+                //     text: _isEnrolled ? 'Go to Course' : 'اشترك الآن',
+                //     theme: context.textStyle.copyWith(
+                //       fontSize: 18.sp,
+                //       fontWeight: FontWeightHelper.bold,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

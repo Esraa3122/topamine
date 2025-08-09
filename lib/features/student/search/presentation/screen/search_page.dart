@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
+import 'package:test/features/student/search/presentation/widgets/card_search.dart';
 import 'package:test/features/student/search/presentation/widgets/custom_text_search.dart';
 import 'package:test/features/student/search/presentation/widgets/subject_filter_list.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
@@ -131,7 +132,7 @@ void dispose() {
                                   arguments: course,
                                 );
                               },
-                              child: BookingCourseCardStudent(
+                              child: CardSearch(
                                 course: course,
                               ),
                             );

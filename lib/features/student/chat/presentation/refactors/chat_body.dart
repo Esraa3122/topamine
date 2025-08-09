@@ -7,8 +7,7 @@ import 'package:test/features/student/chat/presentation/widgets/chat_buble_for_s
 import 'package:test/features/student/chat/presentation/widgets/chat_buble_for_teacher.dart';
 
 class ChatBody extends StatefulWidget {
-  final String chatId; // 💡 نمرر chatId
-
+  final String chatId;
   const ChatBody({required this.chatId, super.key});
 
   @override

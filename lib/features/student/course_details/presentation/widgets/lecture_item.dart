@@ -78,7 +78,7 @@ class _LectureItemState extends State<LectureItem> {
                   },
                 ),
                 // PDF
-                if (widget.lecture.docUrl.isNotEmpty)
+                if ((widget.lecture.docUrl ?? '').isNotEmpty)
                   ListTile(
                     leading: const Icon(
                       Icons.picture_as_pdf,
@@ -86,10 +86,10 @@ class _LectureItemState extends State<LectureItem> {
                     ),
                     title: const Text('عرض PDF'),
                     onTap: () {
-                      launchUrlString(widget.lecture.docUrl);
+                      launchUrlString(widget.lecture.docUrl!);
                     },
                   ),
-                if (widget.lecture.txtUrl.isNotEmpty)
+                if ((widget.lecture.txtUrl ?? '').isNotEmpty)
                   ListTile(
                     leading: const Icon(
                       Icons.description,
@@ -97,7 +97,7 @@ class _LectureItemState extends State<LectureItem> {
                     ),
                     title: const Text('عرض TXT'),
                     onTap: () {
-                      launchUrlString(widget.lecture.txtUrl);
+                      launchUrlString(widget.lecture.txtUrl!);
                     },
                   ),
               ],

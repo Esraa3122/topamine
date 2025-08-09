@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class LectureListWidget extends StatelessWidget {
   const LectureListWidget({
