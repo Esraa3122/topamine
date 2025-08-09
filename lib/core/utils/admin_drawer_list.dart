@@ -9,7 +9,6 @@ import 'package:test/core/service/shared_pref/shared_pref.dart';
 import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/presentation/screen/login_screen.dart';
-import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
 import 'package:test/features/teacher/profile/presentation/refactors/list_chat.dart';
 
 List<DrawerItemModel> profileDrawerList(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
 import 'package:test/features/student/profile_teacher/data/repo/view_profile_teacher_repo.dart';
