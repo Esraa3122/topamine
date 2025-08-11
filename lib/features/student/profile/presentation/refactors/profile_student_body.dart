@@ -9,7 +9,10 @@ import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/student/edit_profile/presentation/screen/edit_profile_student_screen.dart';
 import 'package:test/features/student/profile/presentation/widgets/profile_student_info.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/about_us.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/contact_us.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/dark_mode_change.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/edit_profile_teacher.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/language_change.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/logout_widget.dart';
 
@@ -38,123 +41,101 @@ class _ProfileStudentBodyState extends State<ProfileStudentBody> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            //User Profile Info
-            Center(
-              child: FutureBuilder<UserModel?>(
-                future: _getUser(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+        child: Center(
+          child: FutureBuilder<UserModel?>(
+            future: _getUser(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return const Center(child: Text('No user data found.'));
-                  }
+              if (!snapshot.hasData || snapshot.data == null) {
+                return const Center(child: Text('No user data found.'));
+              }
 
-                  return Column(
-                    children: [
-                      ProfileStudentInfo(user: snapshot.data!),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.color.mainColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          maximumSize: Size(200.w, 50.h),
-                        ),
-                        onPressed: () async {
-                          final updatedUser = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditProfileStudentScreen(
-                                user: snapshot.data!,
-                              ),
-                            ),
-                          );
+              final userModel = snapshot.data!;
 
-                          if (updatedUser != null) {
-                            setState(() {}); // reload user data
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.edit,
-                              size: 20,
-                              color: context.color.textColor,
-                            ),
-                            SizedBox(width: 10.w),
-                            TextApp(
-                              text: 'تعديل البيانات',
-                              theme: context.textStyle.copyWith(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeightHelper.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+              return Column(
+                children: [
+                  // معلومات البروفايل
+                  ProfileStudentInfo(user: userModel),
+
+                  const SizedBox(height: 20),
+
+                  // عنوان الميزات
+                  CustomFadeInRight(
+                    duration: 400,
+                    child: TextApp(
+                      text: 'ميزات التطبيق',
+                      theme: context.textStyle.copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeightHelper.bold,
                       ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            //title
-            SizedBox(
-              height: 20.h,
-            ),
-            CustomFadeInRight(
-              duration: 400,
-              child: TextApp(
-                text: 'ميزات التطبيق',
-                theme: context.textStyle.copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeightHelper.bold,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            // language
-            const CustomFadeInRight(duration: 400, child: LanguageChange()),
-            SizedBox(height: 20.h),
-            // dark mode
-            const CustomFadeInRight(
-              duration: 400,
-              child: DarkModeChange(),
-            ),
-            SizedBox(height: 20.h),
-            // Build Developer
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: BuildDeveloper(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Notifications change
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: NotificationsChange(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Build Version
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: BuildVersion(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Logout
-            const CustomFadeInRight(
-              duration: 400,
-              child: LogOutWidget(),
-            ),
-          ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  // تغيير اللغة
+                  const CustomFadeInRight(
+                    duration: 400,
+                    child: LanguageChange(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // الوضع الليلي
+                  const CustomFadeInRight(
+                    duration: 400,
+                    child: DarkModeChange(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // تعديل البيانات
+                  CustomFadeInRight(
+                    duration: 400,
+                    child: EditProfileTeacher(
+                      onTap: () async {
+                        final updatedUser = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EditProfileStudentScreen(
+                              user: userModel,
+                            ),
+                          ),
+                        );
+                        if (updatedUser != null) {
+                          setState(() {});
+                        }
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // اتصل بنا
+                  const CustomFadeInRight(
+                    duration: 400,
+                    child: ContactUs(),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // من نحن
+                 const CustomFadeInRight(
+                    duration: 400,child: AboutUs()),
+                  const SizedBox(height: 20),
+
+                  // تسجيل الخروج
+                  const CustomFadeInRight(
+                    duration: 400,
+                    child: LogOutWidget(),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
+

@@ -71,7 +71,7 @@ class CoursesModel {
   @JsonKey(name: 'subTitle')
   final String? subTitle;
 
-  @JsonKey(name: 'status')
+  @JsonKey(name: 'status', defaultValue: 'active')
   final String? status;
 
   @JsonKey(name: 'startDate', fromJson: _fromTimestamp, toJson: _toTimestamp)

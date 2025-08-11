@@ -14,7 +14,7 @@ class ListStudentChat extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          Icons.chat_bubble,
+          Icons.chat_bubble_outline_outlined,
           color: context.color.textColor,
         ),
         SizedBox(width: 10.w),

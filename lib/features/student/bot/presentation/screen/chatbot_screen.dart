@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:test/core/common/widgets/custom_app_bar.dart';
+import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/bot/presentation/widget/message.dart';
@@ -70,19 +72,24 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Gemini Chatbot',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 6, top: 6, bottom: 6),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(AppImages.logo),
-          ),
-        ),
-        backgroundColor: Colors.blue,
+      appBar: CustomAppBar(
+        title: 'Gemini Chatbot',
+        color: context.color.textColor,
+        backgroundColor: context.color.mainColor,
       ),
+      // AppBar(
+      //   title: const Text(
+      //     'Gemini Chatbot',
+      //     style: TextStyle(fontWeight: FontWeight.bold),
+      //   ),
+      //   leading: const Padding(
+      //     padding: EdgeInsets.only(left: 6, top: 6, bottom: 6),
+      //     child: CircleAvatar(
+      //       backgroundImage: AssetImage(AppImages.logo),
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.blue,
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -107,28 +114,36 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 child: CircularProgressIndicator(),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'Ask something here...',
-                    ),
-                    controller: _textEditingController,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: context.color.bluePinkLight,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: handleSubmit,
-                    icon: const Icon(Icons.send),
-                  ),
-                ),
-              ],
+           Row(
+  children: [
+    Expanded(
+      child: CustomTextField(
+        hintText: 'اسأل شىء هنا ...',
+        lable: '',
+        controller: _textEditingController,
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: InkWell(
+            onTap: handleSubmit,
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: context.color.bluePinkLight,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.send,
+                size: 18, // الحجم أصغر
+                color: Colors.white,
+              ),
             ),
+          ),
+        ),
+      ),
+    ),
+  ],
+)
           ],
         ),
       ),

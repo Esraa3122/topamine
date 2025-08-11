@@ -51,18 +51,33 @@ class NavigationStudentAppBar extends StatelessWidget
               ],
             );
           } else if (cubit.navBarEnum == NavBarEnum.profile) {
-            return CustomFadeInRight(
-              duration: 800,
-              child: Center(
-                child: TextApp(
-                  text: context.translate(LangKeys.appName),
-                  theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.textColor,
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomFadeInRight(
+                  duration: 800,
+                  child: Center(
+                    child: TextApp(
+                      text: context.translate(LangKeys.appName),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                CustomFadeInLeft(
+                  duration: 800,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.clear_all_rounded,
+                      color: context.color.textColor,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
             );
           }
           return const SizedBox.shrink();

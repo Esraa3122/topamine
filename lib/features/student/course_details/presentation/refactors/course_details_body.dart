@@ -10,16 +10,13 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/core/service/paymob_manager/webview.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/course_info.dart';
-import 'package:test/features/student/course_details/presentation/widgets/course_section.dart';
 import 'package:test/features/student/course_details/presentation/widgets/custom_contanier_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/lecture_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/vertical_validator.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
-
 
 class CourseDetailsBody extends StatefulWidget {
   const CourseDetailsBody({required this.course, super.key});
@@ -31,11 +28,27 @@ class CourseDetailsBody extends StatefulWidget {
 
 class _CourseDetailsBodyState extends State<CourseDetailsBody> {
   bool _isEnrolled = false;
+  int enrolledCount = 0;
 
   @override
   void initState() {
     super.initState();
     _checkEnrollment();
+    fetchEnrolledCount();
+  }
+
+  String formatDuration(Duration duration) {
+    if (duration.isNegative) {
+      return "انتهى";
+    }
+
+    final days = duration.inDays;
+    return '${days} يوم';
+
+    // final hours = duration.inHours % 24;
+    // final minutes = duration.inMinutes % 60;
+
+    // return '${days} يوم ${hours} ساعة ${minutes} دقيقة';
   }
 
   Future<void> _checkEnrollment() async {
@@ -56,8 +69,28 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
     }
   }
 
+  Future<int> getEnrolledStudentCount(String courseId) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('enrollments')
+        .where('courseId', isEqualTo: courseId)
+        .get();
+
+    return snapshot.size;
+  }
+
+  Future<void> fetchEnrolledCount() async {
+    final count = await getEnrolledStudentCount(widget.course.id.toString());
+    setState(() {
+      enrolledCount = count;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final endDate = widget.course.endDate;
+    final difference = endDate!.difference(now);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,12 +104,13 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomContanierCourse(
-                      label: widget.course.title,
+                      label: widget.course.subject ?? '',
                       backgroundColor: const Color(0xffDBEAFE),
                       textColor: const Color(0xff2563EB),
                     ),
                     CustomContanierCourse(
-                      label: widget.course.status ?? '',
+                      label:
+                          '${widget.course.lectures!.length.toString()} محاضره',
                       backgroundColor: const Color(0xffDCFCE7),
                       textColor: const Color(0xff16A34A),
                     ),
@@ -91,10 +125,16 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16.h),
+                // CustomContanierCourse(
+                //   label: widget.course.subject!,
+                //   backgroundColor: const Color(0xff2563EB),
+                //   textColor: context.color.textColor!,
+                // ),
+                // SizedBox(height: 12.h),
                 TextApp(
                   text: widget.course.title,
                   theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
+                    fontSize: 25.sp,
                     fontWeight: FontWeightHelper.bold,
                     color: context.color.textColor,
                   ),
@@ -108,120 +148,129 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                     color: context.color.textColor,
                   ),
                 ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        widget.course.imageUrl ?? '',
-                      ),
-                      backgroundColor: context.color.mainColor,
-                    ),
-                    SizedBox(width: 10.w),
-                    TextApp(
-                      text: widget.course.teacherName,
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ],
+                SizedBox(width: 12.w),
+                TextApp(
+                  text: 'تم اضافته بواسطة ${widget.course.teacherName}',
+                  theme: context.textStyle.copyWith(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeightHelper.regular,
+                    color: context.color.bluePinkLight,
+                  ),
                 ),
                 SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    ...List.generate(
-                      5,
-                      (index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 18,
-                      ),
-                    ),
-                    SizedBox(width: 6.w),
-                    TextApp(
-                      text: '(2.7 k reviews)',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    TextApp(
-                      text: r'$ ',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.bluePinkLight,
-                      ),
-                    ),
-                    TextApp(
-                      text: widget.course.price.toString(),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.bluePinkLight,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     CircleAvatar(
+                //       backgroundImage: NetworkImage(
+                //         widget.course.imageUrl ?? '',
+                //       ),
+                //       backgroundColor: context.color.mainColor,
+                //     ),
+                //     SizedBox(width: 10.w),
+                //     TextApp(
+                //       text: widget.course.teacherName,
+                //       theme: context.textStyle.copyWith(
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeightHelper.regular,
+                //         color: context.color.textColor,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 12.h),
+                // Row(
+                //   children: [
+                //     ...List.generate(
+                //       5,
+                //       (index) => const Icon(
+                //         Icons.star,
+                //         color: Colors.amber,
+                //         size: 18,
+                //       ),
+                //     ),
+                //     SizedBox(width: 6.w),
+                //     TextApp(
+                //       text: '(2.7 k reviews)',
+                //       theme: context.textStyle.copyWith(
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeightHelper.regular,
+                //         color: context.color.textColor,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 12.h),
+                // Row(
+                //   children: [
+                //     TextApp(
+                //       text: r'$ ',
+                //       theme: context.textStyle.copyWith(
+                //         fontSize: 24.sp,
+                //         fontWeight: FontWeightHelper.bold,
+                //         color: context.color.bluePinkLight,
+                //       ),
+                //     ),
+                //     TextApp(
+                //       text: widget.course.price.toString(),
+                //       theme: context.textStyle.copyWith(
+                //         fontSize: 24.sp,
+                //         fontWeight: FontWeightHelper.bold,
+                //         color: context.color.bluePinkLight,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 16.h),
                 const Divider(),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CourseInfo(
                       icon: Icons.people,
-                      label: '2.4k',
+                      label: enrolledCount.toString(),
                       sub: 'Students',
                     ),
-                    VertiDivider(),
+                    const VertiDivider(),
                     CourseInfo(
                       icon: Icons.access_time,
-                      label: '24h',
+                      label: formatDuration(difference),
                       sub: 'Duration',
                     ),
                     VertiDivider(),
                     CourseInfo(
                       icon: Icons.video_collection,
-                      label: '32',
+                      label: widget.course.lectures!.length.toString(),
                       sub: 'Lectures',
                     ),
                   ],
                 ),
                 const Divider(),
-                SizedBox(height: 16.h),
-                TextApp(
-                  text: context.translate(LangKeys.aboutThisCourse),
-                  theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.textColor,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                TextApp(
-                  text: widget.course.subTitle ?? '',
-                  theme: context.textStyle.copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeightHelper.regular,
-                    color: context.color.textColor,
-                    height: 1.5.h,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                const BulletItem(text: 'Comprehensive SAT Math preparation'),
-                const BulletItem(
-                  text: 'Step-by-step problem-solving techniques',
-                ),
-                const BulletItem(text: 'Practice tests and quizzes'),
-                const BulletItem(text: 'Detailed solution explanations'),
+                // SizedBox(height: 16.h),
+                // TextApp(
+                //   text: context.translate(LangKeys.aboutThisCourse),
+                //   theme: context.textStyle.copyWith(
+                //     fontSize: 20.sp,
+                //     fontWeight: FontWeightHelper.bold,
+                //     color: context.color.textColor,
+                //   ),
+                // ),
+                // SizedBox(height: 8.h),
+                // TextApp(
+                //   text: widget.course.subTitle ?? '',
+                //   theme: context.textStyle.copyWith(
+                //     fontSize: 14.sp,
+                //     fontWeight: FontWeightHelper.regular,
+                //     color: context.color.textColor,
+                //     height: 1.5.h,
+                //   ),
+                // ),
+                // SizedBox(height: 16.h),
+                // const BulletItem(text: 'Comprehensive SAT Math preparation'),
+                // const BulletItem(
+                //   text: 'Step-by-step problem-solving techniques',
+                // ),
+                // const BulletItem(text: 'Practice tests and quizzes'),
+                // const BulletItem(text: 'Detailed solution explanations'),
                 SizedBox(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,14 +283,14 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                         color: context.color.textColor,
                       ),
                     ),
-                    TextApp(
-                      text: '32 lectures • 24 hours',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
+                    // TextApp(
+                    //   text: '32 lectures • 24 hours',
+                    //   theme: context.textStyle.copyWith(
+                    //     fontSize: 12.sp,
+                    //     fontWeight: FontWeightHelper.regular,
+                    //     color: context.color.textColor,
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -263,19 +312,20 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                       return LectureItem(
                         lecture: widget.course.lectures![index],
                         course: widget.course,
+                        isLocked: !_isEnrolled,
                       );
                     },
                   ),
-                const Divider(),
-                TextApp(
-                  text: context.translate(LangKeys.studentReviews),
-                  theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.textColor,
-                  ),
-                ),
-                const StudentList(),
+                // const Divider(),
+                // TextApp(
+                //   text: context.translate(LangKeys.studentReviews),
+                //   theme: context.textStyle.copyWith(
+                //     fontSize: 20.sp,
+                //     fontWeight: FontWeightHelper.bold,
+                //     color: context.color.textColor,
+                //   ),
+                // ),
+                // const StudentList(),
                 SizedBox(height: 20.h),
                 CustomLinearButton(
                   height: 50.h,
@@ -294,7 +344,7 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                   },
 
                   child: TextApp(
-                    text: _isEnrolled ? 'Go to Course' : 'اشترك الآن',
+                    text: _isEnrolled ? 'اذهب الى الكورس الأن' : 'اشترك الآن',
                     theme: context.textStyle.copyWith(
                       fontSize: 18.sp,
                       fontWeight: FontWeightHelper.bold,

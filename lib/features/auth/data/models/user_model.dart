@@ -15,7 +15,7 @@ class UserModel {
     required this.phone,
     required this.governorate,
     this.userImage,
-    this.blocked = false,
+    this.blocked = true,
     this.grade,
     this.subject,
     this.status,
@@ -27,10 +27,9 @@ class UserModel {
       _$UserModelFromJson(json);
 
   @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
-  @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
   final UserRole userRole;
 
-  @JsonKey(name: 'blocked', defaultValue: false)
+  @JsonKey(name: 'blocked', defaultValue: true)
   final bool blocked;
 
   @JsonKey(name: 'id')

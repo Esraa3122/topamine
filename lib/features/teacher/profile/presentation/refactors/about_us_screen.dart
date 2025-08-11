@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 
@@ -157,10 +158,11 @@ class _AboutUsPageState extends State<AboutUsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(title: 'About Us', color: Colors.white, backgroundColor: Colors.blue.shade300,),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.blue.shade300],
+            colors: [Colors.blue.shade300, context.color.mainColor!],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

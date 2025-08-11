@@ -4,7 +4,6 @@ import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
@@ -64,80 +63,6 @@ class _ProfileTeacherBodyState extends State<ProfileTeacherBody> {
                   return Column(
                     children: [
                       TeacherProfileInfo(user: userModel),
-                      // const SizedBox(height: 10),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: context.color.mainColor,
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(8.r),
-                      //     ),
-                      //     maximumSize: Size(200.w, 50.h),
-                      //   ),
-                      //   onPressed: () async {
-                      //     final updatedUser = await Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (_) => EditProfileTeacherScreen(
-                      //           user: userModel,
-                      //         ),
-                      //       ),
-                      //     );
-
-                      //     if (updatedUser != null) {
-                      //       setState(() {});
-                      //     }
-                      //   },
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Icon(
-                      //         Icons.edit,
-                      //         size: 20,
-                      //         color: context.color.textColor,
-                      //       ),
-                      //       SizedBox(width: 10.w),
-                      //       TextApp(
-                      //         text: 'تعديل البيانات',
-                      //         theme: context.textStyle.copyWith(
-                      //           fontSize: 16.sp,
-                      //           fontWeight: FontWeightHelper.bold,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 10),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: context.color.mainColor,
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(8.r),
-                      //     ),
-                      //     maximumSize: Size(200.w, 50.h),
-                      //   ),
-                      //   onPressed: () async {
-                      //     await Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (_) => const StudentsListScreen(),
-                      //       ),
-                      //     );
-                        // },
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Icon(Icons.chat, color: context.color.textColor),
-                      //       SizedBox(width: 10.w),
-                      //       TextApp(
-                      //         text: 'عرض المحادثات',
-                      //         theme: context.textStyle.copyWith(
-                      //           fontSize: 16.sp,
-                      //           fontWeight: FontWeightHelper.bold,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                       const SizedBox(height: 20),
                       CustomFadeInRight(
                         duration: 400,

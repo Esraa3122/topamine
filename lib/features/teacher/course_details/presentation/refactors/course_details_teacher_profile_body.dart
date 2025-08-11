@@ -1,23 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/core/service/paymob_manager/paymob_manager.dart';
-import 'package:test/core/service/paymob_manager/webview.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
-import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/vertical_validator.dart';
-import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/course_info_teacher_profile.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/custom_contanier_course_teacher_profile.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/lecture_item_teacher_profile.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 
 class CourseDetailsTeacherProfileBody extends StatefulWidget {
@@ -31,34 +23,51 @@ class CourseDetailsTeacherProfileBody extends StatefulWidget {
 
 class _CourseDetailsTeacherProfileBodyState
     extends State<CourseDetailsTeacherProfileBody> {
-  bool _isEnrolled = false;
+  int enrolledCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _checkEnrollment();
+    fetchEnrolledCount();
   }
 
-  Future<void> _checkEnrollment() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+  String formatDuration(Duration duration) {
+    if (duration.isNegative) {
+      return "انتهى";
+    }
 
+    final days = duration.inDays;
+    return '${days} يوم';
+
+    // final hours = duration.inHours % 24;
+    // final minutes = duration.inMinutes % 60;
+
+    // return '${days} يوم ${hours} ساعة ${minutes} دقيقة';
+  }
+
+
+  Future<int> getEnrolledStudentCount(String courseId) async {
     final snapshot = await FirebaseFirestore.instance
         .collection('enrollments')
-        .where('userId', isEqualTo: user.uid)
-        .where('courseId', isEqualTo: widget.course.id)
-        .limit(1)
+        .where('courseId', isEqualTo: courseId)
         .get();
 
-    if (snapshot.docs.isNotEmpty) {
-      setState(() {
-        _isEnrolled = true;
-      });
-    }
+    return snapshot.size;
+  }
+
+  Future<void> fetchEnrolledCount() async {
+    final count = await getEnrolledStudentCount(widget.course.id.toString());
+    setState(() {
+      enrolledCount = count;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final endDate = widget.course.endDate;
+    final difference = endDate!.difference(now);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,12 +81,13 @@ class _CourseDetailsTeacherProfileBodyState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomContanierCourseTeacherProfile(
-                      label: widget.course.title,
+                      label: widget.course.subject ?? '',
                       backgroundColor: const Color(0xffDBEAFE),
                       textColor: const Color(0xff2563EB),
                     ),
                     CustomContanierCourseTeacherProfile(
-                      label: widget.course.status ?? '',
+                      label:
+                          '${widget.course.lectures!.length.toString()} محاضره',
                       backgroundColor: const Color(0xffDCFCE7),
                       textColor: const Color(0xff16A34A),
                     ),
@@ -95,7 +105,7 @@ class _CourseDetailsTeacherProfileBodyState
                 TextApp(
                   text: widget.course.title,
                   theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
+                    fontSize: 25.sp,
                     fontWeight: FontWeightHelper.bold,
                     color: context.color.textColor,
                   ),
@@ -109,141 +119,49 @@ class _CourseDetailsTeacherProfileBodyState
                     color: context.color.textColor,
                   ),
                 ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        widget.course.imageUrl ?? '',
-                      ),
-                      backgroundColor: context.color.mainColor,
-                    ),
-                    SizedBox(width: 10.w),
-                    TextApp(
-                      text: widget.course.teacherName,
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    ...List.generate(
-                      5,
-                      (index) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: 18,
-                      ),
-                    ),
-                    SizedBox(width: 6.w),
-                    TextApp(
-                      text: '(2.7 k reviews)',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    TextApp(
-                      text: r'$ ',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.bluePinkLight,
-                      ),
-                    ),
-                    TextApp(
-                      text: widget.course.price.toString(),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.bluePinkLight,
-                      ),
-                    ),
-                  ],
+                SizedBox(width: 12.w),
+                TextApp(
+                  text: 'تم اضافته بواسطة ${widget.course.teacherName}',
+                  theme: context.textStyle.copyWith(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeightHelper.regular,
+                    color: context.color.bluePinkLight,
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 const Divider(),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CourseInfoTeacherProfile(
                       icon: Icons.people,
-                      label: '2.4k',
+                      label: enrolledCount.toString(),
                       sub: 'Students',
                     ),
-                    VertiDivider(),
+                    const VertiDivider(),
                     CourseInfoTeacherProfile(
                       icon: Icons.access_time,
-                      label: '24h',
+                      label: formatDuration(difference),
                       sub: 'Duration',
                     ),
-                    VertiDivider(),
+                    const VertiDivider(),
                     CourseInfoTeacherProfile(
                       icon: Icons.video_collection,
-                      label: '32',
+                      label: widget.course.lectures!.length.toString(),
                       sub: 'Lectures',
                     ),
                   ],
                 ),
                 const Divider(),
-                SizedBox(height: 16.h),
+            
+                SizedBox(height: 24.h),
                 TextApp(
-                  text: context.translate(LangKeys.aboutThisCourse),
+                  text: context.translate(LangKeys.courseContent),
                   theme: context.textStyle.copyWith(
                     fontSize: 20.sp,
                     fontWeight: FontWeightHelper.bold,
                     color: context.color.textColor,
                   ),
-                ),
-                SizedBox(height: 8.h),
-                TextApp(
-                  text: widget.course.subTitle ?? '',
-                  theme: context.textStyle.copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeightHelper.regular,
-                    color: context.color.textColor,
-                    height: 1.5.h,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                const BulletItem(text: 'Comprehensive SAT Math preparation'),
-                const BulletItem(
-                  text: 'Step-by-step problem-solving techniques',
-                ),
-                const BulletItem(text: 'Practice tests and quizzes'),
-                const BulletItem(text: 'Detailed solution explanations'),
-                SizedBox(height: 24.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextApp(
-                      text: context.translate(LangKeys.courseContent),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                    TextApp(
-                      text: '32 lectures • 24 hours',
-                      theme: context.textStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ],
                 ),
                 SizedBox(height: 16.h),
                 if (widget.course.lectures == null ||
@@ -267,104 +185,11 @@ class _CourseDetailsTeacherProfileBodyState
                       );
                     },
                   ),
-                const Divider(),
-                TextApp(
-                  text: context.translate(LangKeys.studentReviews),
-                  theme: context.textStyle.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeightHelper.bold,
-                    color: context.color.textColor,
-                  ),
-                ),
-                const StudentList(),
-                // SizedBox(height: 20.h),
-                // CustomLinearButton(
-                //   height: 50.h,
-                //   width: MediaQuery.of(context).size.width,
-                //   onPressed: () {
-                //     if (_isEnrolled) {
-                //       Navigator.of(context).push(
-                //         MaterialPageRoute(
-                //           builder: (_) =>
-                //               VideoPlayerPage(course: widget.course),
-                //         ),
-                //       );
-                //     } else {
-                //       _pay(context, widget.course);
-                //     }
-                //   },
-
-                //   child: TextApp(
-                //     text: _isEnrolled ? 'Go to Course' : 'اشترك الآن',
-                //     theme: context.textStyle.copyWith(
-                //       fontSize: 18.sp,
-                //       fontWeight: FontWeightHelper.bold,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _pay(BuildContext context, CoursesModel course) async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        if (kDebugMode) {
-          print('User not logged in');
-        }
-        return;
-      }
-
-      final manager = PaymobManager();
-      final paymentKey = await manager.createPayment(
-        amount: (course.price ?? 0).toInt(),
-        currency: 'EGP',
-        userId: user.uid,
-        userName: user.displayName ?? 'Unknown',
-        userEmail: user.email ?? 'unknown@email.com',
-        courseId: course.id ?? '0',
-        courseName: course.title,
-        courseDescription: course.subTitle ?? 'No description',
-        courseImage: course.imageUrl ?? '',
-      );
-
-      final orderId = manager.lastOrderId;
-      final paymentUrl =
-          'https://accept.paymob.com/api/acceptance/iframes/940163?payment_token=$paymentKey';
-
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => PaymentWebViewScreen(
-            paymentUrl: paymentUrl,
-            successRedirect: 'https://yourapp.com/payment-success',
-            course: course,
-            orderId: orderId,
-          ),
-        ),
-      );
-
-      if (result == true) {
-        setState(() {
-          _isEnrolled = true;
-        });
-
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => VideoPlayerPage(course: course),
-          ),
-        );
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Pay error: $e');
-      }
-    }
   }
 }

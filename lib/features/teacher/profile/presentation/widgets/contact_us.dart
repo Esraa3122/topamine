@@ -13,7 +13,7 @@ class ContactUs extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          Icons.phone,
+          Icons.phone_enabled_outlined,
           color: context.color.textColor,
         ),
         SizedBox(width: 10.w),
@@ -28,7 +28,10 @@ class ContactUs extends StatelessWidget {
 
         InkWell(
           onTap: ()async {
-            await launchUrlString("tel:+201142107502");
+            await launchUrlString(
+              'mailto:johnihab.01@gmail.com',
+              mode: LaunchMode.externalApplication,
+            );
           },
 
           child: Row(

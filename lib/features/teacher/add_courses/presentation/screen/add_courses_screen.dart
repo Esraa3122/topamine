@@ -179,7 +179,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           'إضافة كورس',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
@@ -567,7 +567,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                     onPressed: submit,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

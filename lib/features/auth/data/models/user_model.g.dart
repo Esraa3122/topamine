@@ -14,7 +14,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
   phone: json['phone'] as String,
   governorate: json['governorate'] as String,
   userImage: json['avatar'] as String?,
-  blocked: json['blocked'] as bool? ?? false,
+  blocked: json['blocked'] as bool? ?? true,
   grade: json['grade'] as String?,
   subject: json['subject'] as String?,
   status: mapStringToAccountStatus(json['status'] as String),

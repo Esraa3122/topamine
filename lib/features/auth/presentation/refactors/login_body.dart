@@ -1,7 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
+import 'package:test/core/common/toast/awesome_snackbar.dart';
+import 'package:test/core/common/toast/buildawesomedialog.dart';
 import 'package:test/core/common/toast/show_toast.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/enums/rule_register.dart';
@@ -51,26 +54,26 @@ class _LoginBodyState extends State<LoginBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) async {
         if (state is AuthWaitingApproval) {
-          await context.pushNamedAndRemoveUntil(AppRoutes.waitingApproval);
-          ShowToast.showToastInfoTop(message: 'حسابك قيد المراجعة');
+          // await context.pushNamedAndRemoveUntil(AppRoutes.waitingApproval);
+          buildAwesomeDialogWarning(
+            'Warning!',
+            'حسابك قيد المراجعة',
+            context,
+          );
           return;
         }
 
         if (state is AuthSuccess) {
-          ShowToast.showToastSuccessTop(
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Success!',
             message: context.translate(state.successMessage),
+            contentType: ContentType.success,
           );
 
           final user = state.user;
 
-          if (user!.blocked == true) {
-            ShowToast.showToastErrorTop(message: 'هذا المستخدم محظور.');
-            await SharedPrefHelper().clearSession();
-            return;
-          }
-
-
-          if (user.status == AccountStatus.accepted) {
+          if (user!.status == AccountStatus.accepted) {
             if (user.userRole == UserRole.teacher) {
               await context.pushNamedAndRemoveUntil(
                 AppRoutes.navigationTeacher,
@@ -84,13 +87,18 @@ class _LoginBodyState extends State<LoginBody> {
               await SharedPrefHelper().clearSession();
             }
           }
-        } else if (state is AuthFailure) {
-          ShowToast.showToastErrorTop(
-            message: context.translate(state.errorMessage),
+        }
+
+        if (state is AuthFailure) {
+          // ShowToast.showToastErrorTop(message: state.errorMessage);
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Error!',
+            message: state.errorMessage,
+            contentType: ContentType.failure,
           );
         }
       },
-
 
       builder: (context, state) {
         return Padding(

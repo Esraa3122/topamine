@@ -13,7 +13,7 @@ class AboutUs extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          Icons.phone,
+          Icons.info_outline,
           color: context.color.textColor,
         ),
         SizedBox(width: 10.w),

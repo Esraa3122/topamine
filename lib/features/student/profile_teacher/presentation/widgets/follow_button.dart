@@ -44,6 +44,7 @@ class _FollowButtonState extends State<FollowButton>
         .collection('followers')
         .get();
 
+  if (!mounted) return;
     setState(() {
       isFollowing = doc.exists;
       followersCount = followersSnapshot.docs.length;

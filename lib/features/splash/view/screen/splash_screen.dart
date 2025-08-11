@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
     });
   }
 
-  Future<void> _handleNavigation() async {
+ Future<void> _handleNavigation() async {
   await Future.delayed(const Duration(seconds: 2));
 
   final firebaseUser = FirebaseAuth.instance.currentUser;
@@ -49,11 +49,11 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   if (userModel.status == AccountStatus.pending) {
-    await context.pushReplacementNamed(AppRoutes.waitingApproval);
+   _goToLogin();
     return;
   }
 
-  if (userModel.status == AccountStatus.rejected || userModel.blocked == true) {
+  if (userModel.status == AccountStatus.rejected || userModel.blocked == false) {
     await FirebaseAuth.instance.signOut();
     await SharedPrefHelper().clearSession();
     _goToLogin();
@@ -64,15 +64,17 @@ class _SplashPageState extends State<SplashPage> {
     final role = userModel.userRole;
     if (role == UserRole.teacher) {
       await context.pushReplacementNamed(AppRoutes.navigationTeacher);
-    } else if (role == UserRole.student){
+    } else if (role == UserRole.student) {
       await context.pushReplacementNamed(AppRoutes.navigationStudent);
+    } else {
+      // Optional fallback
+      await FirebaseAuth.instance.signOut();
+      await SharedPrefHelper().clearSession();
+      _goToLogin();
     }
-  } else {
-    await FirebaseAuth.instance.signOut();
-    await SharedPrefHelper().clearSession();
-    _goToLogin();
   }
 }
+
 
 
   void _goToOnBording() {

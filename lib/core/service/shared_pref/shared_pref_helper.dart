@@ -39,7 +39,7 @@ class SharedPrefHelper {
 
   Future<bool> isUserBlocked() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(keyIsBlocked) ?? false;
+    return prefs.getBool(keyIsBlocked) ?? true;
   }
 
   Future<void> setString(String key, String value) async {

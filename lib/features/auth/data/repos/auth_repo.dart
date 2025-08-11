@@ -85,7 +85,7 @@ class AuthRepos {
       throw Exception('User data not found.');
     }
 
-    if (user.blocked) {
+    if (user.blocked == false) {
     throw Exception('تم حظر هذا المستخدم من قبل الإدارة.');
   }
 
@@ -94,6 +94,10 @@ class AuthRepos {
     }
 
     await sharedPref.saveUserSession(uid, user.userRole.name);
+    await sharedPref.saveUserStatus(
+    mapAccountStatusToString(user.status ?? AccountStatus.pending)!,
+  );
+  await sharedPref.saveUserBlocked(user.blocked);
     return user;
   }
 

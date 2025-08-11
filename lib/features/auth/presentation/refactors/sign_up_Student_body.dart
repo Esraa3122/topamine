@@ -62,12 +62,12 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async{
         if (state is AuthSuccess) {
           ShowToast.showToastSuccessTop(
             message: context.translate(state.successMessage),
           );
-          context.pushNamedAndRemoveUntil(AppRoutes.login);
+          await context.pushNamedAndRemoveUntil(AppRoutes.login);
         } else if (state is AuthFailure) {
           ShowToast.showToastErrorTop(
             message: context.translate(state.errorMessage),

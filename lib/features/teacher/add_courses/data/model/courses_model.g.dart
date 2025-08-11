@@ -17,7 +17,7 @@ CoursesModel _$CoursesModelFromJson(Map<String, dynamic> json) => CoursesModel(
   teacherEmail: json['teacherEmail'] as String?,
   term: json['term'] as String?,
   subTitle: json['subTitle'] as String?,
-  status: json['status'] as String?,
+  status: json['status'] as String? ?? 'active',
   startDate: _fromTimestamp(json['startDate']),
   price: json['price'] as num?,
   endDate: _fromTimestamp(json['endDate']),

@@ -40,6 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
         subject: subject,
         status: status,
       );
+      await FirebaseAuth.instance.signOut();
 
       emit(
         AuthSuccess(
@@ -62,59 +63,117 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> login(String email, String password) async {
-    emit(AuthLoading());
+  emit(AuthLoading());
 
-    try {
-      await repository.loginUser(email, password);
+  try {
+    await repository.loginUser(email, password);
 
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid == null) {
-        emit(AuthFailure(errorMessage: 'Unable to get user ID'));
-        return;
-      }
-
-      final userData = await repository.getUserData(uid);
-      if (userData == null) {
-        emit(AuthFailure(errorMessage: 'User data not found'));
-        return;
-      }
-
-      if (userData.blocked == true) {
-        await FirebaseAuth.instance.signOut();
-        emit(AuthFailure(errorMessage: 'تم حظر حسابك، لا يمكنك تسجيل الدخول.'));
-        return;
-      }
-
-      if (userData.userRole == UserRole.teacher) {
-        if (userData.status == AccountStatus.pending) {
-          emit(AuthWaitingApproval());
-          return;
-        } else if (userData.status == AccountStatus.rejected) {
-          emit(
-            AuthFailure(errorMessage: 'تم رفض طلبك، لا يمكنك تسجيل الدخول.'),
-          );
-          return;
-        }
-      }
-
-      emit(
-        AuthSuccess(
-          successMessage: LangKeys.loggedSuccessfully,
-          user: userData,
-        ),
-      );
-    } on FirebaseAuthException catch (ex) {
-      if (ex.code == 'user-not-found') {
-        emit(AuthFailure(errorMessage: 'user not found'));
-      } else if (ex.code == 'wrong-password') {
-        emit(AuthFailure(errorMessage: 'wrong password'));
-      } else {
-        emit(AuthFailure(errorMessage: LangKeys.loggedError));
-      }
-    } catch (e) {
-      emit(AuthFailure(errorMessage: e.toString()));
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      emit(AuthFailure(errorMessage: 'Unable to get user ID'));
+      return;
     }
+
+    final userData = await repository.getUserData(uid);
+    if (userData == null) {
+      emit(AuthFailure(errorMessage: 'User data not found'));
+      return;
+    }
+
+    if (userData.blocked == false) {
+      await FirebaseAuth.instance.signOut();
+      emit(AuthFailure(errorMessage: 'تم حظر حسابك، لا يمكنك تسجيل الدخول.'));
+      return;
+    }
+
+    if (userData.userRole == UserRole.teacher) {
+      final status = userData.status ?? AccountStatus.pending;
+
+      if (status == AccountStatus.pending) {
+        emit(AuthWaitingApproval());
+        return;
+      }
+
+      if (status == AccountStatus.rejected) {
+        emit(AuthFailure(errorMessage: 'تم رفض طلبك، لا يمكنك تسجيل الدخول.'));
+        return;
+      }
+    }
+
+    emit(
+      AuthSuccess(
+        successMessage: LangKeys.loggedSuccessfully,
+        user: userData,
+      ),
+    );
+  } on FirebaseAuthException catch (ex) {
+    if (ex.code == 'user-not-found') {
+      emit(AuthFailure(errorMessage: 'user not found'));
+    } else if (ex.code == 'wrong-password') {
+      emit(AuthFailure(errorMessage: 'wrong password'));
+    } else {
+      emit(AuthFailure(errorMessage: LangKeys.loggedError));
+    }
+  } catch (e) {
+    emit(AuthFailure(errorMessage: e.toString()));
   }
+}
+
+
+  // Future<void> login(String email, String password) async {
+  //   emit(AuthLoading());
+
+  //   try {
+  //     await repository.loginUser(email, password);
+
+  //     final uid = FirebaseAuth.instance.currentUser?.uid;
+  //     if (uid == null) {
+  //       emit(AuthFailure(errorMessage: 'Unable to get user ID'));
+  //       return;
+  //     }
+
+  //     final userData = await repository.getUserData(uid);
+  //     if (userData == null) {
+  //       emit(AuthFailure(errorMessage: 'User data not found'));
+  //       return;
+  //     }
+
+  //     if (userData.blocked == false) {
+  //       await FirebaseAuth.instance.signOut();
+  //       emit(AuthFailure(errorMessage: 'تم حظر حسابك، لا يمكنك تسجيل الدخول.'));
+  //       return;
+  //     }
+
+  //     if (userData.userRole == UserRole.teacher) {
+  //       if (userData.status == AccountStatus.pending) {
+  //         emit(AuthWaitingApproval());
+  //         return;
+  //       } else if (userData.status == AccountStatus.rejected) {
+  //         emit(
+  //           AuthFailure(errorMessage: 'تم رفض طلبك، لا يمكنك تسجيل الدخول.'),
+  //         );
+  //         return;
+  //       }
+  //     }
+
+  //     emit(
+  //       AuthSuccess(
+  //         successMessage: LangKeys.loggedSuccessfully,
+  //         user: userData,
+  //       ),
+  //     );
+  //   } on FirebaseAuthException catch (ex) {
+  //     if (ex.code == 'user-not-found') {
+  //       emit(AuthFailure(errorMessage: 'user not found'));
+  //     } else if (ex.code == 'wrong-password') {
+  //       emit(AuthFailure(errorMessage: 'wrong password'));
+  //     } else {
+  //       emit(AuthFailure(errorMessage: LangKeys.loggedError));
+  //     }
+  //   } catch (e) {
+  //     emit(AuthFailure(errorMessage: e.toString()));
+  //   }
+  // }
 
   Future<void> logout() async {
     emit(AuthLoading());

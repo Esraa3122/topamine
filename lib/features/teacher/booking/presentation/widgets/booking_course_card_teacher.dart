@@ -118,7 +118,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        course['subTitle'].toString(),
+                        course['title'].toString(),
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,

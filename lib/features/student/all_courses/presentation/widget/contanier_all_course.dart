@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
@@ -83,22 +81,22 @@ class ContanierAllCourse extends StatelessWidget {
                       fontWeight: FontWeightHelper.regular,
                     ),
                   ),
-                   SizedBox(height: 2.h),
-                  CustomLinearButton(
-                    height: 30.h,
-                    width: double.infinity,
-                    onPressed: () {
-                      context.pushNamed(AppRoutes.paymentDetailsView);
-                    },
-                    child: TextApp(
-                      text: context.translate(LangKeys.entrollNow),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  //  SizedBox(height: 2.h),
+                  // CustomLinearButton(
+                  //   height: 30.h,
+                  //   width: double.infinity,
+                  //   onPressed: () {
+                  //     context.pushNamed(AppRoutes.paymentDetailsView);
+                  //   },
+                  //   child: TextApp(
+                  //     text: context.translate(LangKeys.entrollNow),
+                  //     theme: context.textStyle.copyWith(
+                  //       fontSize: 18.sp,
+                  //       fontWeight: FontWeightHelper.bold,
+                  //       color: Colors.white,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
