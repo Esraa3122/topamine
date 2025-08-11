@@ -8,7 +8,6 @@ import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/course_details/presentation/widgets/bullet_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/course_info.dart';
-import 'package:test/features/student/course_details/presentation/widgets/course_section.dart';
 import 'package:test/features/student/course_details/presentation/widgets/custom_contanier_course.dart';
 import 'package:test/features/student/course_details/presentation/widgets/lecture_item.dart';
 import 'package:test/features/student/course_details/presentation/widgets/student_course.dart';

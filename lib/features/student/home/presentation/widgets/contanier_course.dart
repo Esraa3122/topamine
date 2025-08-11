@@ -69,7 +69,8 @@ class ContanierCourse extends StatelessWidget {
                         fontWeight: FontWeightHelper.medium,
                         color: context.color.textColor,
                       ),
-                      maxLines: 2,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 6.h),
                     TextApp(

@@ -7,6 +7,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/firebase/notifications/notification_helper.dart';
+import 'package:test/core/service/shared_pref/shared_pref.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/home/presentation/widgets/auto_slider.dart';
 import 'package:test/features/student/home/presentation/widgets/course_for_you.dart';
@@ -22,34 +23,54 @@ class HomeStudentBody extends StatefulWidget {
 
 class _HomeStudentBodyState extends State<HomeStudentBody> {
   final TextEditingController searchController = TextEditingController();
+  Set<String> notifiedCourseIds = {};
   // String searchQuery = '';
   @override
   void initState() {
     super.initState();
+    loadNotifiedCourses();
     listenForNewCourses();
+  }
+
+  Future<void> loadNotifiedCourses() async {
+    final prefs = SharedPref().getPreferenceInstance();
+    final savedList = prefs.getStringList('notifiedCourses') ?? [];
+    setState(() {
+      notifiedCourseIds = savedList.toSet();
+    });
   }
 
   void listenForNewCourses() {
     FirebaseFirestore.instance.collection('courses').snapshots().listen((
       snapshot,
-    ) {
+    ) async {
+      final prefs = SharedPref().getPreferenceInstance();
       for (final change in snapshot.docChanges) {
         if (change.type == DocumentChangeType.added) {
-          final course = change.doc.data();
-          final courseTitle = course?['title'] ?? 'كورس جديد';
-          flutterLocalNotificationsPlugin.show(
-            0,
-            '📚 كورس جديد',
-            'تم إضافة الكورس "$courseTitle" للتو!',
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                'high_importance_channel',
-                'إشعارات مهمة',
-                importance: Importance.high,
+          final courseId = change.doc.id;
+
+          if (!notifiedCourseIds.contains(courseId)) {
+            final course = change.doc.data();
+            final courseTitle = course?['title'] ?? 'كورس جديد';
+            await flutterLocalNotificationsPlugin.show(
+              0,
+              '📚 كورس جديد',
+              'تم إضافة الكورس "$courseTitle" للتو!',
+              const NotificationDetails(
+                android: AndroidNotificationDetails(
+                  'high_importance_channel',
+                  'إشعارات مهمة',
+                  importance: Importance.high,
+                ),
               ),
-            ),
-            payload: change.doc.id,
-          );
+              payload: courseId,
+            );
+            notifiedCourseIds.add(courseId);
+            await prefs.setStringList(
+              'notifiedCourses',
+              notifiedCourseIds.toList(),
+            );
+          }
         }
       }
     });
