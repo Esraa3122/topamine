@@ -6,7 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/shared_pref/shared_pref.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

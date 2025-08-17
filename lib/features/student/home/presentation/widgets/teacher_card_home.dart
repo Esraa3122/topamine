@@ -6,7 +6,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class TeacherCard extends StatelessWidget {
   const TeacherCard({required this.teacher, super.key, this.coursesModel});

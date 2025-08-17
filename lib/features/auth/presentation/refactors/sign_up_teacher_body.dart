@@ -15,6 +15,7 @@ import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/color/colors_light.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
 import 'package:test/features/auth/presentation/widgets/auth_title_info.dart';
 import 'package:test/features/auth/presentation/widgets/sign_up/sign_up_button.dart';
 import 'package:test/features/auth/presentation/widgets/sign_up/sign_up_text_form_teacher.dart';
@@ -73,13 +74,13 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is Success) {
+      listener: (context, state) async{
+        if (state is AuthSuccess) {
           ShowToast.showToastSuccessTop(
             message: context.translate(state.successMessage),
           );
-          context.pushNamedAndRemoveUntil(AppRoutes.login);
-        } else if (state is Failure) {
+          await context.pushNamedAndRemoveUntil(AppRoutes.login);
+        } else if (state is AuthFailure) {
           ShowToast.showToastErrorTop(
             message: context.translate(state.errorMessage),
           );
@@ -142,7 +143,7 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
                   height: 20.h,
                 ),
                 //SignUpButton
-                if (state is Loading)
+                if (state is AuthLoading)
                   const Center(
                     child: CircularProgressIndicator(
                       color: ColorsLight.pinkLight,

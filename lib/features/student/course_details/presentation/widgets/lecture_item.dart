@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/video_player/cubit/video_cubit.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -9,11 +13,13 @@ class LectureItem extends StatefulWidget {
   const LectureItem({
     required this.lecture,
     required this.course,
+    this.isLocked = false,
     super.key,
   });
 
   final LectureModel lecture;
   final CoursesModel course;
+  final bool isLocked;
 
   @override
   State<LectureItem> createState() => _LectureItemState();
@@ -22,10 +28,53 @@ class LectureItem extends StatefulWidget {
 class _LectureItemState extends State<LectureItem> {
   bool _isExpanded = false;
 
+  void _handleTapExpansion() {
+    if (widget.isLocked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يرجى الاشتراك لعرض محتوى المحاضرة')),
+      );
+      return;
+    }
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  void _handleVideoTap() {
+    if (widget.isLocked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يرجى الاشتراك لعرض الفيديو')),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (_) => VideoCubit(),
+          child: VideoPlayerPage(
+            course: widget.course,
+            initialLecture: widget.lecture,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _handleDocTap(String url, String type) {
+    if (widget.isLocked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('يرجى الاشتراك لعرض $type')),
+      );
+      return;
+    }
+    launchUrlString(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: context.color.mainColor,
       elevation: 4,
       shadowColor: Colors.grey[300],
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -38,22 +87,20 @@ class _LectureItemState extends State<LectureItem> {
               color: Colors.blue,
               size: 30,
             ),
-            title: Text(
-              widget.lecture.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+            title: TextApp(
+              text:  widget.lecture.title, 
+              theme: context.textStyle.copyWith(
                 fontSize: 14,
-              ),
-            ),
-            trailing: Icon(
-              _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: Colors.grey,
-            ),
-            onTap: () {
-              setState(() {
-                _isExpanded = !_isExpanded;
-              });
-            },
+                fontWeight: FontWeightHelper.medium,
+                color: context.color.textColor
+                ),),
+            trailing: widget.isLocked
+                ? const Icon(Icons.lock, color: Colors.grey)
+                : Icon(
+                    _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                    color: Colors.grey,
+                  ),
+            onTap: _handleTapExpansion,
           ),
           AnimatedCrossFade(
             firstChild: const SizedBox.shrink(),
@@ -61,44 +108,44 @@ class _LectureItemState extends State<LectureItem> {
               children: [
                 ListTile(
                   leading: const Icon(Icons.play_arrow, color: Colors.green),
-                  title: const Text('مشاهدة الفيديو'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (_) => VideoCubit(),
-                          child: VideoPlayerPage(
-                            course: widget.course,
-                            initialLecture: widget.lecture,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                  title: TextApp(
+              text:  'مشاهدة الفيديو', 
+              theme: context.textStyle.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeightHelper.medium,
+                color: context.color.textColor
+                ),),
+                  onTap: _handleVideoTap,
                 ),
-                // PDF
-                if (widget.lecture.docUrl.isNotEmpty)
+                if ((widget.lecture.docUrl ?? '').isNotEmpty)
                   ListTile(
                     leading: const Icon(
                       Icons.picture_as_pdf,
                       color: Colors.red,
                     ),
-                    title: const Text('عرض PDF'),
-                    onTap: () {
-                      launchUrlString(widget.lecture.docUrl);
-                    },
+                    title: TextApp(
+              text:  'عرض PDF', 
+              theme: context.textStyle.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeightHelper.medium,
+                color: context.color.textColor
+                ),),
+                    onTap: () => _handleDocTap(widget.lecture.docUrl!,  'ملف PDF'),
                   ),
-                if (widget.lecture.txtUrl.isNotEmpty)
+                if ((widget.lecture.txtUrl ?? '').isNotEmpty)
                   ListTile(
                     leading: const Icon(
                       Icons.description,
                       color: Colors.orange,
                     ),
-                    title: const Text('عرض TXT'),
-                    onTap: () {
-                      launchUrlString(widget.lecture.txtUrl);
-                    },
+                    title: TextApp(
+              text:  'عرض TXT', 
+              theme: context.textStyle.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeightHelper.medium,
+                color: context.color.textColor
+                ),),
+                    onTap: () => _handleDocTap(widget.lecture.txtUrl!, 'ملف TXT'),
                   ),
               ],
             ),

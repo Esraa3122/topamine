@@ -9,8 +9,12 @@ import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
 import 'package:test/features/teacher/profile/presentation/refactors/list_chat.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/about_us.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/contact_us.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/dark_mode_change.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/edit_profile_teacher.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/language_change.dart';
+import 'package:test/features/teacher/profile/presentation/widgets/list_student_chat.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/logout_widget.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/teacher_profile_info.dart';
 
@@ -31,7 +35,7 @@ class _ProfileTeacherBodyState extends State<ProfileTeacherBody> {
     final data = await authRepo.getUserData(uid);
     if (data == null) return null;
 
-    return UserModel.fromJson(data);
+    return data;
   }
 
   @override
@@ -54,127 +58,82 @@ class _ProfileTeacherBodyState extends State<ProfileTeacherBody> {
                     return const Center(child: Text('No user data found.'));
                   }
 
+                  final userModel = snapshot.data!;
+
                   return Column(
                     children: [
-                      TeacherProfileInfo(user: snapshot.data!),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.color.mainColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
+                      TeacherProfileInfo(user: userModel),
+                      const SizedBox(height: 20),
+                      CustomFadeInRight(
+                        duration: 400,
+                        child: TextApp(
+                          text: 'ميزات التطبيق',
+                          theme: context.textStyle.copyWith(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeightHelper.bold,
                           ),
-                          maximumSize: Size(200.w, 50.h),
-                        ),
-                        onPressed: () async {
-                          final updatedUser = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditProfileTeacherScreen(
-                                user: snapshot.data!,
-                              ),
-                            ),
-                          );
-
-                          if (updatedUser != null) {
-                            setState(() {}); // reload user data
-                          }
-                        },
-                        
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.edit,
-                              size: 20,
-                              color: context.color.textColor,
-                            ),
-                            SizedBox(width: 10.w),
-                            TextApp(
-                              text: 'تعديل البيانات',
-                              theme: context.textStyle.copyWith(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeightHelper.bold,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.color.mainColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          maximumSize: Size(200.w, 50.h),
-                        ),
-                        onPressed: () async {
-                          final updatedUser = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const StudentsListScreen(),
-                            ),
-                          );
+                      const SizedBox(height: 30),
+                      const CustomFadeInRight(
+                        duration: 400,
+                        child: LanguageChange(),
+                      ),
+                      const SizedBox(height: 20),
+                      const CustomFadeInRight(
+                        duration: 400,
+                        child: DarkModeChange(),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomFadeInRight(
+                        duration: 400,
+                        child: EditProfileTeacher(
+                          onTap: () async {
+                            final updatedUser = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => EditProfileTeacherScreen(
+                                  user: userModel,
+                                ),
+                              ),
+                            );
 
-                          if (updatedUser != null) {
-                            setState(() {}); // reload user data
-                          }
-                        }, child: null,),
+                            if (updatedUser != null) {
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomFadeInRight(
+                        duration: 400,
+                        child: ListStudentChat(
+                          onTap: () {
+                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => StudentsListScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const CustomFadeInRight(
+                        duration: 400,
+                        child: ContactUs(),
+                      ),
+                      const SizedBox(height: 20),
+                      const AboutUs(),
+                       const SizedBox(height: 20),
+                      const CustomFadeInRight(
+                        duration: 400,
+                        child: LogOutWidget(),
+                      ),
                     ],
                   );
                 },
               ),
-            ),
-            //title
-            SizedBox(
-              height: 20.h,
-            ),
-            CustomFadeInRight(
-              duration: 400,
-              child: TextApp(
-                text: 'ميزات التطبيق',
-                theme: context.textStyle.copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeightHelper.bold,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            // language
-            const CustomFadeInRight(duration: 400, child: LanguageChange()),
-            SizedBox(height: 20.h),
-            // dark mode
-            const CustomFadeInRight(
-              duration: 400,
-              child: DarkModeChange(),
-            ),
-            SizedBox(height: 20.h),
-            // Build Developer
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: BuildDeveloper(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Notifications change
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: NotificationsChange(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Build Version
-            // const CustomFadeInRight(
-            //   duration: 400,
-            //   child: BuildVersion(),
-            // ),
-            // SizedBox(height: 20.h),
-            // Logout
-            const CustomFadeInRight(
-              duration: 400,
-              child: LogOutWidget(),
             ),
           ],
         ),

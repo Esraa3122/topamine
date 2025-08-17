@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/student/search/presentation/widgets/card_search.dart';
 import 'package:test/features/student/search/presentation/widgets/custom_text_search.dart';
 import 'package:test/features/student/search/presentation/widgets/subject_filter_list.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -29,6 +31,12 @@ class _SearchPageState extends State<SearchPage> {
     fetchCoursesFromFirestore();
   }
 
+  @override
+void dispose() {
+  searchController.dispose();
+  super.dispose();
+}
+
   Future<void> fetchCoursesFromFirestore() async {
     try {
       final snapshot = await FirebaseFirestore.instance
@@ -49,12 +57,16 @@ class _SearchPageState extends State<SearchPage> {
           .toSet()
           .toList();
 
+          if (!mounted) return;
+
       setState(() {
         allCourses = loadedCourses;
         // sectionTitles = ['All', ...sections];
         isLoading = false;
       });
     } catch (e) {
+
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
@@ -120,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
                                   arguments: course,
                                 );
                               },
-                              child: BookingCourseCardStudent(
+                              child: CardSearch(
                                 course: course,
                               ),
                             );

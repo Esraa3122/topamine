@@ -11,7 +11,6 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 
-
 class LanguageChange extends StatelessWidget {
   const LanguageChange({super.key});
 
@@ -23,10 +22,10 @@ class LanguageChange extends StatelessWidget {
       builder: (context, state) {
         return Row(
           children: [
-            SvgPicture.asset(
-              AppImages.language,
-              color: context.color.textColor,
-            ),
+            // SvgPicture.asset(
+            //   AppImages.language,
+            //   color: context.color.textColor,
+            // ),
             SizedBox(width: 10.w),
             TextApp(
               text: context.translate(LangKeys.languageTilte),

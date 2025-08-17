@@ -15,14 +15,20 @@ import 'package:test/features/onbording/view/screens/on_boarding_screen.dart';
 import 'package:test/features/splash/view/screen/splash_screen.dart';
 import 'package:test/features/student/all_courses/presentation/screen/all_courses_page.dart';
 import 'package:test/features/student/booking/presentation/screen/booking_student_screen.dart';
+import 'package:test/features/student/bot/presentation/screen/chatbot_screen.dart';
 import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/student/edit_profile/presentation/screen/edit_profile_student_screen.dart';
 import 'package:test/features/student/home/presentation/screens/home_student_screen.dart';
 import 'package:test/features/student/navigation/presentation/screen/navigation_student_screen.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/profile/presentation/screens/profile_student_screen.dart';
 import 'package:test/features/student/profile_teacher/presentation/screen/view_profile_teacher_screen.dart';
 import 'package:test/features/student/search/presentation/screen/search_page.dart';
+import 'package:test/features/teacher/all_courses/presentation/screen/all_courses_teacher_profile_page.dart';
 import 'package:test/features/teacher/booking/presentation/screen/booking_teacher_screen.dart';
+import 'package:test/features/teacher/course_details/presentation/screen/course_details_teacher_profile_screen.dart';
+import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
+import 'package:test/features/teacher/home/presentation/screen/home_teacher_screen.dart';
 import 'package:test/features/teacher/navigation/presentation/screens/navigation_teacher_screen.dart';
 import 'package:test/features/teacher/profile/presentation/screens/profile_teacher_screen.dart';
 
@@ -37,16 +43,24 @@ class AppRoutes {
   static const String navigationStudent = 'navigationStudent';
   static const String navigationTeacher = 'navigationTeacher';
   static const String homePage = 'homePage';
+  static const String homeTeacherScreen = 'homeTeacherScreen';
   static const String bookingStudentScreen = 'bookingStudentScreen';
   static const String bookingTeacherScreen = 'bookingTeacherScreen';
   static const String courseDetails = 'courseDetails';
   static const String allCoursesPage = 'allCoursesPage';
+  static const String allCoursesTeacherProfilePage =
+      'allCoursesTeacherProfilePage';
   static const String searchPage = 'searchPage';
   static const String teacherProfile2 = 'teacherProfile2';
   static const String teacherProfile = 'teacherProfile';
   static const String studentProfile = 'studentProfile';
   static const String paymentDetailsView = 'paymentDetailsView';
   static const String waitingApproval = 'waitingApproval';
+  static const String chatBoot = 'chatBoot';
+  static const String courseDetailsTeacherProfile =
+      'courseDetailsTeacherProfile';
+  static const String editProfileStudentScreen = 'editProfileStudentScreen';
+  static const String editProfileTeacherScreen = 'editProfileTeacherScreen';
 
   static Route<void> onGenerateRoute(RouteSettings settings) {
     final arg = settings.arguments;
@@ -93,6 +107,8 @@ class AppRoutes {
         return BaseRoute(page: const NavigationTeacherScreen());
       case homePage:
         return BaseRoute(page: const HomePage());
+      case homeTeacherScreen:
+        return BaseRoute(page: const HomeTeacherScreen());
       case searchPage:
         return BaseRoute(page: const SearchPage());
       case bookingStudentScreen:
@@ -101,9 +117,17 @@ class AppRoutes {
         return BaseRoute(page: const BookingTeacherScreen());
       case allCoursesPage:
         return BaseRoute(page: const AllCoursesPage());
+      case allCoursesTeacherProfilePage:
+        return BaseRoute(page: const AllCoursesTeacherProfilePage());
       case courseDetails:
         return BaseRoute(
           page: CourseDetailsScreen(course: arg! as CoursesModel),
+        );
+      case courseDetailsTeacherProfile:
+        return BaseRoute(
+          page: CourseDetailsTeacherProfileScreen(
+            course: arg! as CoursesModel,
+          ),
         );
       case teacherProfile2:
         return BaseRoute(
@@ -115,6 +139,20 @@ class AppRoutes {
         return BaseRoute(page: const ProfileTeacherScreen());
       case studentProfile:
         return BaseRoute(page: const ProfileStudentScreen());
+      case editProfileStudentScreen:
+        return BaseRoute(
+          page: EditProfileStudentScreen(
+            user: arg! as UserModel,
+          ),
+        );
+      case editProfileTeacherScreen:
+        return BaseRoute(
+          page: EditProfileTeacherScreen(
+            user: arg! as UserModel,
+          ),
+        );
+      case chatBoot:
+        return BaseRoute(page: const ChatbotScreen());
       default:
         return BaseRoute(page: const PageUnderBuildScreen());
     }

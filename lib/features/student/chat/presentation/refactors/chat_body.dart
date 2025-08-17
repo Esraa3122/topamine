@@ -6,10 +6,9 @@ import 'package:test/features/student/chat/data/models/chats_model.dart';
 import 'package:test/features/student/chat/presentation/widgets/chat_buble_for_student.dart';
 import 'package:test/features/student/chat/presentation/widgets/chat_buble_for_teacher.dart';
 
-class ChatBody extends StatefulWidget { // 💡 نمرر chatId
-
-  const ChatBody({required this.chatId, super.key});
+class ChatBody extends StatefulWidget {
   final String chatId;
+  const ChatBody({required this.chatId, super.key});
 
   @override
   State<ChatBody> createState() => _ChatBodyState();
@@ -59,8 +58,8 @@ class _ChatBodyState extends State<ChatBody> {
       stream: messages.orderBy('createdAt', descending: true).snapshots(),
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasData) {
-          var messagesList = asyncSnapshot.data!.docs.map((doc) {
-            return Message.fromJson(doc.data()! as Map<String, dynamic>);
+          List<Message> messagesList = asyncSnapshot.data!.docs.map((doc) {
+            return Message.fromJson(doc.data() as Map<String, dynamic>);
           }).toList();
 
           return Column(

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
+import 'package:test/core/enums/status_register.dart';
 
 part 'user_model.g.dart';
 
@@ -14,9 +15,12 @@ class UserModel {
     required this.phone,
     required this.governorate,
     this.userImage,
+    this.blocked = true,
     this.grade,
     this.subject,
     this.status,
+    this.experiance,
+    this.info,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -24,6 +28,9 @@ class UserModel {
 
   @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
   final UserRole userRole;
+
+  @JsonKey(name: 'blocked', defaultValue: true)
+  final bool blocked;
 
   @JsonKey(name: 'id')
   final String userId;
@@ -49,6 +56,12 @@ class UserModel {
   @JsonKey(name: 'subject')
   final String? subject;
 
+  @JsonKey(name: 'experiance')
+  final String? experiance;
+
+  @JsonKey(name: 'info')
+  final String? info;
+
   @JsonKey(
     name: 'status',
     fromJson: mapStringToAccountStatus,
@@ -63,29 +76,44 @@ class UserModel {
     String? userEmail,
     String? userName,
     UserRole? userRole,
+    bool? blocked,
     String? phone,
     String? governorate,
     String? userImage,
     String? grade,
     String? subject,
     AccountStatus? status,
+    String? info,
+    String? experiance,
   }) {
     return UserModel(
       userId: userId ?? this.userId,
       userEmail: userEmail ?? this.userEmail,
       userName: userName ?? this.userName,
       userRole: userRole ?? this.userRole,
+      blocked: blocked ?? this.blocked,
       phone: phone ?? this.phone,
       governorate: governorate ?? this.governorate,
       userImage: userImage ?? this.userImage,
       grade: grade ?? this.grade,
       subject: subject ?? this.subject,
       status: status ?? this.status,
+      experiance: experiance ?? this.experiance,
+      info: info ?? this.info,
     );
   }
 }
 
-UserRole _roleFromJson(String role) =>
-    UserRole.values.firstWhere((e) => e.name == role);
+// UserRole _roleFromJson(String role) =>
+//     UserRole.values.firstWhere((e) => e.name == role);
+UserRole _roleFromJson(String role) {
+  try {
+    return UserRole.values.firstWhere((e) => e.name == role);
+  } catch (_) {
+    throw Exception('Invalid user role: $role');
+  }
+}
+
+
 
 String _roleToJson(UserRole role) => role.name;

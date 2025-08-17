@@ -1,10 +1,20 @@
-part of 'auth_cubit.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
 
-@freezed
-class AuthState with _$AuthState {
-  const factory AuthState.initial() = _Initial;
-  const factory AuthState.loading() = Loading;
-  const factory AuthState.success({required String successMessage}) = Success;
-  const factory AuthState.failure({required String errorMessage}) = Failure;
-  const factory AuthState.waitingApproval() = WaitingApproval; 
+abstract class AuthState {}
+
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {
+  final String successMessage;
+  final UserModel? user;
+  AuthSuccess({required this.successMessage, this.user});
 }
+
+class AuthFailure extends AuthState {
+  final String errorMessage;
+  AuthFailure({required this.errorMessage});
+}
+
+class AuthWaitingApproval extends AuthState {}

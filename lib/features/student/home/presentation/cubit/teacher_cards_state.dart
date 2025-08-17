@@ -1,9 +1,32 @@
-part of 'teacher_cards_cubit.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
-@freezed
-class TeacherCardsState with _$TeacherCardsState {
-  const factory TeacherCardsState.initial() = _Initial;
-  const factory TeacherCardsState.loading() = _Loading;
-  const factory TeacherCardsState.loaded(List<UserModel> teachers) = _Loaded;
-  const factory TeacherCardsState.error(String message) = _Error;
+enum TeacherCardsStatus { initial, loading, loaded, loadedCourses, error }
+
+class TeacherCardsState {
+  final TeacherCardsStatus status;
+  final List<UserModel> teachers;
+  final List<CoursesModel> courses;
+  final String? errorMessage;
+
+  TeacherCardsState({
+    this.status = TeacherCardsStatus.initial,
+    this.teachers = const [],
+    this.courses = const [],
+    this.errorMessage,
+  });
+
+  TeacherCardsState copyWith({
+    TeacherCardsStatus? status,
+    List<UserModel>? teachers,
+    List<CoursesModel>? courses,
+    String? errorMessage,
+  }) {
+    return TeacherCardsState(
+      status: status ?? this.status,
+      teachers: teachers ?? this.teachers,
+      courses: courses ?? this.courses,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

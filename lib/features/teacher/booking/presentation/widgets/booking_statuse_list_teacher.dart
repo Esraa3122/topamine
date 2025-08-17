@@ -13,9 +13,9 @@ class BookingStatusListTeacher extends StatelessWidget {
 
   final List<String> filters = const [
     'all',
-    'الصف الاول الثانوى',
-    'الصف الثانى الثانوى',
-    'الصف الثالث الثانوى',
+    'الصف الاول الثانوي',
+    'الصف الثانى الثانوي',
+    'الصف الثالث الثانوي',
   ];
 
   @override

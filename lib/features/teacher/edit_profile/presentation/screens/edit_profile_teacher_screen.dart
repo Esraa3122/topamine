@@ -52,7 +52,7 @@ class _EditProfileTeacherScreenState extends State<EditProfileTeacherScreen> {
   }
 
   Future<void> _saveChanges() async {
-    var imageUrl = widget.user.userImage;
+    String? imageUrl = widget.user.userImage;
 
     if (selectedImage != null) {
       imageUrl = await sl<AuthRepos>().uploadProfileImage(selectedImage!);

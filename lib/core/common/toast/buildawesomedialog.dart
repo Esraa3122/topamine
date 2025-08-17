@@ -24,3 +24,19 @@ void buildAwesomeDialogSucces(String title, String desc, BuildContext context) {
     btnOkOnPress: () {},
   ).show();
 }
+
+void buildAwesomeDialogWarning(
+  String title,
+  String desc,
+  BuildContext context,
+) {
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.warning,
+    title: title,
+    desc: desc,
+    btnOkText: 'OK',
+    btnOkColor: Colors.amber,
+    btnOkOnPress: () {},
+  ).show();
+}

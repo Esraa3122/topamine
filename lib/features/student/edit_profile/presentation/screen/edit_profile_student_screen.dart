@@ -50,8 +50,8 @@ class _EditProfileStudentScreenState extends State<EditProfileStudentScreen> {
     super.dispose();
   }
 
-  Future<void> _saveChanges() async {
-      var imageUrl = widget.user.userImage;
+  void _saveChanges() async {
+      String? imageUrl = widget.user.userImage;
 
   if (selectedImage != null) {
     imageUrl = await sl<AuthRepos>().uploadProfileImage(selectedImage!);
@@ -107,7 +107,7 @@ Future<void> pickImage() async {
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.3),
-                offset: const Offset(0, 4),
+                offset: Offset(0, 4),
                 blurRadius: 2,
               ),
                BoxShadow(

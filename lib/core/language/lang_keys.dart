@@ -101,8 +101,17 @@ class LangKeys {
   static const String cancel = 'cancel';
   static const String buildVersion = 'build_version';
   static const String buildDeveloper = 'build_developer';
-  static const String notifications = 'notifications';
+  static const settings = 'settings';
+  static const notifications = 'notifications';
+  static const newNotifications = 'newNotifications';
+  static const editProfile = 'editProfile';
+  static const contactUs = 'contactUs';
+  static const aboutUs = 'aboutUs';
+  static const logout = 'logout';
+  static const chat = 'chat';
+  static const noUserData = 'noUserData';
   static const String subscribedToNotifications = 'subscribed_to_notifications';
   static const String unsubscribedToNotifications =
       'unsubscribed_to_notifications';
+
 }

@@ -14,10 +14,7 @@ class StudentsListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('قائمة الطلاب')),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .where('role', isEqualTo: 'student')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('chats').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -27,64 +24,55 @@ class StudentsListScreen extends StatelessWidget {
             return const Center(child: Text('حدث خطأ أثناء جلب البيانات'));
           }
 
-          final students = snapshot.data?.docs ?? [];
+          final chatDocs = snapshot.data?.docs ?? [];
 
-          if (students.isEmpty) {
-            return const Center(child: Text('لا يوجد طلاب حالياً'));
-          }
+          return FutureBuilder<List<Map<String, dynamic>>>(
+            future: _getChatsStartedByStudents(chatDocs, currentUserId),
+            builder: (context, futureSnapshot) {
+              if (!futureSnapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          return ListView.builder(
-            itemCount: students.length,
-            itemBuilder: (context, index) {
-              final student = students[index];
-              final studentId = student.id;
-              final studentName = student['name'] ?? 'طالب بدون اسم';
+              final studentChats = futureSnapshot.data!;
 
-              final chatId = _generateChatId(currentUserId, studentId);
+              if (studentChats.isEmpty) {
+                return const Center(child: Text('لا توجد محادثات من طلاب حالياً'));
+              }
 
-              return FutureBuilder<QuerySnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('chats')
-                    .where('chatId', isEqualTo: chatId)
-                    .orderBy('createdAt', descending: true)
-                    .limit(1)
-                    .get(),
-                builder: (context, chatSnapshot) {
-                  var lastMessage = 'ابدأ المحادثة';
-                  var timeAgo = '';
+              return ListView.builder(
+                itemCount: studentChats.length,
+                itemBuilder: (context, index) {
+                  final chat = studentChats[index];
+                  final student = chat['student'];
+                  final lastMessage = chat['lastMessage'] ?? 'ابدأ المحادثة';
+                  final Timestamp? timestamp = chat['lastMessageTime'] as Timestamp?;
+                  final time = timestamp != null
+                      ? ' · ${_formatTimeAgo(timestamp.toDate())}'
+                      : '';
 
-                  if (chatSnapshot.hasData &&
-                      chatSnapshot.data!.docs.isNotEmpty) {
-                    final lastDoc = chatSnapshot.data!.docs.first;
-                    final message = lastDoc['message'] ?? '';
-                    final timestamp = lastDoc['createdAt'] as Timestamp;
-                    final date = timestamp.toDate();
-                    lastMessage = message.toString();
-                    timeAgo = ' · ${_formatTimeAgo(date)}';
-                  }
+                  final chatId = chat['chatId'];
 
-                 return ListTile(
-  leading: CircleAvatar(
-    radius: 24,
-    backgroundImage: student['avatar'] != null && student['avatar'].toString().isNotEmpty
-        ? NetworkImage(student['avatar'].toString())
-        : null,
-    child: student['avatar'] == null || student['avatar'].toString().isEmpty
-        ? const Icon(Icons.person, size: 28)
-        : null,
-  ),
-  title: Text(studentName.toString()),
-  subtitle: Text('$lastMessage$timeAgo'),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ChatScreen(chatId: chatId),
-      ),
-    );
-  },
-);
-
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius: 24,
+                      backgroundImage: student['avatar'] != null && student['avatar'].toString().isNotEmpty
+                          ? NetworkImage(student['avatar'].toString())
+                          : null,
+                      child: student['avatar'] == null || student['avatar'].toString().isEmpty
+                          ? const Icon(Icons.person, size: 28)
+                          : null,
+                    ),
+                    title: Text(student['name'].toString() ?? 'طالب'),
+                    subtitle: Text('$lastMessage$time'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ChatScreen(chatId: chatId.toString()),
+                        ),
+                      );
+                    },
+                  );
                 },
               );
             },
@@ -94,10 +82,52 @@ class StudentsListScreen extends StatelessWidget {
     );
   }
 
-  String _generateChatId(String userId1, String userId2) {
-    return userId1.compareTo(userId2) < 0
-        ? '${userId1}_$userId2'
-        : '${userId2}_$userId1';
+  Future<List<Map<String, dynamic>>> _getChatsStartedByStudents(
+    List<QueryDocumentSnapshot> chats,
+    String teacherId,
+  ) async {
+    List<Map<String, dynamic>> studentChats = [];
+
+    for (var chat in chats) {
+      final chatId = chat.id;
+      if (!chatId.contains(teacherId)) continue;
+
+      // استخرج ID الطالب من chatId
+      final ids = chatId.split('_');
+      if (ids.length != 2) continue;
+
+      final studentId = ids[0] == teacherId ? ids[1] : ids[0];
+
+      // تحقق من أن أول رسالة من الطالب
+      final messagesSnap = await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(chatId)
+          .collection('messages')
+          .orderBy('createdAt')
+          .limit(1)
+          .get();
+
+      if (messagesSnap.docs.isEmpty) continue;
+
+      final firstMessage = messagesSnap.docs.first;
+      final createdBy = firstMessage['createdBy'];
+
+      if (createdBy != studentId) continue; // الشات لم يبدأه الطالب
+
+      // جلب بيانات الطالب
+      final studentDoc = await FirebaseFirestore.instance.collection('users').doc(studentId).get();
+
+      if (!studentDoc.exists) continue;
+
+      studentChats.add({
+        'chatId': chatId,
+        'student': studentDoc.data(),
+        'lastMessage': chat['lastMessage'],
+        'lastMessageTime': chat['lastMessageTime'],
+      });
+    }
+
+    return studentChats;
   }
 
   String _formatTimeAgo(DateTime dateTime) {

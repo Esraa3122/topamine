@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test/features/student/course_details/data/model/student_model.dart';
 import 'package:test/features/student/course_details/presentation/widgets/student_card.dart';
 
+
+
 class StudentList extends StatelessWidget {
   const StudentList({super.key});
 

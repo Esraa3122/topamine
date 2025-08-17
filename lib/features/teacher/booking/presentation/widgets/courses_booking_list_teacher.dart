@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/booking/presentation/widgets/booking_course_card_teacher.dart';
+import 'package:test/features/teacher/course_details/presentation/screen/course_details_teacher_profile_screen.dart';
 
 class CoursesBookingListTeacher extends StatelessWidget {
   const CoursesBookingListTeacher({
@@ -18,9 +19,21 @@ class CoursesBookingListTeacher extends StatelessWidget {
     return ListView.builder(
       itemCount: courses.length,
       itemBuilder: (context, index) {
-        return BookingCourseCardTeacher(
-          selectedFilter: selectedFilter,
-          searchQuery: searchQuery,
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CourseDetailsTeacherProfileScreen(
+                  course: courses[index],
+                ),
+              ),
+            );
+          },
+          child: BookingCourseCardTeacher(
+            selectedFilter: selectedFilter,
+            searchQuery: searchQuery,
+          ),
         );
       },
     );

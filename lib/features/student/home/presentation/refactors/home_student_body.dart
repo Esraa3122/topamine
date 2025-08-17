@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,41 +41,174 @@ class _HomeStudentBodyState extends State<HomeStudentBody> {
     });
   }
 
-  void listenForNewCourses() {
-    FirebaseFirestore.instance.collection('courses').snapshots().listen((
-      snapshot,
-    ) async {
-      final prefs = SharedPref().getPreferenceInstance();
-      for (final change in snapshot.docChanges) {
-        if (change.type == DocumentChangeType.added) {
-          final courseId = change.doc.id;
+void listenForNewCourses() async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) return;
 
-          if (!notifiedCourseIds.contains(courseId)) {
-            final course = change.doc.data();
-            final courseTitle = course?['title'] ?? 'كورس جديد';
-            await flutterLocalNotificationsPlugin.show(
-              0,
-              '📚 كورس جديد',
-              'تم إضافة الكورس "$courseTitle" للتو!',
-              const NotificationDetails(
-                android: AndroidNotificationDetails(
-                  'high_importance_channel',
-                  'إشعارات مهمة',
-                  importance: Importance.high,
-                ),
-              ),
-              payload: courseId,
-            );
-            notifiedCourseIds.add(courseId);
-            await prefs.setStringList(
-              'notifiedCourses',
-              notifiedCourseIds.toList(),
-            );
-          }
-        }
-      }
+  final currentUserId = currentUser.uid;
+
+  FirebaseFirestore.instance
+      .collection('courses')
+      .orderBy('createdAt', descending: true)
+      .snapshots()
+      .listen((snapshot) async {
+    if (snapshot.docs.isEmpty) return;
+
+    final courseDoc = snapshot.docs.first;
+    final course = courseDoc.data();
+
+    final courseId = courseDoc.id;
+    final teacherId = course['teacherId'] ?? '';
+    final courseTitle = course['title'] ?? 'كورس جديد';
+    final message = 'تم إضافة الكورس "$courseTitle" للتو!';
+
+    final followerDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(teacherId.toString())
+        .collection('followers')
+        .doc(currentUserId)
+        .get();
+
+    if (!followerDoc.exists) return; 
+
+    final notifiedDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserId)
+        .collection('notifications')
+        .doc(courseId)
+        .get();
+
+    if (notifiedDoc.exists) return; 
+
+    int notificationId = courseId.hashCode;
+
+    await flutterLocalNotificationsPlugin.show(
+      notificationId,
+      '📚 كورس جديد',
+      message,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'high_importance_channel',
+          'إشعارات مهمة',
+          importance: Importance.high,
+        ),
+      ),
+      payload: courseId,
+    );
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserId)
+        .collection('notifications')
+        .doc(courseId)
+        .set({
+      'courseId': courseId,
+      'title': courseTitle,
+      'message': message,
+      'read': false,
+      'createdAt': FieldValue.serverTimestamp(),
     });
-  }
+  });
+}
+
+
+
+  // void listenForNewCourses() async {
+  //   final currentUser = FirebaseAuth.instance.currentUser;
+  //   if (currentUser == null) return;
+
+  //   final currentUserId = currentUser.uid;
+
+  //   final DateTime screenOpenedAt = DateTime.now();
+
+  //   FirebaseFirestore.instance.collection('courses').snapshots().listen(
+  //     (snapshot) async {
+  //       List<Future> futures = [];
+
+  //       for (final change in snapshot.docChanges) {
+  //         if (change.type == DocumentChangeType.added) {
+  //           futures.add(() async {
+  //             final course = change.doc.data();
+  //             if (course == null) return;
+
+  //             final Timestamp? createdAtTimestamp =
+  //                 course['createdAt'] is Timestamp
+  //                 ? course['createdAt'] as Timestamp
+  //                 : null;
+  //             if (createdAtTimestamp == null) {
+  //               return;
+  //             }
+
+  //             final DateTime createdAt = createdAtTimestamp.toDate();
+
+  //             if (createdAt.isBefore(screenOpenedAt)) {
+  //               return;
+  //             }
+
+  //             final courseId = change.doc.id;
+  //             final teacherId = course['teacherId'] ?? '';
+  //             final courseTitle = course['title'] ?? 'كورس جديد';
+  //             final message = 'تم إضافة الكورس "$courseTitle" للتو!';
+
+  //             final followerDoc = await FirebaseFirestore.instance
+  //                 .collection('users')
+  //                 .doc(teacherId.toString())
+  //                 .collection('followers')
+  //                 .doc(currentUserId)
+  //                 .get();
+
+  //             if (!followerDoc.exists) {
+  //               return;
+  //             }
+
+  //             final notifiedDoc = await FirebaseFirestore.instance
+  //                 .collection('users')
+  //                 .doc(currentUserId)
+  //                 .collection('notifications')
+  //                 .doc(courseId)
+  //                 .get();
+
+  //             if (notifiedDoc.exists) {
+  //               return;
+  //             }
+
+  //             int notificationId = courseId.hashCode;
+
+  //             await flutterLocalNotificationsPlugin.show(
+  //               notificationId,
+  //               '📚 كورس جديد',
+  //               message,
+  //               const NotificationDetails(
+  //                 android: AndroidNotificationDetails(
+  //                   'high_importance_channel',
+  //                   'إشعارات مهمة',
+  //                   importance: Importance.high,
+  //                 ),
+  //               ),
+  //               payload: courseId,
+  //             );
+
+  //             await FirebaseFirestore.instance
+  //                 .collection('users')
+  //                 .doc(currentUserId)
+  //                 .collection('notifications')
+  //                 .doc(courseId)
+  //                 .set({
+  //                   'courseId': courseId,
+  //                   'title': courseTitle,
+  //                   'message': message,
+  //                   'read': false,
+  //                   'createdAt': FieldValue.serverTimestamp(),
+  //                 });
+  //           }());
+  //         }
+  //       }
+
+  //       await Future.wait(futures);
+  //     },
+  //   );
+  // }
+
 
   @override
   Widget build(BuildContext context) {

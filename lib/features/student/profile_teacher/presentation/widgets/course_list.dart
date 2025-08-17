@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
+import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
 import 'package:test/features/student/profile_teacher/data/repo/view_profile_teacher_repo.dart';
 import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_cubit.dart';
 import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_state.dart';
@@ -30,7 +31,16 @@ class CoursesList extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: state.courses.length,
               itemBuilder: (context, index) {
-                return CardViewTeacher(course: state.courses[index]);
+                return GestureDetector(
+          onTap: () {
+             Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>  CourseDetailsScreen(course: state.courses[index],),
+            ),
+          );
+          },
+                  child: CardViewTeacher(course: state.courses[index]));
               },
             );
           }

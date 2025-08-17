@@ -5,7 +5,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/student/home/data/model/courses_model.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class ContanierCourse extends StatelessWidget {
   const ContanierCourse({required this.course, super.key});

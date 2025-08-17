@@ -18,10 +18,10 @@ class LogOutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SvgPicture.asset(
-          AppImages.logout,
-          color: context.color.textColor,
-        ),
+        // SvgPicture.asset(
+        //   AppImages.logout,
+        //   color: context.color.textColor,
+        // ),
         SizedBox(width: 10.w),
         TextApp(
           text: context.translate(LangKeys.logOut),
