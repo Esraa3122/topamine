@@ -154,6 +154,8 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                               children: [
                                 Text(
                                   course['title'].toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,

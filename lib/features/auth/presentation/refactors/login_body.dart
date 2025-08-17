@@ -20,7 +20,6 @@ import 'package:test/features/auth/presentation/widgets/auth_title_info.dart';
 import 'package:test/features/auth/presentation/widgets/dark_and_lang_buttons.dart';
 import 'package:test/features/auth/presentation/widgets/login/login_button.dart';
 import 'package:test/features/auth/presentation/widgets/login/login_text_form.dart';
-import 'package:test/features/auth/presentation/widgets/sign_up_with_google.dart';
 import 'package:test/features/splash/view/widget/container_logo_splash.dart';
 
 class LoginBody extends StatefulWidget {
@@ -111,7 +110,7 @@ class _LoginBodyState extends State<LoginBody> {
                 const DarkAndLangButtons(),
 
                 SizedBox(
-                  height: 20.h,
+                  height: 50.h,
                 ),
 
                 const CustomFadeInDown( 
@@ -171,32 +170,32 @@ class _LoginBodyState extends State<LoginBody> {
                   onPressed: _login,
                 ),
 
-                SizedBox(
-                  height: 30.h,
-                ),
+                // SizedBox(
+                //   height: 30.h,
+                // ),
 
-                Row(
-                  children: [
-                    const Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: TextApp(
-                        text: context.translate(LangKeys.or),
-                        theme: context.textStyle.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeightHelper.regular,
-                          color: context.color.textColor,
-                        ),
-                      ),
-                    ),
-                    const Expanded(child: Divider()),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     const Expanded(child: Divider()),
+                //     Padding(
+                //       padding: EdgeInsets.symmetric(horizontal: 10.w),
+                //       child: TextApp(
+                //         text: context.translate(LangKeys.or),
+                //         theme: context.textStyle.copyWith(
+                //           fontSize: 14.sp,
+                //           fontWeight: FontWeightHelper.regular,
+                //           color: context.color.textColor,
+                //         ),
+                //       ),
+                //     ),
+                //     const Expanded(child: Divider()),
+                //   ],
+                // ),
 
-                SizedBox(
-                  height: 30.h,
-                ),
-                const SigninWithGoogle(),
+                // SizedBox(
+                //   height: 30.h,
+                // ),
+                // const SigninWithGoogle(),
                 SizedBox(
                   height: 20.h,
                 ),
