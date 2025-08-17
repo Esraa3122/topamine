@@ -21,7 +21,7 @@ class ContanierCourseHomeTeacher extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.pushNamed(
-          AppRoutes.courseDetailsTeacherProfile,
+          AppRoutes.courseDetailseForViewProfileScreen,
           arguments: course,
         );
       },
@@ -33,6 +33,7 @@ class ContanierCourseHomeTeacher extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           elevation: 2,
+          shadowColor: context.color.bluePinkLight!.withOpacity(0.8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,6 +56,7 @@ class ContanierCourseHomeTeacher extends StatelessWidget {
                   children: [
                     TextApp(
                       text: course.title,
+                      maxLines: 1,
                       theme: context.textStyle.copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeightHelper.bold,
@@ -63,7 +65,7 @@ class ContanierCourseHomeTeacher extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     TextApp(
-                      text: course.subTitle ?? '',
+                      text: course.teacherName ?? '',
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.medium,
@@ -71,15 +73,33 @@ class ContanierCourseHomeTeacher extends StatelessWidget {
                       ),
                       maxLines: 2,
                     ),
+                    SizedBox(height: 4.h),
+                     TextApp(
+                      text: 'Price: ${course.price} EGP',
+                      theme: context.textStyle.copyWith(
+                        color: context.color.bluePinkLight,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
                     SizedBox(height: 6.h),
                     TextApp(
-                      text: 'Created at: ${_formatTime(course.createdAt)}',
+                      text: 'Start Date: ${_formatTime(course.createdAt)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.regular,
                       ),
                     ),
+                     TextApp(
+                      text: 'End Date: ${_formatTime(course.endDate)}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                   
                   ],
                 ),
               ),

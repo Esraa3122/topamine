@@ -22,16 +22,6 @@ class HomePage extends StatelessWidget {
         backgroundColor: context.color.bluePinkLight,
         shape: const CircleBorder(),
         onPressed: () {
-          //           Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) => BlocProvider(
-          //       create: (_) => AddCourseCubit(AddCourseRepository()),
-          //       child: const AddCourseScreen(),
-          //     ),
-          //   ),
-          // );
-
           context.pushNamed(AppRoutes.chatBoot);
         },
         child: const Icon(Icons.chat, color: Colors.white),

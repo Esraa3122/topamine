@@ -14,6 +14,10 @@ class UserProfileShimmer extends StatelessWidget {
         LoadingShimmer(height: 10.h, width: 100.w),
         SizedBox(height: 7.h),
         LoadingShimmer(height: 10.h, width: 150.w),
+        SizedBox(height: 7.h),
+        LoadingShimmer(height: 8.h, width: 90.w),
+        SizedBox(height: 7.h),
+        LoadingShimmer(height: 8.h, width: 120.w),
       ],
     );
   }

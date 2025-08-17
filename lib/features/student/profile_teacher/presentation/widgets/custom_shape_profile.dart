@@ -31,9 +31,9 @@ class CustomShapeProfile extends StatelessWidget {
           decoration: BoxDecoration(
             color: context.color.mainColor,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: context.color.bluePinkLight!.withOpacity(0.5),
                 blurRadius: 6,
                 offset: Offset(0, 3),
               ),

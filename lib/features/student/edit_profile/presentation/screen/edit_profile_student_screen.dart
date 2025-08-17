@@ -23,10 +23,8 @@ class EditProfileStudentScreen extends StatefulWidget {
 class _EditProfileStudentScreenState extends State<EditProfileStudentScreen> {
   late TextEditingController nameController;
   late TextEditingController emailController;
-  // late TextEditingController passwordController;
   late TextEditingController academicYearController;
   late TextEditingController governorateController;
-  // late TextEditingController phoneNumberController;
 
   @override
   void initState() {
@@ -40,7 +38,6 @@ class _EditProfileStudentScreenState extends State<EditProfileStudentScreen> {
     governorateController = TextEditingController(
       text: widget.user.governorate,
     );
-    // phoneNumberController = TextEditingController(text: widget.user.phoneNumber ?? '');
   }
 
   @override
@@ -91,27 +88,25 @@ Future<void> pickImage() async {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Center(
         child: Container(
-          // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            // border: Border.all(color: context.color.mainColor!),
             borderRadius: BorderRadius.circular(20.r),
             gradient: LinearGradient(
               colors: [
                 context.color.mainColor!.withOpacity(0.8),
-                context.color.mainColor!.withOpacity(0.8),
+                context.color.mainColor!,
               ],
               begin: const Alignment(0.36, 0.27),
               end: const Alignment(0.58, 0.85),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
+                color: context.color.containerShadow1!.withOpacity(0.3),
                 offset: Offset(0, 4),
                 blurRadius: 2,
               ),
                BoxShadow(
-                color: context.color.containerShadow2!.withOpacity(0.3),
+                color: context.color.bluePinkLight!.withOpacity(0.3),
                 offset: const Offset(0, 4),
                 blurRadius: 2,
               ),
@@ -145,8 +140,6 @@ Future<void> pickImage() async {
                     lable: 'البريد',
                   ),
                   SizedBox(height: 10.h),
-                  // CustomTextField(controller: passwordController, lable: 'الباسورد',),
-                  // const SizedBox(height: 10),
                   CustomTextField(
                     controller: academicYearController,
                     lable: 'السنه الدراسيه',
@@ -157,7 +150,6 @@ Future<void> pickImage() async {
                     lable: 'المحافظه',
                   ),
                   SizedBox(height: 10.h),
-                  // CustomTextField(controller: phoneNumberController, lable: 'رقم الهاتف',),
                   SizedBox(height: 20.h),
                   CustomLinearButton(
                     onPressed: _saveChanges,

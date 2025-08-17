@@ -12,11 +12,6 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.info_outline,
-          color: context.color.textColor,
-        ),
-        SizedBox(width: 10.w),
         TextApp(
           text: 'من نحن ',
           theme: context.textStyle.copyWith(

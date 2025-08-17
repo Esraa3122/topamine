@@ -78,19 +78,19 @@ class CustomBottomNavBarStudent extends StatelessWidget {
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
-                    label: 'Home',
+                    label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.search),
-                    label: 'Search',
+                    label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.calendar_month),
-                    label: 'Booking',
+                    label: '',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person),
-                    label: 'Profile',
+                    label: '',
                   ),
                 ],
               );

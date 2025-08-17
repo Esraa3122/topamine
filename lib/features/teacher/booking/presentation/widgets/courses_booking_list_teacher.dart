@@ -1,41 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/booking/presentation/widgets/booking_course_card_teacher.dart';
-import 'package:test/features/teacher/course_details/presentation/screen/course_details_teacher_profile_screen.dart';
 
 class CoursesBookingListTeacher extends StatelessWidget {
   const CoursesBookingListTeacher({
-    required this.courses,
     required this.selectedFilter,
     required this.searchQuery,
     super.key,
   });
-  final List<CoursesModel> courses;
   final String selectedFilter;
   final String searchQuery;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: courses.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => CourseDetailsTeacherProfileScreen(
-                  course: courses[index],
-                ),
-              ),
-            );
-          },
-          child: BookingCourseCardTeacher(
-            selectedFilter: selectedFilter,
-            searchQuery: searchQuery,
-          ),
-        );
-      },
+    return BookingCourseCardTeacher(
+      selectedFilter: selectedFilter,
+      searchQuery: searchQuery,
     );
   }
 }

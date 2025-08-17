@@ -12,9 +12,9 @@ class BannerSliders extends StatefulWidget {
 
 class _BannerSlidersState extends State<BannerSliders> {
   final List<String> imageUrls = [
-    AppImages.logo,
-    AppImages.logo,
-    AppImages.logo,
+    AppImages.home1,
+    AppImages.home2,
+    AppImages.home3,
   ];
   int _current = 0;
   @override

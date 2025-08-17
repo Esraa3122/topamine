@@ -27,6 +27,7 @@ import 'package:test/features/student/search/presentation/screen/search_page.dar
 import 'package:test/features/teacher/all_courses/presentation/screen/all_courses_teacher_profile_page.dart';
 import 'package:test/features/teacher/booking/presentation/screen/booking_teacher_screen.dart';
 import 'package:test/features/teacher/course_details/presentation/screen/course_details_teacher_profile_screen.dart';
+import 'package:test/features/teacher/course_detailse_for_view_profile/screen/course_detailse_for_view_profile_screen.dart';
 import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
 import 'package:test/features/teacher/home/presentation/screen/home_teacher_screen.dart';
 import 'package:test/features/teacher/navigation/presentation/screens/navigation_teacher_screen.dart';
@@ -59,6 +60,8 @@ class AppRoutes {
   static const String chatBoot = 'chatBoot';
   static const String courseDetailsTeacherProfile =
       'courseDetailsTeacherProfile';
+  static const String courseDetailseForViewProfileScreen =
+      'courseDetailseForViewProfileScreen';
   static const String editProfileStudentScreen = 'editProfileStudentScreen';
   static const String editProfileTeacherScreen = 'editProfileTeacherScreen';
 
@@ -126,6 +129,12 @@ class AppRoutes {
       case courseDetailsTeacherProfile:
         return BaseRoute(
           page: CourseDetailsTeacherProfileScreen(
+            course: arg! as CoursesModel,
+          ),
+        );
+      case courseDetailseForViewProfileScreen:
+        return BaseRoute(
+          page: CourseDetailseForViewProfileScreen(
             course: arg! as CoursesModel,
           ),
         );

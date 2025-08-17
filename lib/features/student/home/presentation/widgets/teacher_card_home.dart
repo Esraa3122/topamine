@@ -23,6 +23,7 @@ class TeacherCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         elevation: 2,
+        shadowColor: context.color.bluePinkLight,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -68,33 +69,6 @@ class TeacherCard extends StatelessWidget {
                 ),
               ),
             ),
-
-            // SizedBox(height: 8.h),
-
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: List.generate(
-            //         5,
-            //         (index) => Icon(
-            //           index < teacher.rating.round() ? Icons.star : Icons.star_border,
-            //           color: Colors.amber,
-            //           size: 14,
-            //         ),
-            //       ),
-            //     ),
-            //     TextApp(
-            //           text: '(${teacher.reviews} reviews)',
-            //           maxLines: 1,
-            //           theme: context.textStyle.copyWith(
-            //             fontSize: 10.sp,
-            //             fontWeight: FontWeightHelper.regular,
-            //             color: context.color.textColor
-            //           ),),
-            //   ],
-            // ),
           ],
         ),
       ),

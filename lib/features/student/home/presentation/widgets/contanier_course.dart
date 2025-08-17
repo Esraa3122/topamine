@@ -33,6 +33,7 @@ class ContanierCourse extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           elevation: 2,
+          shadowColor: context.color.bluePinkLight!.withOpacity(0.8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,15 +56,16 @@ class ContanierCourse extends StatelessWidget {
                   children: [
                     TextApp(
                       text: course.title,
+                      maxLines: 1,
                       theme: context.textStyle.copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeightHelper.bold,
                         color: context.color.textColor,
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 3.h),
                     TextApp(
-                      text: course.subTitle ?? '',
+                      text: course.teacherName ?? '',
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.medium,
@@ -71,15 +73,33 @@ class ContanierCourse extends StatelessWidget {
                       ),
                       maxLines: 2,
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 3.h),
+                     TextApp(
+                      text: 'السعر: ${course.price} EGP',
+                      theme: context.textStyle.copyWith(
+                        color: context.color.bluePinkLight,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                    SizedBox(height: 3.h),
                     TextApp(
-                      text: 'Created at: ${_formatTime(course.createdAt)}',
+                      text: 'تاريخ البدء: ${_formatTime(course.createdAt)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.regular,
                       ),
                     ),
+                     TextApp(
+                      text: 'تاريخ الانتهاء: ${_formatTime(course.endDate)}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                   
                   ],
                 ),
               ),

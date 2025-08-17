@@ -12,11 +12,11 @@ class EditProfileTeacher extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.edit_outlined,
-          color: context.color.textColor,
-        ),
-        SizedBox(width: 10.w),
+        // Icon(
+        //   Icons.edit_outlined,
+        //   color: context.color.textColor,
+        // ),
+        // SizedBox(width: 10.w),
         TextApp(
           text: 'تعديل البيانات',
           theme: context.textStyle.copyWith(

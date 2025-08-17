@@ -21,12 +21,6 @@ class NavigationStudentScreen extends StatelessWidget {
         appBar: const NavigationStudentAppBar(),
         body: Container(
           constraints: const BoxConstraints.expand(),
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     image: AssetImage(context.images.mainLight!),
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
           child: Column(
             children: [
               Expanded(

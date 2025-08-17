@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/utils/PickFileUtils.dart';
+import 'package:test/features/splash/view/widget/animation_splash_screen.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/add_courses/presentation/cubit/add_course_cubit.dart';
+import 'package:test/features/teacher/add_courses/presentation/widget/date_field.dart';
 
 class AddCourseScreen extends StatefulWidget {
   const AddCourseScreen({super.key});
@@ -193,13 +196,22 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       body: BlocListener<AddCourseCubit, AddCourseState>(
         listener: (context, state) {
           if (state is AddCourseSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('تمت الإضافة بنجاح')),
+            AwesomeSnackBar.show(
+              context: context,
+              title: 'Success!',
+              message: 'تمت الإضافة بنجاح',
+              contentType: ContentType.success,
             );
           } else if (state is AddCourseError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+            AwesomeSnackBar.show(
+              context: context,
+              title: 'Error!',
+              message: state.message,
+              contentType: ContentType.failure,
             );
+          }
+          if (state is AddCourseLoading) {
+            const AnimationSplashScreen();
           }
         },
         child: SingleChildScrollView(
@@ -588,50 +600,3 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
   }
 }
 
-class DateField extends StatelessWidget {
-  const DateField({required this.label, required this.date, super.key});
-  final String label;
-  final DateTime? date;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-          const SizedBox(height: 4),
-          Text(
-            date != null
-                ? DateFormat('yyyy-MM-dd').format(date!)
-                : "اختر التاريخ",
-            style: const TextStyle(fontSize: 14),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// class DottedBorderBox extends StatelessWidget {
-//   const DottedBorderBox({super.key, required this.child});
-//   final Widget child;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 120,
-//       width: double.infinity,
-//       decoration: BoxDecoration(
-//         border: Border.all(color: Colors.grey, width: 1),
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       child: child,
-//     );
-//   }
-// }

@@ -23,6 +23,7 @@ class TeacherCardHomeTeacher extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         elevation: 2,
+        shadowColor: context.color.bluePinkLight,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -19,12 +19,14 @@ class CustomTextField extends StatelessWidget {
     this.overrideValidator = false,
     this.prefixIcon,
     this.onChanged,
+    this.onFieldSubmitted,
     this.maxLength,
     this.maxLines = 1,
   });
 
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final void Function(String)? onFieldSubmitted;
   final String lable;
   final TextEditingController controller;
   final bool filled;
@@ -54,6 +56,7 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onFieldSubmitted: onFieldSubmitted,
       maxLines: maxLines,
       readOnly: readOnly,
       decoration: InputDecoration(

@@ -3,21 +3,22 @@ import 'package:test/core/common/widgets/custom_text_field.dart';
 
 class CustomTextSearch extends StatelessWidget {
   const CustomTextSearch({
-    required this.searchController, super.key,
-    this.onChanged,
+    required this.searchController,
+    super.key,
+    this.onSubmitted,
   });
-  final void Function(String?)? onChanged;
   final TextEditingController searchController;
+  final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
       controller: searchController,
-      lable: 'Search',
-      hintText: 'Search teacher or subject',
+      lable: 'البحث',
+      hintText: 'البحث عن معلم أو مادة',
       prefixIcon: const Icon(Icons.search),
       suffixIcon: const Icon(Icons.filter_list),
-      onChanged: onChanged,
+      onFieldSubmitted: onSubmitted,
     );
   }
 }

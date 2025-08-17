@@ -1,146 +1,134 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:test/core/common/animations/animate_do.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
-import 'package:test/features/student/search/presentation/widgets/card_search.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
+import 'package:test/features/student/profile_teacher/presentation/screen/view_profile_teacher_screen.dart';
+import 'package:test/features/student/search/data/data_sourse_search.dart';
+import 'package:test/features/student/search/presentation/cubit/search_cubit.dart';
+import 'package:test/features/student/search/presentation/cubit/search_state.dart';
 import 'package:test/features/student/search/presentation/widgets/custom_text_search.dart';
-import 'package:test/features/student/search/presentation/widgets/subject_filter_list.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+import 'package:test/features/student/search/presentation/widgets/filters_widget.dart';
+import 'package:test/features/student/search/presentation/widgets/recent_searches_widget.dart';
+import 'package:test/features/student/search/presentation/widgets/search_results_widget.dart';
 
-
-class SearchPage extends StatefulWidget {
+class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController searchController = TextEditingController();
-  String selectedSubject = 'All';
-  String searchQuery = '';
-
-  List<CoursesModel> allCourses = [];
-  List<String> sectionTitles = ['All'];
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchCoursesFromFirestore();
-  }
-
-  @override
-void dispose() {
-  searchController.dispose();
-  super.dispose();
-}
-
-  Future<void> fetchCoursesFromFirestore() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('courses')
-          .get();
-
-      final loadedCourses = snapshot.docs
-          .map(
-            (doc) => CoursesModel.fromJson(
-              doc.data(),
-            ),
-          )
-          .toList();
-
-      final sections = loadedCourses
-          .map((course) => course.gradeLevel)
-          .where((title) => title!.isNotEmpty)
-          .toSet()
-          .toList();
-
-          if (!mounted) return;
-
-      setState(() {
-        allCourses = loadedCourses;
-        // sectionTitles = ['All', ...sections];
-        isLoading = false;
-      });
-    } catch (e) {
-
-      if (!mounted) return;
-      setState(() {
-        isLoading = false;
-      });
-      debugPrint('Error fetching courses: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    var filteredCourses = allCourses.where((course) {
-      final lowerSearch = searchQuery.toLowerCase();
-      final matchSearch =
-          course.title.toLowerCase().contains(lowerSearch) ||
-          course.teacherEmail!.toLowerCase().contains(lowerSearch) ||
-          course.gradeLevel!.toLowerCase().contains(lowerSearch);
-      final matchSection =
-          selectedSubject == 'All' || course.gradeLevel == selectedSubject;
+    return BlocProvider(
+      create: (_) => SearchCubit(DataSourseSearch()),
+      child: const SearchView(),
+    );
+  }
+}
 
-      return matchSearch && matchSection;
-    }).toList();
+class SearchView extends StatelessWidget {
+  const SearchView({super.key});
 
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomFadeInLeft(
-                  duration: 300,
-                  child: CustomTextSearch(
-                    searchController: searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        searchQuery = value ?? '';
-                      });
-                    },
-                  ),
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<SearchCubit>();
+
+    return BlocBuilder<SearchCubit, SearchState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return Center(child: SpinKitSpinningLines(
+      color: context.color.textColor!,
+      size: 50.sp,
+    ));
+        }
+
+        final filteredCourses = cubit.filteredCourses;
+        final filteredTeachers = cubit.filteredTeachers;
+
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomFadeInLeft(
+                duration: 800,
+                child: CustomTextSearch(
+                  searchController: cubit.searchController,
+                  onSubmitted: cubit.addToRecentSearch,
                 ),
-                SizedBox(height: 20.h),
-                SubjectFilterList(
-                  sections: sectionTitles,
-                  selectedSubject: selectedSubject,
-                  onSubjectSelected: (value) {
-                    setState(() {
-                      selectedSubject = value;
-                    });
-                  },
+              ),
+              SizedBox(height: 20.h),
+              FiltersWidget(
+                gradeLevels: state.gradeLevelTitles,
+                subjects: state.subjectTitles,
+                selectedGrade: state.selectedGradeLevel,
+                selectedSubject: state.selectedSubjectName,
+                onGradeSelected: cubit.updateSelectedGrade,
+                onSubjectSelected: cubit.updateSelectedSubject,
+              ),
+              SizedBox(height: 20.h),
+              TextApp(
+                text: 'البحث الأخير',
+                theme: context.textStyle.copyWith(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeightHelper.bold,
+                  color: context.color.textColor,
                 ),
-                SizedBox(height: 20.h),
-                Expanded(
-                  child: filteredCourses.isEmpty
-                      ? const Center(child: Text('No courses found'))
-                      : ListView.builder(
-                          itemCount: filteredCourses.length,
-                          itemBuilder: (context, index) {
-                            final course = filteredCourses[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.courseDetails,
-                                  arguments: course,
-                                );
-                              },
-                              child: CardSearch(
-                                course: course,
+              ),
+              SizedBox(height: 15.h),
+              Expanded(
+                child:
+                    (state.searchQuery.trim().isNotEmpty ||
+                        state.selectedGradeLevel != 'All' ||
+                        state.selectedSubjectName != 'All')
+                    ? SearchResultsWidget(
+                        teachers: filteredTeachers,
+                        courses: filteredCourses,
+                        onTeacherSelected: (teacher) async {
+                          cubit.addToRecentSearch(teacher);
+                          final teacherModel = await cubit.firestoreService
+                              .fetchTeacherByName(teacher);
+                          if (teacherModel != null) {
+                            if (!context.mounted) return;
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ViewProfileTeacherScreen(
+                                  userModel: teacherModel,
+                                ),
                               ),
                             );
-                          },
-                        ),
-                ),
-              ],
-            ),
-          );
+                          } else {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Teacher not found'),
+                              ),
+                            );
+                          }
+                        },
+                        onCourseSelected: (course) {
+                          cubit.addToRecentSearch(course.title);
+                          if (!context.mounted) return;
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.courseDetails,
+                            arguments: course,
+                          );
+                        },
+                      )
+                    : RecentSearchesWidget(
+                        recentSearches: state.recentSearches,
+                        onSearchTap: cubit.updateSearchQuery,
+                        onDeleteTap: cubit.deleteRecentSearchAt,
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

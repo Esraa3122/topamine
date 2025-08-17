@@ -27,7 +27,6 @@ class AuthTitleInfo extends StatelessWidget {
                 fontSize: 24.sp,
                 color: context.color.textColor,
                 fontWeight: FontWeightHelper.bold,
-                // fontFamily: FontFamilyHelper.pacifico
                 ),
           ),
           SizedBox(
@@ -39,7 +38,6 @@ class AuthTitleInfo extends StatelessWidget {
               fontSize: 15.sp,
               color: context.color.textColor,
               fontWeight: FontWeightHelper.regular,
-              // fontFamily: FontFamilyHelper.pacifico,
             ),
             textAlign: TextAlign.center,
           ),

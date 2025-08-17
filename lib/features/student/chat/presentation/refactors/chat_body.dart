@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/student/chat/data/models/chats_model.dart';
 import 'package:test/features/student/chat/presentation/widgets/chat_buble_for_student.dart';
@@ -22,7 +25,8 @@ class _ChatBodyState extends State<ChatBody> {
 
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
   final String? currentUserEmail = FirebaseAuth.instance.currentUser!.email;
-  final String? currentUserName = FirebaseAuth.instance.currentUser!.displayName ?? 'No Name';
+  final String? currentUserName =
+      FirebaseAuth.instance.currentUser!.displayName ?? 'No Name';
 
   @override
   void initState() {
@@ -42,7 +46,9 @@ class _ChatBodyState extends State<ChatBody> {
       'emailUser': currentUserEmail,
     };
 
-    final chatRef = FirebaseFirestore.instance.collection('chats').doc(widget.chatId);
+    final chatRef = FirebaseFirestore.instance
+        .collection('chats')
+        .doc(widget.chatId);
 
     await messages.add(messageData);
 
@@ -62,56 +68,79 @@ class _ChatBodyState extends State<ChatBody> {
             return Message.fromJson(doc.data() as Map<String, dynamic>);
           }).toList();
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  reverse: true,
-                  controller: _controller,
-                  itemCount: messagesList.length,
-                  itemBuilder: (context, index) {
-                    final message = messagesList[index];
-                    return message.uId == currentUserId
-                        ? ChatBubleForStudent(message: message)
-                        : ChatBubleForTeacher(message: message);
-                  },
-                ),
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue.shade300, context.color.mainColor!],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: controller,
-                  onSubmitted: (data) async {
-                    await sendMessage(data);
-                    controller.clear();
-                    _controller.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOut,
-                    );
-                  },
-                  decoration: InputDecoration(
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    reverse: true,
+                    controller: _controller,
+                    itemCount: messagesList.length,
+                    itemBuilder: (context, index) {
+                      final message = messagesList[index];
+                      return message.uId == currentUserId
+                          ? ChatBubleForStudent(message: message)
+                          : ChatBubleForTeacher(message: message);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: CustomTextField(
                     hintText: 'Send Message',
-                    suffixIcon: Icon(
-                      Icons.send,
-                      color: context.color.bluePinkDark,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: context.color.textFormBorder!,
+                    lable: '',
+                    controller: controller,
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: InkWell(
+                        onTap: () async {
+                          final text = controller.text.trim();
+
+                          if (text.isEmpty) {
+                            return;
+                          }
+                          await sendMessage(controller.text);
+                          controller.clear();
+                          await _controller.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOut,
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: context.color.bluePinkLight,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.send,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: SpinKitSpinningLines(
+              color: context.color.textColor!,
+              size: 50.sp,
+            ),
+          );
         }
       },
     );

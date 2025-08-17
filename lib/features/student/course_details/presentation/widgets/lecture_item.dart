@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/video_player/cubit/video_cubit.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
+import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LectureItem extends StatefulWidget {

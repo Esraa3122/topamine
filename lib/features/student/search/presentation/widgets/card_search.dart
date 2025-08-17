@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class CardSearch extends StatelessWidget {
@@ -89,21 +88,6 @@ class CardSearch extends StatelessWidget {
                         'Created At: ${course.createdAt}',
                         style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                       ),
-                      // if (showStatus) ...[
-                      //   SizedBox(height: 4.h),
-                      //   Text(
-                      //     course.status == 'completed'
-                      //         ? 'Completed'
-                      //         : 'In Progress',
-                      //     style: TextStyle(
-                      //       color: course.status == 'completed'
-                      //           ? Colors.green
-                      //           : Colors.orange,
-                      //       fontSize: 12.sp,
-                      //       fontWeight: FontWeight.w600,
-                      //     ),
-                      //   ),
-                      // ],
                     ],
                   ),
                 ),

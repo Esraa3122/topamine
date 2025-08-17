@@ -7,8 +7,12 @@ import 'package:test/features/teacher/add_courses/data/model/courses_model.dart'
 class BookingStudentCubit extends Cubit<BookingStudentState> {
   BookingStudentCubit() : super(BookingStudentInitial());
 
+  void safeEmit(BookingStudentState state) {
+    if (!isClosed) emit(state);
+  }
+
   Future<void> fetchEnrolledCourses() async {
-    emit(BookingStudentLoading());
+    safeEmit(BookingStudentLoading());
     try {
       final currentUserId = FirebaseAuth.instance.currentUser!.uid;
       final now = DateTime.now();
@@ -18,28 +22,45 @@ class BookingStudentCubit extends Cubit<BookingStudentState> {
           .where('userId', isEqualTo: currentUserId)
           .get();
 
-      final enrolledCourseIds = enrollmentSnapshot.docs
-          .map((doc) => doc['courseId'] as String)
-          .toList();
+      final Map<String, String> courseStatusMap = {};
 
-      final courseSnapshot = await FirebaseFirestore.instance
-          .collection('courses')
-          .get();
+      for (var doc in enrollmentSnapshot.docs) {
+        final data = doc.data();
+        final courseId = data['courseId']?.toString();
+        if (courseId == null || courseId.isEmpty) continue;
+
+        final status = data['statusProgress']?.toString() ?? 'inProgress';
+        courseStatusMap[courseId] = status;
+      }
+
+      final enrolledCourseIds = courseStatusMap.keys.toList();
+
+      final courseSnapshot =
+          await FirebaseFirestore.instance.collection('courses').get();
 
       final courses = courseSnapshot.docs
-          .map((doc) => CoursesModel.fromJson({...doc.data(), 'id': doc.id}))
-          .where((course) => enrolledCourseIds.contains(course.id))
-          .where(
-            (course) =>
-                course.endDate != null &&
+          .map((doc) {
+            final courseId = doc.id;
+            if (!enrolledCourseIds.contains(courseId)) return null;
+
+            final courseData = {...doc.data(), 'id': courseId};
+            courseData['status'] = courseStatusMap[courseId] ?? 'inProgress';
+
+            final course = CoursesModel.fromJson(courseData);
+
+            if (course.endDate != null &&
                 (now.isBefore(course.endDate!) ||
-                    now.isAtSameMomentAs(course.endDate!)),
-          )
+                    now.isAtSameMomentAs(course.endDate!))) {
+              return course;
+            }
+            return null;
+          })
+          .whereType<CoursesModel>()
           .toList();
 
-      emit(BookingStudentLoaded(courses));
+      safeEmit(BookingStudentLoaded(courses));
     } catch (e) {
-      emit(BookingStudentError(e.toString()));
+      safeEmit(BookingStudentError(e.toString()));
     }
   }
 }

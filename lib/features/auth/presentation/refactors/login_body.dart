@@ -21,6 +21,7 @@ import 'package:test/features/auth/presentation/widgets/dark_and_lang_buttons.da
 import 'package:test/features/auth/presentation/widgets/login/login_button.dart';
 import 'package:test/features/auth/presentation/widgets/login/login_text_form.dart';
 import 'package:test/features/auth/presentation/widgets/sign_up_with_google.dart';
+import 'package:test/features/splash/view/widget/container_logo_splash.dart';
 
 class LoginBody extends StatefulWidget {
   const LoginBody({super.key});
@@ -110,9 +111,16 @@ class _LoginBodyState extends State<LoginBody> {
                 const DarkAndLangButtons(),
 
                 SizedBox(
-                  height: 50.h,
+                  height: 20.h,
                 ),
 
+                const CustomFadeInDown( 
+                  duration: 800,
+                  child: ContainerLogoSplash()),
+
+                SizedBox(
+                  height: 10.h,
+                ),
                 // Welcome Info
                 AuthTitleInfo(
                   title: context.translate(LangKeys.welcomBack),

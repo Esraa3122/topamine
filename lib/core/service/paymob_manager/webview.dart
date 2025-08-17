@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 
 class PaymentWebViewScreen extends StatefulWidget {

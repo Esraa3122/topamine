@@ -6,6 +6,10 @@ class AppImages {
       'assets/images/core/undraw_signal-searching_yod3.png';
   static const String userAvatar = 'assets/images/core/user.png';
 
+  static const String home1 = 'assets/images/student/home1.jpg';
+  static const String home2 = 'assets/images/student/home2.jpg';
+  static const String home3 = 'assets/images/student/home3.jpg';
+
   // teacher
   static const String mainLight = 'assets/images/student/main_light.jpg';
   static const String mainDark = 'assets/images/student/home_bg_dark.png';

@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/enums/status_register.dart';
-import 'package:test/core/enums/status_register.dart';
 
 part 'user_model.g.dart';
 
@@ -15,7 +14,7 @@ class UserModel {
     required this.phone,
     required this.governorate,
     this.userImage,
-    this.blocked = true,
+    this.blocked = false,
     this.grade,
     this.subject,
     this.status,
@@ -29,7 +28,7 @@ class UserModel {
   @JsonKey(name: 'role', fromJson: _roleFromJson, toJson: _roleToJson)
   final UserRole userRole;
 
-  @JsonKey(name: 'blocked', defaultValue: true)
+  @JsonKey(name: 'blocked', defaultValue: false)
   final bool blocked;
 
   @JsonKey(name: 'id')
@@ -104,8 +103,6 @@ class UserModel {
   }
 }
 
-// UserRole _roleFromJson(String role) =>
-//     UserRole.values.firstWhere((e) => e.name == role);
 UserRole _roleFromJson(String role) {
   try {
     return UserRole.values.firstWhere((e) => e.name == role);

@@ -11,7 +11,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Chat',),
+      appBar: CustomAppBar(title: 'Chat', backgroundColor: Colors.blue.shade300,),
       body: ChatBody(chatId: chatId),
     );
   }

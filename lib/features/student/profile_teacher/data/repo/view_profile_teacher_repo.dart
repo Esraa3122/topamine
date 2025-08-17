@@ -10,8 +10,8 @@ class CourseRepository {
 
     final snapshot = await firestore
         .collection('courses')
-        .where('teacherEmail', isEqualTo: teacherId)
-        // .where('status', isEqualTo: 'active') 
+        .where('teacherId', isEqualTo: teacherId)
+        // .where('status', isEqualTo: 'active')
         .get();
 
     return snapshot.docs

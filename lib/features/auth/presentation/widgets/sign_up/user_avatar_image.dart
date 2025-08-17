@@ -18,7 +18,6 @@ class UserAvatarImage extends StatefulWidget {
 class _UserAvatarImageState extends State<UserAvatarImage> {
   File? _imageFile;
   String? _imageUrl;
-  // bool _isUploading = false;
 
   Future<void> _handlePickImage() async {
     final pickedImage = await PickImageUtils().pickImage();
