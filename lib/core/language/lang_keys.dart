@@ -78,6 +78,26 @@ class LangKeys {
 
   static const String homepage = 'homepage';
   static const String search = 'search';
+  static const String lastsearch = 'last_search';
+  static const String searchForTeacherOrsubject =
+      'search_for_teacher_or_suject';
+  static const String searchForCourses = 'search_for_courses';
+  static const String profileAccount = 'profile_account_information';
+  static const String lecture = 'lecture';
+  static const String days = 'days';
+  static const String student = 'student';
+  static const String noLecturesAvailable = 'no_lectures_available';
+  static const String goToCourseNow = 'go_to_course_now';
+  static const String subscribeNow = 'subscribe_now';
+  static const String addedBy = 'added_by';
+  static const String end = 'end';
+  static const String startDate = 'start_date';
+  static const String endDate = 'end_date';
+  static const String price = 'price';
+  static const String noCourses = 'no_courses';
+  static const String newmessage = 'new_message';
+  static const String have = 'have';
+  static const String duration = 'duration';
   static const String name = 'name';
   static const String adress = 'adress';
   static const String age = 'age';
@@ -113,5 +133,4 @@ class LangKeys {
   static const String subscribedToNotifications = 'subscribed_to_notifications';
   static const String unsubscribedToNotifications =
       'unsubscribed_to_notifications';
-
 }

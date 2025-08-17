@@ -11,7 +11,6 @@ import 'package:test/features/teacher/course_details/presentation/widgets/course
 import 'package:test/features/teacher/course_details/presentation/widgets/custom_contanier_course_teacher_profile.dart';
 import 'package:test/features/teacher/course_details/presentation/widgets/lecture_item_teacher_profile.dart';
 
-
 class CourseDetailsTeacherProfileBody extends StatefulWidget {
   const CourseDetailsTeacherProfileBody({required this.course, super.key});
   final CoursesModel course;
@@ -44,7 +43,6 @@ class _CourseDetailsTeacherProfileBodyState
 
     // return '${days} يوم ${hours} ساعة ${minutes} دقيقة';
   }
-
 
   Future<int> getEnrolledStudentCount(String courseId) async {
     final snapshot = await FirebaseFirestore.instance
@@ -121,7 +119,8 @@ class _CourseDetailsTeacherProfileBodyState
                 ),
                 SizedBox(width: 12.w),
                 TextApp(
-                  text: 'تم اضافته بواسطة ${widget.course.teacherName}',
+                  text:
+                      '${context.translate(LangKeys.addedBy)} ${widget.course.teacherName}',
                   theme: context.textStyle.copyWith(
                     fontSize: 13.sp,
                     fontWeight: FontWeightHelper.regular,
@@ -136,24 +135,24 @@ class _CourseDetailsTeacherProfileBodyState
                     CourseInfoTeacherProfile(
                       icon: Icons.people,
                       label: enrolledCount.toString(),
-                      sub: 'Students',
+                      sub: context.translate(LangKeys.student),
                     ),
                     const VertiDivider(),
                     CourseInfoTeacherProfile(
                       icon: Icons.access_time,
                       label: formatDuration(difference),
-                      sub: 'Duration',
+                      sub: context.translate(LangKeys.duration),
                     ),
                     const VertiDivider(),
                     CourseInfoTeacherProfile(
                       icon: Icons.video_collection,
                       label: widget.course.lectures!.length.toString(),
-                      sub: 'Lectures',
+                      sub: context.translate(LangKeys.lecture),
                     ),
                   ],
                 ),
                 const Divider(),
-            
+
                 SizedBox(height: 24.h),
                 TextApp(
                   text: context.translate(LangKeys.courseContent),

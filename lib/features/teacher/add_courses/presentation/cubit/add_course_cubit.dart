@@ -62,4 +62,22 @@ class AddCourseCubit extends Cubit<AddCourseState> {
       emit(AddCourseError(e.toString()));
     }
   }
+  
+  Future<void> updateCourse({
+    required CoursesModel course,
+    File? imageFile,
+  }) async {
+    emit(AddCourseLoading());
+    try {
+      await repository.updateCourse(
+        course: course,
+        imageFile: imageFile,
+        newLectures: lectures.isNotEmpty ? lectures : null,
+      );
+      emit(AddCourseSuccess());
+      lectures = [];
+    } catch (e) {
+      emit(AddCourseError(e.toString()));
+    }
+  }
 }

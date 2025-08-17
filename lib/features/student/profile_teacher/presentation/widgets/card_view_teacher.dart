@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class CardViewTeacher extends StatelessWidget {
   const CardViewTeacher({required this.course, super.key});
   final CoursesModel course;
+  String _formatTime(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      // elevation: 2,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [
-            const Color.fromARGB(255, 212, 211, 211).withOpacity(0.8),
-            Colors.white.withOpacity(0.8),
-          ],
-          begin: const Alignment(0.36, 0.27),
-          end: const Alignment(0.58, 0.85),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: context.color.containerShadow1!.withOpacity(0.3),
-            offset: const Offset(0, 4),
-            blurRadius: 8,
-          ),
-          BoxShadow(
-            color: context.color.containerShadow2!.withOpacity(0.3),
-            offset: const Offset(0, 4),
-            blurRadius: 2,
-          ),
-        ],
-      ),
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+
+                  gradient: LinearGradient(
+                    colors: [
+                      context.color.mainColor!,
+                      context.color.mainColor!.withOpacity(0.8),
+                    ],
+                    begin: const Alignment(0.36, 0.27),
+                    end: const Alignment(0.58, 0.85),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.color.bluePinkLight!,
+                      offset: const Offset(0, 2),
+                      blurRadius: 2,
+                    ),
+                    BoxShadow(
+                      color: context.color.containerShadow1!,
+                      offset: const Offset(0, 2),
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -58,20 +64,51 @@ class CardViewTeacher extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      course.title,
-                      style: TextStyle(
+                    TextApp(
+                      text: course.title,
+                      maxLines: 2,
+                      textOverflow: TextOverflow.ellipsis,
+                      theme: context.textStyle.copyWith(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
                       ),
                     ),
-                    SizedBox(height: 4.h),
-                    SizedBox(height: 4.h),
-                    Text(
-                      course.teacherName,
-                      style: const TextStyle(color: Colors.black54),
+                    SizedBox(height: 6.h),
+                    TextApp(
+                      text: course.teacherName,
+                      theme: context.textStyle.copyWith(
+                        color: Colors.black54,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
                     ),
-                    SizedBox(height: 2.h),
+                     SizedBox(height: 6.h),
+                     TextApp(
+                      text: 'السعر: ${course.price} EGP',
+                      theme: context.textStyle.copyWith(
+                        color: context.color.bluePinkLight,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    TextApp(
+                      text: 'تاريخ البدء: ${_formatTime(course.createdAt)}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                     TextApp(
+                      text: 'تاريخ الانتهاء: ${_formatTime(course.endDate)}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
                   ],
                 ),
               ),

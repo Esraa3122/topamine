@@ -25,7 +25,7 @@ class ChatBubleForTeacher extends StatelessWidget {
             topRight: Radius.circular(32),
             bottomLeft: Radius.circular(32),
           ),
-          color: context.color.bluePinkLight,
+          color: context.color.bluePinkLight!.withOpacity(0.5),
         ),
         child: Text(
           message.message,

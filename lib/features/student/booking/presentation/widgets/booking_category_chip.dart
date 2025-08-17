@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/extensions/context_extension.dart';
 
 class BookingCategoryChip extends StatelessWidget {
   const BookingCategoryChip({
@@ -21,13 +22,16 @@ class BookingCategoryChip extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.blue : Colors.grey.shade200,
+            color: isSelected ? context.color.bluePinkLight : Colors.transparent,
             borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: isSelected ? Colors.transparent : context.color.bluePinkLight!,
+            ),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black87,
+              color: isSelected ? Colors.white : context.color.textColor,
               fontWeight: FontWeight.w500,
             ),
           ),

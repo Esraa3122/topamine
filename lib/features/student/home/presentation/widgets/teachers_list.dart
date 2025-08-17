@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/features/student/home/presentation/cubit/teacher_cards_cubit.dart';
 import 'package:test/features/student/home/presentation/cubit/teacher_cards_state.dart';
+import 'package:test/features/student/home/presentation/widgets/simmer_teacher_card.dart';
 import 'package:test/features/student/home/presentation/widgets/teacher_card_home.dart';
 
 class TeachersList extends StatelessWidget {
@@ -12,11 +13,20 @@ class TeachersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TeacherCardsCubit>(
-      create: (_) => sl<TeacherCardsCubit>()..getActiveData(fetchTeachers: true),
+      create: (_) =>
+          sl<TeacherCardsCubit>()..getActiveData(fetchTeachers: true),
       child: BlocBuilder<TeacherCardsCubit, TeacherCardsState>(
         builder: (context, state) {
           if (state.status == TeacherCardsStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+  return SizedBox(
+    height: 100.h,
+    child: ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: 3, 
+      separatorBuilder: (context, index) => SizedBox(width: 10.w),
+      itemBuilder: (context, index) => const TeacherCardShimmer(),
+    ),
+  );
           } else if (state.status == TeacherCardsStatus.loaded) {
             final teachers = state.teachers;
             if (teachers.isEmpty) {

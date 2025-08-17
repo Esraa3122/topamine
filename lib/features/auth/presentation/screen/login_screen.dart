@@ -12,18 +12,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      bottomNavigationBar: CustomPaint(
-        size: Size(MediaQuery.of(context).size.width, 100.h),
-        painter: AuthCustomPainter(
-            gradient: LinearGradient(colors: [
-          context.color.bluePinkLight!,
-          context.color.bluePinkLight!,
-          context.color.bluePinkLight!,
-          context.color.bluePinkDark!
-        ])),
-      ),
-      body: const SafeArea(bottom: false, child: LoginBody()),
+    return  const Scaffold(
+      body: SafeArea(bottom: false, child: LoginBody()),
     );
   }
 }

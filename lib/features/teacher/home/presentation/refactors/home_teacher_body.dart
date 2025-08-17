@@ -6,7 +6,6 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/home/presentation/widgets/auto_slider.dart';
-import 'package:test/features/student/home/presentation/widgets/progress_badges.dart';
 import 'package:test/features/teacher/home/presentation/widgets/course_for_you_home_teacher.dart';
 import 'package:test/features/teacher/home/presentation/widgets/teacher_list_home_teacher.dart';
 
@@ -73,8 +72,8 @@ class _HomeTeacherBodyState extends State<HomeTeacherBody> {
         ),
         SizedBox(height: 16.h),
         const TeacherListHomeTeacher(),
-        SizedBox(height: 24.h),
-        const StudentTestimonials(),
+        // SizedBox(height: 24.h),
+        // const StudentTestimonials(),
       ],
     );
   }

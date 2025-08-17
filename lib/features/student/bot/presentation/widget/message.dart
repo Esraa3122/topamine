@@ -12,9 +12,9 @@ class Message extends StatelessWidget {
     return Align(
       alignment:  isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: isUser ? context.color.bluePinkDark : context.color.bluePinkLight,
+          color: isUser ? context.color.mainColor!.withOpacity(0.5) : context.color.textColor!.withOpacity(0.5),
           borderRadius: BorderRadius.only(
             topLeft: isUser ? Radius.circular(10) : Radius.circular(0),
             topRight: isUser ? Radius.circular(0) : Radius.circular(10),
@@ -22,7 +22,7 @@ class Message extends StatelessWidget {
             bottomRight: Radius.circular(10)
           )
         ),
-        child: Text(message, style: TextStyle(fontSize: 16),),
+        child: Text(message, style: TextStyle(fontSize: 16, color: isUser ? context.color.textColor : context.color.mainColor),),
       ),
     );
   }

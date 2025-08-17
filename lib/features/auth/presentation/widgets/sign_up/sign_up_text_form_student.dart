@@ -69,19 +69,14 @@ class _SignUpTextFormStudentState extends State<SignUpTextFormStudent> {
     'الوادي الجديد',
   ];
 
-  // late AuthBloc _bloc;
   @override
   void initState() {
     super.initState();
-    // _bloc = context.read<AuthBloc>();
   }
 
   @override
   void dispose() {
     super.dispose();
-    // _bloc.nameController.dispose();
-    // _bloc.emailController.dispose();
-    // _bloc.passwordController.dispose();
   }
 
   @override

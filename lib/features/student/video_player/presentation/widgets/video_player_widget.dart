@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
-  const VideoPlayerWidget({required this.videoUrl, super.key});
+  const VideoPlayerWidget({
+    required this.videoUrl,
+    required this.onVideoCompleted,
+    super.key,
+  });
+
   final String? videoUrl;
+  final VoidCallback onVideoCompleted; 
 
   @override
   State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
@@ -33,7 +39,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   Future<void> _initializePlayer() async {
     if (widget.videoUrl == null || widget.videoUrl!.isEmpty) {
       setState(() {
-        _errorMessage = 'No Video Avalabile';
+        _errorMessage = 'No Video Available';
       });
       return;
     }
@@ -41,6 +47,13 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     try {
       _videoController = VideoPlayerController.network(widget.videoUrl!);
       await _videoController!.initialize();
+
+      _videoController!.addListener(() {
+        if (_videoController!.value.position >=
+            _videoController!.value.duration) {
+          widget.onVideoCompleted();
+        }
+      });
 
       _chewieController = ChewieController(
         videoPlayerController: _videoController!,

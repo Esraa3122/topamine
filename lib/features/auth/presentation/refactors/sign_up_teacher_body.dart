@@ -39,18 +39,7 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
   final governorateController = TextEditingController();
   final subjectController = TextEditingController();
   File? uploadedImageUrl;
-
-  // File? _selectedImage;
-
-  // Future<void> _pickImage() async {
-  //   final picked = await picker.pickImage(source: ImageSource.gallery);
-  //   if (picked != null) {
-  //     setState(() {
-  //       _selectedImage = File(picked.path);
-  //     });
-  //   }
-  // }
-
+  
   void _registerTeacher() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthCubit>().register(

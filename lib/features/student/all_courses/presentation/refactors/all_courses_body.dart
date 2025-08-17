@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/features/student/all_courses/presentation/cubit/all_courses_cubit.dart';
-import 'package:test/features/student/all_courses/presentation/widget/contanier_all_course.dart';
+import 'package:test/features/student/home/presentation/widgets/animated_card.dart';
+import 'package:test/features/student/home/presentation/widgets/simmer_courses_for_you.dart';
 
 class AllCoursesBody extends StatelessWidget {
   const AllCoursesBody({super.key});
@@ -13,9 +14,21 @@ class AllCoursesBody extends StatelessWidget {
       create: (_) => AllCoursesCubit()..listenToCourses(),
       child: BlocBuilder<AllCoursesCubit, AllCoursesState>(
         builder: (context, state) {
-          if (state.status == AllCoursesStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+         if (state.status == AllCoursesStatus.loading) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: GridView.builder(
+          itemCount: 4,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 0.78,
+          ),
+          itemBuilder: (context, index) => const CourseCardShimmer(),
+        ),
+      );
+    }
           if (state.status == AllCoursesStatus.error) {
             return Center(child: Text('Error: ${state.errorMessage}'));
           }
@@ -64,7 +77,7 @@ class AllCoursesBody extends StatelessWidget {
                       childAspectRatio: 0.78,
                     ),
                     itemBuilder: (context, index) {
-                      return ContanierAllCourse(
+                      return AnimatedCourseCard(
                         course: state.filteredCourses[index],
                       );
                     },

@@ -27,7 +27,7 @@ class CoursesModel {
     this.teacherEmail,
     this.term,
     this.subTitle,
-    this.status,
+    this.status = 'active',
     this.startDate,
     this.price,
     this.endDate,

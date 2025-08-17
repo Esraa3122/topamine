@@ -1,30 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/features/student/all_courses/data/course_service.dart';
 import 'package:test/features/student/all_courses/presentation/cubit/all_courses_cubit.dart';
-import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
-import 'package:test/features/teacher/all_courses/presentation/widget/contanier_all_course_teacher_profile.dart';
+import 'package:test/features/student/home/presentation/widgets/simmer_courses_for_you.dart';
+import 'package:test/features/teacher/home/presentation/widgets/contanier_course_home_teacher.dart';
 
-class AllCoursesTeacherProfileBody extends StatefulWidget {
+class AllCoursesTeacherProfileBody extends StatelessWidget {
   const AllCoursesTeacherProfileBody({super.key});
-
-  @override
-  State<AllCoursesTeacherProfileBody> createState() =>
-      _AllCoursesTeacherProfileBodyState();
-}
-
-class _AllCoursesTeacherProfileBodyState
-    extends State<AllCoursesTeacherProfileBody> {
-  String selectedFilter = 'All';
-
-  late final Future<List<CoursesModel>> _coursesFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _coursesFuture = CourseService().getAllCourses();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +14,27 @@ class _AllCoursesTeacherProfileBodyState
       create: (_) => AllCoursesCubit()..listenToCourses(),
       child: BlocBuilder<AllCoursesCubit, AllCoursesState>(
         builder: (context, state) {
-          if (state.status == AllCoursesStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+         if (state.status == AllCoursesStatus.loading) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: GridView.builder(
+          itemCount: 4,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 0.78,
+          ),
+          itemBuilder: (context, index) => const CourseCardShimmer(),
+        ),
+      );
+    }
           if (state.status == AllCoursesStatus.error) {
             return Center(child: Text('Error: ${state.errorMessage}'));
+          }
+
+          if (state.filteredCourses.isEmpty) {
+            return const Center(child: Text('لا توجد كورسات متاحة حاليًا'));
           }
 
           return Padding(
@@ -73,13 +71,13 @@ class _AllCoursesTeacherProfileBodyState
                     itemCount: state.filteredCourses.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.78,
-                        ),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 0.78,
+                    ),
                     itemBuilder: (context, index) {
-                      return ContanierAllCourseTeacherProfile(
+                      return ContanierCourseHomeTeacher(
                         course: state.filteredCourses[index],
                       );
                     },

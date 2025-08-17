@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/features/student/home/presentation/cubit/teacher_cards_cubit.dart';
 import 'package:test/features/student/home/presentation/cubit/teacher_cards_state.dart';
-import 'package:test/features/student/home/presentation/widgets/contanier_course.dart';
+import 'package:test/features/student/home/presentation/widgets/animated_card.dart';
+import 'package:test/features/student/home/presentation/widgets/simmer_courses_for_you.dart';
 
 class CoursesListYou extends StatelessWidget {
   const CoursesListYou({super.key});
@@ -14,11 +15,16 @@ class CoursesListYou extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<TeacherCardsCubit>()..getActiveData(),
       child: SizedBox(
-        height: 200.h,
+        height: 220.h,
         child: BlocBuilder<TeacherCardsCubit, TeacherCardsState>(
           builder: (context, state) {
             if (state.status == TeacherCardsStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                separatorBuilder: (context, index) => SizedBox(width: 10.w),
+                itemCount: 4, 
+                itemBuilder: (context, index) => const CourseCardShimmer(),
+              );
             }
 
             if (state.status == TeacherCardsStatus.error) {
@@ -40,9 +46,8 @@ class CoursesListYou extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               separatorBuilder: (context, index) => SizedBox(width: 10.w),
               itemCount: courses.length,
-              itemBuilder: (context, index) {
-                return ContanierCourse(course: courses[index]);
-              },
+              itemBuilder: (context, index) =>
+                  AnimatedCourseCard(course: courses[index]),
             );
           },
         ),

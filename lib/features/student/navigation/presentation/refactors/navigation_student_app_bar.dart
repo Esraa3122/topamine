@@ -24,9 +24,7 @@ class NavigationStudentAppBar extends StatelessWidget
       title: BlocBuilder(
         bloc: cubit,
         builder: (context, state) {
-          if (cubit.navBarEnum == NavBarEnum.home ||
-              cubit.navBarEnum == NavBarEnum.search ||
-              cubit.navBarEnum == NavBarEnum.booking) {
+          if (cubit.navBarEnum == NavBarEnum.home) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -50,7 +48,7 @@ class NavigationStudentAppBar extends StatelessWidget
                 ),
               ],
             );
-          } else if (cubit.navBarEnum == NavBarEnum.profile) {
+          } else if (cubit.navBarEnum == NavBarEnum.search) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -58,7 +56,7 @@ class NavigationStudentAppBar extends StatelessWidget
                   duration: 800,
                   child: Center(
                     child: TextApp(
-                      text: context.translate(LangKeys.appName),
+                      text: context.translate(LangKeys.search),
                       theme: context.textStyle.copyWith(
                         fontSize: 20.sp,
                         fontWeight: FontWeightHelper.bold,
@@ -69,12 +67,61 @@ class NavigationStudentAppBar extends StatelessWidget
                 ),
                 CustomFadeInLeft(
                   duration: 800,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.clear_all_rounded,
-                      color: context.color.textColor,
+                  child: Image.asset(
+                    AppImages.logo,
+                    width: 40.w,
+                  ),
+                ),
+              ],
+            );
+          } else if (cubit.navBarEnum == NavBarEnum.booking) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomFadeInRight(
+                  duration: 800,
+                  child: Center(
+                    child: TextApp(
+                      text: context.translate(LangKeys.myCourses),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                      ),
                     ),
-                    onPressed: () {},
+                  ),
+                ),
+                CustomFadeInLeft(
+                  duration: 800,
+                  child: Image.asset(
+                    AppImages.logo,
+                    width: 40.w,
+                  ),
+                ),
+              ],
+            );
+          } else if (cubit.navBarEnum == NavBarEnum.profile) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomFadeInRight(
+                  duration: 800,
+                  child: Center(
+                    child: TextApp(
+                      text: context.translate(LangKeys.profileAccount),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                      ),
+                    ),
+                  ),
+                ),
+                CustomFadeInLeft(
+                  duration: 800,
+                  child: Image.asset(
+                    AppImages.logo,
+                    width: 40.w,
                   ),
                 ),
               ],

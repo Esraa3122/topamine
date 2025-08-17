@@ -21,16 +21,12 @@ class _CategoryBookingListTeacherState
   List<BookingCategoryModel> filters = [
     BookingCategoryModel(name: 'All', value: 'all', isSelected: true),
     BookingCategoryModel(
-      name: 'الصف الأول الثانوى',
-      value: 'الصف الأول الثانوى',
+      name: 'active',
+      value: 'active',
     ),
     BookingCategoryModel(
-      name: 'الصف الثانى الثانوى',
-      value: 'الصف الثانى الثانوى',
-    ),
-    BookingCategoryModel(
-      name: 'الصف الثالث الثانوى',
-      value: 'الصف الثالث الثانوى',
+      name: 'not active',
+      value: 'not active',
     ),
   ];
 

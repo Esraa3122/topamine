@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
@@ -33,6 +34,7 @@ class ContanierCourse extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           elevation: 2,
+          shadowColor: context.color.bluePinkLight!.withOpacity(0.8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,15 +57,16 @@ class ContanierCourse extends StatelessWidget {
                   children: [
                     TextApp(
                       text: course.title,
+                      maxLines: 1,
                       theme: context.textStyle.copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeightHelper.bold,
                         color: context.color.textColor,
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 3.h),
                     TextApp(
-                      text: course.subTitle ?? '',
+                      text: course.teacherName ?? '',
                       theme: context.textStyle.copyWith(
                         fontSize: 12.sp,
                         fontWeight: FontWeightHelper.medium,
@@ -72,9 +75,29 @@ class ContanierCourse extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 3.h),
                     TextApp(
-                      text: 'Created at: ${_formatTime(course.createdAt)}',
+                      text:
+                          '${context.translate(LangKeys.price)} ${course.price} EGP',
+                      theme: context.textStyle.copyWith(
+                        color: context.color.bluePinkLight,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                    SizedBox(height: 3.h),
+                    TextApp(
+                      text:
+                          '${context.translate(LangKeys.startDate)} ${_formatTime(course.createdAt)}',
+                      theme: context.textStyle.copyWith(
+                        color: Colors.grey,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeightHelper.regular,
+                      ),
+                    ),
+                    TextApp(
+                      text:
+                          '${context.translate(LangKeys.endDate)} ${_formatTime(course.endDate)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,

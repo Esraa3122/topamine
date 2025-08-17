@@ -7,13 +7,13 @@ class InitialState extends ViewTeacherProfileState {}
 class LoadingState extends ViewTeacherProfileState {}
 
 class LoadedState extends ViewTeacherProfileState {
-  final List<CoursesModel> courses;
 
   LoadedState(this.courses);
+  final List<CoursesModel> courses;
 }
 
 class ErrorState extends ViewTeacherProfileState {
-  final String message;
 
   ErrorState(this.message);
+  final String message;
 }

@@ -12,6 +12,7 @@ import 'package:test/core/style/color/colors_light.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/widgets/dark_and_lang_buttons.dart';
+import 'package:test/features/splash/view/widget/container_logo_splash.dart';
 
 class RuleSignUpBody extends StatelessWidget {
   const RuleSignUpBody({super.key});
@@ -36,8 +37,15 @@ class RuleSignUpBody extends StatelessWidget {
           //Dark mode and language
           const DarkAndLangButtons(),
           SizedBox(
-            height: 100.h,
+            height: 40.h,
           ),
+          const CustomFadeInDown( 
+                  duration: 800,
+                  child: ContainerLogoSplash()),
+
+                SizedBox(
+                  height: 10.h,
+                ),
           TextApp(
             text: context.translate(LangKeys.joinToTopamine),
             theme: context.textStyle.copyWith(
@@ -65,12 +73,24 @@ class RuleSignUpBody extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: ColorsLight.greyCFColor,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(color: Colors.white, blurRadius: 6),
-                ],
+            gradient: LinearGradient(
+              colors: [Colors.grey.shade50, context.color.mainColor!,],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
+            ],
+            border: Border.all(
+              color: Colors.blueAccent.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
               child: Column(
                 children: [
                   SvgPicture.asset(AppImages.teacher),
@@ -107,12 +127,24 @@ class RuleSignUpBody extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: ColorsLight.greyCFColor,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(color: Colors.white, blurRadius: 6),
-                ],
+            gradient: LinearGradient(
+              colors: [Colors.grey.shade50, context.color.mainColor!,],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
+            ],
+            border: Border.all(
+              color: Colors.blueAccent.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
               child: Column(
                 children: [
                   SvgPicture.asset(AppImages.student),

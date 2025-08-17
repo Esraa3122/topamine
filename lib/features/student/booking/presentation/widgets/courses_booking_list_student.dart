@@ -3,12 +3,11 @@ import 'package:test/features/student/booking/presentation/widgets/booking_cours
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class CoursesBookingListStudent extends StatelessWidget {
-  final List<CoursesModel> courses;
 
   const CoursesBookingListStudent({
-    super.key,
-    required this.courses,
+    required this.courses, super.key,
   });
+  final List<CoursesModel> courses;
 
   @override
   Widget build(BuildContext context) {
@@ -27,4 +26,5 @@ class CoursesBookingListStudent extends StatelessWidget {
     );
   }
 }
+
 

@@ -13,6 +13,13 @@ class ContainerLogoSplash extends StatelessWidget {
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
         image: DecorationImage(
           image: AssetImage(AppImages.logo),
           fit: BoxFit.contain,

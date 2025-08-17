@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:test/core/app/app_cubit/app_cubit.dart';
 import 'package:test/core/common/dialogs/donor_dialogs.dart';
 import 'package:test/core/common/widgets/text_app.dart';
@@ -9,7 +8,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/app_localizations.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/core/style/images/app_images.dart';
+
 
 class LanguageChange extends StatelessWidget {
   const LanguageChange({super.key});
@@ -22,11 +21,6 @@ class LanguageChange extends StatelessWidget {
       builder: (context, state) {
         return Row(
           children: [
-            // SvgPicture.asset(
-            //   AppImages.language,
-            //   color: context.color.textColor,
-            // ),
-            SizedBox(width: 10.w),
             TextApp(
               text: context.translate(LangKeys.languageTilte),
               theme: context.textStyle.copyWith(

@@ -205,13 +205,13 @@ class _SignUpTextFormTeacherState extends State<SignUpTextFormTeacher> {
             duration: 200,
             child: CustomTextField(
               controller: widget.subjectcontroller,
-              lable: context.translate('LangKeys.subject'),
-              hintText: context.translate('LangKeys.enterSubject'),
+              lable: 'المادة الدراسية',
+              hintText: 'المادة الدراسية',
               prefixIcon: const Icon(Icons.subject),
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return context.translate('LangKeys.pleaseEnterYourSubject');
+                  return 'مطلوب المادة الدراسية';
                 }
                 return null;
               },

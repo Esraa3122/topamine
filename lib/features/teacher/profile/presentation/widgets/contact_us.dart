@@ -13,11 +13,6 @@ class ContactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Icon(
-        //   Icons.phone_enabled_outlined,
-        //   color: context.color.textColor,
-        // ),
-        SizedBox(width: 10.w),
         TextApp(
   text: context.translate(LangKeys.contactUs),
           theme: context.textStyle.copyWith(

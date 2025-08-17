@@ -13,11 +13,6 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Icon(
-        //   Icons.info_outline,
-        //   color: context.color.textColor,
-        // ),
-        SizedBox(width: 10.w),
         TextApp(
           text: context.translate(LangKeys.aboutUs),
           theme: context.textStyle.copyWith(
@@ -32,7 +27,7 @@ class AboutUs extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => AboutUsPage(),
+                builder: (_) => const AboutUsPage(),
               ),
             );
           },

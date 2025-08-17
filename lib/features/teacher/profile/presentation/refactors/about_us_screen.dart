@@ -58,7 +58,7 @@ class _AboutUsPageState extends State<AboutUsPage>
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.white, Colors.grey.shade100],
+              colors: [context.color.mainColor!, Colors.grey.shade100],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -91,7 +91,7 @@ class _AboutUsPageState extends State<AboutUsPage>
                 text: content,
                 theme: context.textStyle.copyWith(
                   fontSize: 16,
-                  color: Colors.black87,
+                  color: context.color.textColor,
                   height: 1.5,
                 ),
               ),
@@ -114,7 +114,7 @@ class _AboutUsPageState extends State<AboutUsPage>
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.white, Colors.grey.shade50],
+              colors: [Colors.grey.shade50, context.color.mainColor!,],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -145,7 +145,7 @@ class _AboutUsPageState extends State<AboutUsPage>
                 theme: context.textStyle.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: context.color.textColor,
                 ),
               ),
             ],
@@ -158,11 +158,12 @@ class _AboutUsPageState extends State<AboutUsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'About Us', color: Colors.white, backgroundColor: Colors.blue.shade300,),
+      appBar: CustomAppBar(title: 'About Us', color: context.color.textColor!, backgroundColor: context.color.mainColor,),
       body: Container(
         decoration: BoxDecoration(
+          // color: context.color.mainColor,
           gradient: LinearGradient(
-            colors: [Colors.blue.shade300, context.color.mainColor!],
+            colors: [context.color.mainColor!, Colors.blue.shade300],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -268,7 +269,7 @@ class _AboutUsPageState extends State<AboutUsPage>
                           theme: context.textStyle.copyWith(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: context.color.textColor,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -303,59 +304,6 @@ class _AboutUsPageState extends State<AboutUsPage>
                           ],
                         ),
                       ],
-                    ),
-                  ),
-                ),
-
-                // Call to Action
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 24,
-                    horizontal: 16,
-                  ),
-                  child: FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: ScaleTransition(
-                      scale: _scaleAnimation,
-                      child: GestureDetector(
-                        onTapDown: (_) {
-                          _animationController.reverse();
-                        },
-                        onTapUp: (_) {
-                          _animationController.forward();
-                          // Navigate to sign-up or explore page
-                          // Navigator.push(context, MaterialPageRoute(builder: (_) => ExplorePage()));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.blueAccent, Colors.blue.shade700],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: TextApp(
-                            text: 'انضم إلينا الآن',
-                            theme: context.textStyle.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                 ),

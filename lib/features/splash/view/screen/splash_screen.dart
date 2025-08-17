@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
  Future<void> _handleNavigation() async {
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 5));
 
   final firebaseUser = FirebaseAuth.instance.currentUser;
 
@@ -53,7 +53,7 @@ class _SplashPageState extends State<SplashPage> {
     return;
   }
 
-  if (userModel.status == AccountStatus.rejected || userModel.blocked == false) {
+  if (userModel.status == AccountStatus.rejected || userModel.blocked == true) {
     await FirebaseAuth.instance.signOut();
     await SharedPrefHelper().clearSession();
     _goToLogin();
@@ -92,32 +92,3 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 }
-
-// class _SplashPageState extends State<SplashPage> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     Future.delayed(const Duration(seconds: 10), () async {
-//       final prefs = await SharedPreferences.getInstance();
-//       final uid = prefs.getString('user_id');
-//       final role = prefs.getString('user_role');
-
-//       if (uid != null && role != null) {
-//         if (role == 'teacher') {
-//           await context.pushNamedAndRemoveUntil(AppRoutes.navigationTeacher);
-//         } else {
-//           await context.pushNamedAndRemoveUntil(AppRoutes.navigationStudent);
-//         }
-//       } else {
-//         await context.pushNamedAndRemoveUntil(AppRoutes.onBoarding);
-//       }
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       body: BodySplashScreen(),
-//     );
-//   }
-// }

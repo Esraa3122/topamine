@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
@@ -9,6 +10,10 @@ import 'package:test/features/teacher/add_courses/data/model/courses_model.dart'
 class ContanierAllCourse extends StatelessWidget {
   const ContanierAllCourse({required this.course, super.key});
   final CoursesModel course;
+  String _formatTime(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +61,7 @@ class ContanierAllCourse extends StatelessWidget {
                 children: [
                   TextApp(
                     text: course.title,
+                    maxLines: 1,
                     theme: context.textStyle.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeightHelper.bold,
@@ -74,29 +80,22 @@ class ContanierAllCourse extends StatelessWidget {
                   SizedBox(height: 2.h),
         
                   TextApp(
-                    text: 'Created At: ${course.createdAt}',
+                    text: 'Start Date: ${_formatTime(course.createdAt)}',
                     theme: context.textStyle.copyWith(
                       color: Colors.grey,
                       fontSize: 12.sp,
                       fontWeight: FontWeightHelper.regular,
                     ),
                   ),
-                  //  SizedBox(height: 2.h),
-                  // CustomLinearButton(
-                  //   height: 30.h,
-                  //   width: double.infinity,
-                  //   onPressed: () {
-                  //     context.pushNamed(AppRoutes.paymentDetailsView);
-                  //   },
-                  //   child: TextApp(
-                  //     text: context.translate(LangKeys.entrollNow),
-                  //     theme: context.textStyle.copyWith(
-                  //       fontSize: 18.sp,
-                  //       fontWeight: FontWeightHelper.bold,
-                  //       color: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
+                   SizedBox(height: 2.h),
+                  TextApp(
+                    text: 'End Date: ${_formatTime(course.endDate)}',
+                    theme: context.textStyle.copyWith(
+                      color: Colors.grey,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeightHelper.regular,
+                    ),
+                  ),
                 ],
               ),
             ),

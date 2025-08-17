@@ -31,5 +31,23 @@ class AddCourseRepository {
     return url;
   }
 
-}
+Future<void> updateCourse({
+    required CoursesModel course,
+    File? imageFile,
+    List<LectureModel>? newLectures,
+  }) async {
+    String? imageUrl = course.imageUrl;
 
+    if (imageFile != null) {
+      imageUrl = await CloudinaryService.uploadFile(imageFile, 'image');
+      if (imageUrl == null) throw Exception('Image upload failed');
+    }
+
+    final updatedCourse = course.copyWith(
+      imageUrl: imageUrl,
+      lectures: newLectures ?? course.lectures, 
+    );
+
+    await courseRef.doc(course.id).update(updatedCourse.toJson());
+  }
+}
