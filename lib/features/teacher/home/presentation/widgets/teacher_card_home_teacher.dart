@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
@@ -54,20 +52,20 @@ class TeacherCardHomeTeacher extends StatelessWidget {
                 ),
               ),
 
-              trailing: CustomLinearButton(
-                width: 50.w,
-                height: 30.h,
-                onPressed: () {
-                  context.pushNamed(
-                    AppRoutes.teacherProfile2,
-                    arguments: teacher,
-                  );
-                },
-                child: const Text(
-                  'View',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              // trailing: CustomLinearButton(
+              //   width: 50.w,
+              //   height: 30.h,
+              //   onPressed: () {
+              //     context.pushNamed(
+              //       AppRoutes.teacherProfile2,
+              //       arguments: teacher,
+              //     );
+              //   },
+              //   child: const Text(
+              //     'View',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
             ),
           ],
         ),
