@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/enums/nav_bar_enum.dart';
-import 'package:test/features/student/search/presentation/screen/search_page.dart';
 import 'package:test/features/teacher/booking/presentation/screen/booking_teacher_screen.dart';
 import 'package:test/features/teacher/home/presentation/screen/home_teacher_screen.dart';
 import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
@@ -34,13 +33,14 @@ class NavigationTeacherScreen extends StatelessWidget {
                     BlocBuilder<TeacherNavigationCubit, TeacherNavigationState>(
                       builder: (context, state) {
                         final cubit = context.read<TeacherNavigationCubit>();
-                        if (cubit.navBarEnum == NavBarEnum.booking) {
+                        if (cubit.navBarEnum == NavBarEnum2.booking) {
                           return const BookingTeacherScreen();
-                        } else if (cubit.navBarEnum == NavBarEnum.profile) {
+                        } else if (cubit.navBarEnum == NavBarEnum2.profile) {
                           return const ProfileTeacherScreen();
-                        } else if (cubit.navBarEnum == NavBarEnum.search) {
-                          return const SearchPage();
-                        }
+                        } 
+                        // else if (cubit.navBarEnum == NavBarEnum.search) {
+                        //   return const SearchPage();
+                        // }
                         return const HomeTeacherScreen();
                       },
                     ),

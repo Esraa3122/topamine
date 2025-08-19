@@ -53,6 +53,9 @@
     "complete_your_account_to_start_student": "اكمل حسابك لكل تبدأ التعلم",
     "grade": "اختار الصف الدراسى",
     "please_select_grade": "من فضلك اختار الصف الدراسى",
+    "subject": "اختر المادة",
+    "please_select_subject": "من فضلك ادخل المادة",
+    "subject_required": "المادة مطلوبة",
     "account_created_successfully": "تم انشاء الحساب بنجاح",
     "the_account_already_exists_for_that_email": "الحساب موجود بالفعل لهذا البريد الإلكتروني",
     "courses_for_you": "كورسات مقترحه لك",
@@ -121,5 +124,8 @@
     "chat": "شات",
     "noUserData": "لا توجد بيانات مستخدم",
     "subscribed_to_notifications": "تم الاشتراك في إشعارات",
-    "unsubscribed_to_notifications": "تم إلغاء الاشتراك في إشعارات"
+    "unsubscribed_to_notifications": "تم إلغاء الاشتراك في إشعارات",
+    "list_students": "قائمة الطلاب",
+    "messages": "الرسائل",
+    "list_notifications": "قائمة الإشعارات"
 }

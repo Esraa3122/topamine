@@ -4,6 +4,6 @@ part of 'teacher_navigation_cubit.dart';
 class TeacherNavigationState with _$TeacherNavigationState {
   const factory TeacherNavigationState.initial() = _Initial;
   const factory TeacherNavigationState.barSelectedIcons({
-    required NavBarEnum navBarEnum,
+    required NavBarEnum2 navBarEnum,
   }) = BarSelectedIconsState;
 }

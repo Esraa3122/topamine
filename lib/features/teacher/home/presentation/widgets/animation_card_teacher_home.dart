@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:test/features/student/home/presentation/widgets/contanier_course.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/home/presentation/widgets/contanier_course_home_teacher.dart';
 
 class AnimationCardTeacherHome extends StatefulWidget {
-  final CoursesModel course;
   const AnimationCardTeacherHome({required this.course, Key? key}) : super(key: key);
+  final CoursesModel course;
 
   @override
   State<AnimationCardTeacherHome> createState() => _AnimationCardTeacherHomeState();

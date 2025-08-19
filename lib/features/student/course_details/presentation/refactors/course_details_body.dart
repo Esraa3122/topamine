@@ -7,6 +7,7 @@ import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/paymob_manager/paymob_manager.dart';
 import 'package:test/core/service/paymob_manager/webview.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
@@ -220,11 +221,9 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
                   width: MediaQuery.of(context).size.width,
                   onPressed: () {
                     if (_isEnrolled) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              VideoPlayerPage(course: widget.course),
-                        ),
+                      context.pushNamed(
+                        AppRoutes.videoPlayerScreen,
+                        arguments: widget.course,
                       );
                     } else {
                       _pay(context, widget.course);
@@ -277,7 +276,7 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
       final paymentUrl =
           'https://accept.paymob.com/api/acceptance/iframes/940163?payment_token=$paymentKey';
 
-      final result = await Navigator.push(
+      final result = await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => PaymentWebViewScreen(
@@ -294,10 +293,9 @@ class _CourseDetailsBodyState extends State<CourseDetailsBody> {
           _isEnrolled = true;
         });
 
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => VideoPlayerPage(course: course),
-          ),
+         await context.pushNamed(
+          AppRoutes.videoPlayerScreen,
+          arguments: course,
         );
       }
     } catch (e) {

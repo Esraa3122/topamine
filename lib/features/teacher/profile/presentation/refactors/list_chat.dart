@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/features/student/chat/presentation/screen/chat_screen.dart';
+import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/images/app_images.dart';
 
 class StudentsListScreen extends StatelessWidget {
   const StudentsListScreen({super.key});
@@ -14,9 +19,13 @@ class StudentsListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'قائمة الطلاب',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+        title: Text(
+          context.translate(LangKeys.listStudents),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         backgroundColor: context.color.bluePinkLight,
@@ -33,7 +42,10 @@ class StudentsListScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance.collection('chats').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),);
           }
 
           if (snapshot.hasError) {
@@ -46,17 +58,17 @@ class StudentsListScreen extends StatelessWidget {
             future: _getChatsStartedByStudents(chatDocs, currentUserId),
             builder: (context, futureSnapshot) {
               if (!futureSnapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),);
               }
 
               final studentChats = futureSnapshot.data!;
 
               if (studentChats.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'لا توجد محادثات من طلاب حالياً',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                return Center(
+                  child: Lottie.asset(AppImages.emptyBox2)
                 );
               }
 
@@ -68,12 +80,18 @@ class StudentsListScreen extends StatelessWidget {
                   final chat = studentChats[index];
                   final student = chat['student'];
                   final lastMessage = chat['lastMessage'] ?? 'ابدأ المحادثة';
-                  final Timestamp? timestamp = chat['lastMessageTime'] as Timestamp?;
-                  final time = timestamp != null ? _formatTimeAgo(timestamp.toDate()) : '';
+                  final Timestamp? timestamp =
+                      chat['lastMessageTime'] as Timestamp?;
+                  final time = timestamp != null
+                      ? _formatTimeAgo(timestamp.toDate())
+                      : '';
                   final chatId = chat['chatId'];
 
                   return FutureBuilder<int>(
-                    future: _getUnreadMessagesCount(chatId.toString(), currentUserId),
+                    future: _getUnreadMessagesCount(
+                      chatId.toString(),
+                      currentUserId,
+                    ),
                     builder: (context, unreadSnapshot) {
                       final unreadCount = unreadSnapshot.data ?? 0;
 
@@ -90,15 +108,21 @@ class StudentsListScreen extends StatelessWidget {
                           ),
                           leading: CircleAvatar(
                             radius: 28,
-                            backgroundImage: student['avatar'] != null &&
+                            backgroundImage:
+                                student['avatar'] != null &&
                                     student['avatar'].toString().isNotEmpty
                                 ? NetworkImage(student['avatar'].toString())
                                 : null,
-                            child: student['avatar'] == null ||
-                                    student['avatar'].toString().isEmpty
-                                ? const Icon(Icons.person, size: 28, color: Colors.white)
-                                : null,
                             backgroundColor: Colors.blueAccent.shade100,
+                            child:
+                                student['avatar'] == null ||
+                                    student['avatar'].toString().isEmpty
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 28,
+                                    color: Colors.white,
+                                  )
+                                : null,
                           ),
                           title: Text(
                             student['name']?.toString() ?? 'طالب',
@@ -108,7 +132,8 @@ class StudentsListScreen extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            lastMessage.toString() + (time.isNotEmpty ? ' · $time' : ''),
+                            lastMessage.toString() +
+                                (time.isNotEmpty ? ' · $time' : ''),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -119,15 +144,18 @@ class StudentsListScreen extends StatelessWidget {
                           trailing: Stack(
                             alignment: Alignment.center,
                             children: [
-                              Icon(Icons.arrow_forward_ios,
-                                  size: 18, color: context.color.bluePinkLight),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 18,
+                                color: context.color.bluePinkLight,
+                              ),
                               if (unreadCount > 0)
                                 Positioned(
                                   right: -6,
                                   top: -6,
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.red,
                                       shape: BoxShape.circle,
                                     ),
@@ -144,11 +172,9 @@ class StudentsListScreen extends StatelessWidget {
                             ],
                           ),
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => ChatScreen(chatId: chatId.toString()),
-                              ),
+                            context.pushNamed(
+                              AppRoutes.chat,
+                              arguments: chatId.toString(),
                             );
                           },
                         ),
@@ -165,7 +191,9 @@ class StudentsListScreen extends StatelessWidget {
   }
 
   Future<List<Map<String, dynamic>>> _getChatsStartedByStudents(
-      List<QueryDocumentSnapshot> chats, String teacherId) async {
+    List<QueryDocumentSnapshot> chats,
+    String teacherId,
+  ) async {
     List<Map<String, dynamic>> studentChats = [];
 
     for (var chat in chats) {
@@ -192,8 +220,10 @@ class StudentsListScreen extends StatelessWidget {
 
       if (createdBy != studentId) continue;
 
-      final studentDoc =
-          await FirebaseFirestore.instance.collection('users').doc(studentId).get();
+      final studentDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(studentId)
+          .get();
 
       if (!studentDoc.exists) continue;
 

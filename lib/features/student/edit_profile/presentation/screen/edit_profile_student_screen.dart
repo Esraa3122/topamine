@@ -8,6 +8,7 @@ import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/di/injection_container.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/language/lang_keys.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 
@@ -118,26 +119,52 @@ Future<void> pickImage() async {
               child: Column(
                 children: [
                   GestureDetector(
-                onTap: pickImage,
-                child: CircleAvatar(
-                radius: 50,
-                backgroundImage: selectedImage != null
-                    ? FileImage(selectedImage!)
-                    : (widget.user.userImage != null && widget.user.userImage!.isNotEmpty
+  onTap: pickImage,
+  child: Stack(
+    alignment: Alignment.center,
+    children: [
+      CircleAvatar(
+        radius: 50,
+        backgroundImage: selectedImage != null
+            ? FileImage(selectedImage!)
+            : (widget.user.userImage != null &&
+                    widget.user.userImage!.isNotEmpty
                 ? NetworkImage(widget.user.userImage!)
-                : const AssetImage('assets/images/core/user.png')),
+                : const AssetImage('assets/images/core/user.png'))
+                as ImageProvider,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
               ),
-              
-              ),
+            ),
+            child: const Icon(
+              Icons.camera_alt,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
                   SizedBox(height: 20.h),
                   CustomTextField(
                     controller: nameController,
-                    lable: 'الاسم',
+                    lable: context.translate(LangKeys.name),
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
                     controller: emailController,
-                    lable: 'البريد',
+                    lable: context.translate(LangKeys.email),
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(

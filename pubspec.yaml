@@ -45,6 +45,7 @@ dependencies:
   uuid: ^4.0.0
   video_player: ^2.8.1
   chewie: ^1.7.1
+  dotted_border: ^3.1.0
 
 
   # image picker
@@ -52,6 +53,8 @@ dependencies:
   permission_handler: ^12.0.1
   video_thumbnail: ^0.5.6
   open_filex: ^4.7.0
+  file_picker: ^10.2.0
+  cached_network_image: ^3.4.1
 
   # UI Animation
   animate_do: ^4.2.0
@@ -60,6 +63,7 @@ dependencies:
   awesome_snackbar_content: ^0.1.7
   awesome_dialog: ^3.2.1
   fluttertoast: ^8.2.12
+  shimmer_animation: ^2.2.2
 
   # Firebase
   firebase_core: ^3.15.0
@@ -67,6 +71,8 @@ dependencies:
   firebase_storage: ^12.4.7
   firebase_messaging: ^15.2.10
   flutter_local_notifications: ^19.4.0
+  google_sign_in: ^6.1.5
+  cloud_firestore: ^5.6.11
   
   # shared preferances
   shared_preferences: ^2.5.3
@@ -75,13 +81,9 @@ dependencies:
   # freezed
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
-  google_sign_in: ^6.1.5
-  cloud_firestore: ^5.6.11
-  cached_network_image: ^3.4.1
+
   intl: ^0.20.2
-  shimmer_animation: ^2.2.2
   provider: ^6.1.5
-  flutter_credit_card: ^4.1.0
   equatable: ^2.0.7
   bloc: ^9.0.0
 
@@ -95,11 +97,11 @@ dependencies:
   webview_flutter: ^4.13.0
   dio: ^5.8.0+1
   url_launcher: ^6.3.2
+  flutter_credit_card: ^4.1.0
 
   # Chat-Bot
   google_generative_ai: ^0.4.7
-  file_picker: ^10.2.0
-  dotted_border: ^3.1.0
+  
   
  
 

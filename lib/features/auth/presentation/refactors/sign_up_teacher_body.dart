@@ -1,18 +1,20 @@
+
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/core/common/animations/animate_do.dart';
-import 'package:test/core/common/toast/show_toast.dart';
+import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/core/style/color/colors_light.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
@@ -65,13 +67,19 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) async{
         if (state is AuthSuccess) {
-          ShowToast.showToastSuccessTop(
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Success!',
             message: context.translate(state.successMessage),
+            contentType: ContentType.success,
           );
           await context.pushNamedAndRemoveUntil(AppRoutes.login);
         } else if (state is AuthFailure) {
-          ShowToast.showToastErrorTop(
-            message: context.translate(state.errorMessage),
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Error!',
+            message: state.errorMessage,
+            contentType: ContentType.failure,
           );
         }
       },
@@ -133,10 +141,11 @@ class _SignUpTeacherBodyState extends State<SignUpTeacherBody> {
                 ),
                 //SignUpButton
                 if (state is AuthLoading)
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: ColorsLight.pinkLight,
-                    ),
+                   Center(
+                    child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),
                   )
                 else
                   SignUpButton(

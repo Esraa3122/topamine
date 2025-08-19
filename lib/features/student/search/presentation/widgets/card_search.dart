@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class CardSearch extends StatelessWidget {
@@ -13,38 +17,39 @@ class CardSearch extends StatelessWidget {
 
   final CoursesModel course;
   final bool showStatus;
+  String _formatTime(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          context,
-          AppRoutes.courseDetails,
-          arguments: course,
-        );
+        context.pushNamed(AppRoutes.courseDetails, arguments: course);
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 8.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
+
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(255, 212, 211, 211).withOpacity(0.8),
-              Colors.white.withOpacity(0.8),
+              context.color.mainColor!,
+              context.color.mainColor!.withOpacity(0.8),
             ],
             begin: const Alignment(0.36, 0.27),
             end: const Alignment(0.58, 0.85),
           ),
           boxShadow: [
             BoxShadow(
-              color: context.color.containerShadow1!.withOpacity(0.3),
-              offset: const Offset(0, 4),
-              blurRadius: 8,
+              color: context.color.bluePinkLight!,
+              offset: const Offset(0, 2),
+              blurRadius: 2,
             ),
             BoxShadow(
-              color: context.color.containerShadow2!.withOpacity(0.3),
-              offset: const Offset(0, 4),
+              color: context.color.containerShadow1!,
+              offset: const Offset(0, 2),
               blurRadius: 2,
             ),
           ],
@@ -71,22 +76,53 @@ class CardSearch extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        course.title,
-                        style: TextStyle(
+                      TextApp(
+                        text: course.title,
+                        maxLines: 2,
+                        textOverflow: TextOverflow.ellipsis,
+                        theme: context.textStyle.copyWith(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeightHelper.bold,
+                          color: context.color.textColor,
                         ),
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        course.teacherName,
-                        style: const TextStyle(color: Colors.black54),
+                      SizedBox(height: 6.h),
+                      TextApp(
+                        text: course.teacherName,
+                        theme: context.textStyle.copyWith(
+                          color: Colors.black54,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeightHelper.regular,
+                        ),
                       ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        'Created At: ${course.createdAt}',
-                        style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                      SizedBox(height: 6.h),
+                      TextApp(
+                        text:
+                            '${context.translate(LangKeys.price)} ${course.price} EGP',
+                        theme: context.textStyle.copyWith(
+                          color: context.color.bluePinkLight,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeightHelper.regular,
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      TextApp(
+                        text:
+                            '${context.translate(LangKeys.startDate)} ${_formatTime(course.createdAt)}',
+                        theme: context.textStyle.copyWith(
+                          color: Colors.grey,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeightHelper.regular,
+                        ),
+                      ),
+                      TextApp(
+                        text:
+                            '${context.translate(LangKeys.endDate)} ${_formatTime(course.endDate)}',
+                        theme: context.textStyle.copyWith(
+                          color: Colors.grey,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeightHelper.regular,
+                        ),
                       ),
                     ],
                   ),

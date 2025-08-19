@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/common/toast/buildawesomedialog.dart';
@@ -166,6 +167,14 @@ class _LoginBodyState extends State<LoginBody> {
                 ),
 
                 // LoginButton
+                if (state is AuthLoading)
+                   Center(
+                    child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),
+                  )
+                else
                 LoginButton(
                   onPressed: _login,
                 ),

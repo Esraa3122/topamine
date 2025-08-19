@@ -7,6 +7,7 @@ import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:test/features/student/home/presentation/cubit/teacher_cards_cubit.dart';
 import 'package:test/features/student/navigation/cubit/student_navigation_cubit.dart';
+import 'package:test/features/student/video_player/cubit/video_cubit.dart';
 import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
 
 final GetIt sl = GetIt.instance;
@@ -51,5 +52,7 @@ Future<void> _initMain() async {
 }
 
 Future<void> _initHome() async {
-  sl.registerFactory(TeacherCardsCubit.new);
+  sl
+    ..registerFactory(TeacherCardsCubit.new)
+    ..registerFactory(VideoCubit.new);
 }

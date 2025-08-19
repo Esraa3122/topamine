@@ -8,7 +8,6 @@ import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/profile/presentation/widgets/settings_card.dart';
-import 'package:test/features/teacher/profile/presentation/refactors/list_chat.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/about_us.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/contact_us.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/dark_mode_change.dart';
@@ -61,9 +60,9 @@ class SettingsListTeacher extends StatelessWidget {
               SettingsCard(
                 iconColor: const Color.fromARGB(255, 11, 0, 170),
                 icon: const Icon(Icons.message, color: Colors.white),
-                title: context.translate(LangKeys.notifications),
-                subtitle:
-                    '${context.translate(LangKeys.have)} $unreadCount ${context.translate(LangKeys.newmessage)} ',
+                title: context.translate(LangKeys.messages),
+                // subtitle:
+                //     '${context.translate(LangKeys.have)} $unreadCount ${context.translate(LangKeys.newmessage)} ',
                 badgeCount: unreadCount,
                 onTap: () async {
                   final chatsSnap = await FirebaseFirestore.instance
@@ -82,11 +81,8 @@ class SettingsListTeacher extends StatelessWidget {
                     }
                   }
 
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const StudentsListScreen(),
-                    ),
+                  await context.pushNamed(
+                    AppRoutes.studentListScreen,
                   );
                 },
               ),

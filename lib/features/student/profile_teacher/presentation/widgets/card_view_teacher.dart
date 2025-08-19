@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -51,6 +52,8 @@ class CardViewTeacher extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 course.imageUrl!,
+                errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.error),
                 width: 80.w,
                 height: 80.h,
                 fit: BoxFit.cover,
@@ -85,7 +88,7 @@ class CardViewTeacher extends StatelessWidget {
                     ),
                      SizedBox(height: 6.h),
                      TextApp(
-                      text: 'السعر: ${course.price} EGP',
+                      text: '${context.translate(LangKeys.price)} ${course.price} EGP',
                       theme: context.textStyle.copyWith(
                         color: context.color.bluePinkLight,
                         fontSize: 14.sp,
@@ -94,7 +97,7 @@ class CardViewTeacher extends StatelessWidget {
                     ),
                     SizedBox(height: 6.h),
                     TextApp(
-                      text: 'تاريخ البدء: ${_formatTime(course.createdAt)}',
+                      text: '${context.translate(LangKeys.startDate)} ${_formatTime(course.createdAt)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,
@@ -102,7 +105,7 @@ class CardViewTeacher extends StatelessWidget {
                       ),
                     ),
                      TextApp(
-                      text: 'تاريخ الانتهاء: ${_formatTime(course.endDate)}',
+                      text: '${context.translate(LangKeys.endDate)} ${_formatTime(course.endDate)}',
                       theme: context.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 12.sp,

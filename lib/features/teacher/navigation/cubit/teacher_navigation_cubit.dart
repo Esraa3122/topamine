@@ -8,17 +8,19 @@ part 'teacher_navigation_cubit.freezed.dart';
 class TeacherNavigationCubit extends Cubit<TeacherNavigationState> {
   TeacherNavigationCubit() : super(const TeacherNavigationState.initial());
 
-  NavBarEnum navBarEnum = NavBarEnum.home;
+  NavBarEnum2 navBarEnum = NavBarEnum2.home;
 
-  void selectedNavBarIcons(NavBarEnum viewEnum) {
-    if (viewEnum == NavBarEnum.home) {
-      navBarEnum = NavBarEnum.home;
-    } else if (viewEnum == NavBarEnum.search) {
-      navBarEnum = NavBarEnum.search;
-    } else if (viewEnum == NavBarEnum.booking) {
-      navBarEnum = NavBarEnum.booking;
-    } else if (viewEnum == NavBarEnum.profile) {
-      navBarEnum = NavBarEnum.profile;
+  void selectedNavBarIcons(NavBarEnum2 viewEnum) {
+    if (viewEnum == NavBarEnum2.home) {
+      navBarEnum = NavBarEnum2.home;
+    } 
+    // else if (viewEnum == NavBarEnum.search) {
+    //   navBarEnum = NavBarEnum.search;
+    // }
+     else if (viewEnum == NavBarEnum2.booking) {
+      navBarEnum = NavBarEnum2.booking;
+    } else if (viewEnum == NavBarEnum2.profile) {
+      navBarEnum = NavBarEnum2.profile;
     }
     emit(TeacherNavigationState.barSelectedIcons(navBarEnum: navBarEnum));
   }

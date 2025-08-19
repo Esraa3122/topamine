@@ -16,21 +16,26 @@ import 'package:test/features/splash/view/screen/splash_screen.dart';
 import 'package:test/features/student/all_courses/presentation/screen/all_courses_page.dart';
 import 'package:test/features/student/booking/presentation/screen/booking_student_screen.dart';
 import 'package:test/features/student/bot/presentation/screen/chatbot_screen.dart';
+import 'package:test/features/student/chat/presentation/screen/chat_screen.dart';
 import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
 import 'package:test/features/student/edit_profile/presentation/screen/edit_profile_student_screen.dart';
 import 'package:test/features/student/home/presentation/screens/home_student_screen.dart';
 import 'package:test/features/student/navigation/presentation/screen/navigation_student_screen.dart';
+import 'package:test/features/student/notification/notification_screen.dart';
+import 'package:test/features/student/video_player/cubit/video_cubit.dart';
+import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/student/profile/presentation/screens/profile_student_screen.dart';
 import 'package:test/features/student/profile_teacher/presentation/screen/view_profile_teacher_screen.dart';
 import 'package:test/features/student/search/presentation/screen/search_page.dart';
 import 'package:test/features/teacher/all_courses/presentation/screen/all_courses_teacher_profile_page.dart';
 import 'package:test/features/teacher/booking/presentation/screen/booking_teacher_screen.dart';
-import 'package:test/features/teacher/course_details/presentation/screen/course_details_teacher_profile_screen.dart';
 import 'package:test/features/teacher/course_detailse_for_view_profile/screen/course_detailse_for_view_profile_screen.dart';
 import 'package:test/features/teacher/edit_profile/presentation/screens/edit_profile_teacher_screen.dart';
 import 'package:test/features/teacher/home/presentation/screen/home_teacher_screen.dart';
 import 'package:test/features/teacher/navigation/presentation/screens/navigation_teacher_screen.dart';
+import 'package:test/features/teacher/profile/presentation/refactors/about_us_screen.dart';
+import 'package:test/features/teacher/profile/presentation/refactors/list_chat.dart';
 import 'package:test/features/teacher/profile/presentation/screens/profile_teacher_screen.dart';
 
 class AppRoutes {
@@ -57,13 +62,16 @@ class AppRoutes {
   static const String studentProfile = 'studentProfile';
   static const String paymentDetailsView = 'paymentDetailsView';
   static const String waitingApproval = 'waitingApproval';
+  static const String chat = 'chat';
   static const String chatBoot = 'chatBoot';
-  static const String courseDetailsTeacherProfile =
-      'courseDetailsTeacherProfile';
   static const String courseDetailseForViewProfileScreen =
       'courseDetailseForViewProfileScreen';
   static const String editProfileStudentScreen = 'editProfileStudentScreen';
   static const String editProfileTeacherScreen = 'editProfileTeacherScreen';
+  static const String videoPlayerScreen = 'videoPlayerScreen';
+  static const String aboutUs = 'aboutUs';
+  static const String notifications = 'notifications';
+  static const String studentListScreen = 'studentListScreen';
 
   static Route<void> onGenerateRoute(RouteSettings settings) {
     final arg = settings.arguments;
@@ -126,12 +134,6 @@ class AppRoutes {
         return BaseRoute(
           page: CourseDetailsScreen(course: arg! as CoursesModel),
         );
-      case courseDetailsTeacherProfile:
-        return BaseRoute(
-          page: CourseDetailsTeacherProfileScreen(
-            course: arg! as CoursesModel,
-          ),
-        );
       case courseDetailseForViewProfileScreen:
         return BaseRoute(
           page: CourseDetailseForViewProfileScreen(
@@ -160,8 +162,25 @@ class AppRoutes {
             user: arg! as UserModel,
           ),
         );
+      case chat:
+        return BaseRoute(
+          page: ChatScreen(chatId: arg! as String),
+        );
       case chatBoot:
         return BaseRoute(page: const ChatbotScreen());
+      case videoPlayerScreen:
+        return BaseRoute(
+          page: BlocProvider(
+            create: (context) => sl<VideoCubit>(),
+            child: VideoPlayerPage(course: arg! as CoursesModel),
+          ),
+        );
+      case aboutUs:
+        return BaseRoute(page: const AboutUsPage());
+      case notifications:
+        return BaseRoute(page: const NotificationScreen());
+      case studentListScreen:
+        return BaseRoute(page: const StudentsListScreen());
       default:
         return BaseRoute(page: const PageUnderBuildScreen());
     }

@@ -21,7 +21,10 @@ class AuthDataSource {
   }
 
   Future<UserCredential> signInWithEmail(String email, String password) async {
-    return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    return await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   Future<String?> uploadProfileImage(File file) async {
@@ -32,7 +35,10 @@ class AuthDataSource {
     await _firestore.collection('users').doc(uid).set(user.toJson());
   }
 
-  Future<void> updateUserData(String uid, Map<String, dynamic> updatedFields) async {
+  Future<void> updateUserData(
+    String uid,
+    Map<String, dynamic> updatedFields,
+  ) async {
     await _firestore.collection('users').doc(uid).update(updatedFields);
   }
 

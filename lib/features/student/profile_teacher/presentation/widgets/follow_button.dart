@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/student/chat/presentation/screen/chat_screen.dart';
 
 class FollowButton extends StatefulWidget {
@@ -152,12 +153,7 @@ final studentEmail = user?.email ?? '';
                           ? '${studentId}_$teacherId'
                           : '${teacherId}_$studentId';
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(chatId: chatId),
-                        ),
-                      );
+                      context.pushNamed(AppRoutes.chat, arguments: chatId);
                     },
 
                     icon: const Padding(

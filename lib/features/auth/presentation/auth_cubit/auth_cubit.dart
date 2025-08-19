@@ -53,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
       } else if (e.code == 'email-already-in-use') {
         emit(
           AuthFailure(
-            errorMessage: LangKeys.theAccountAlreadyExistsForThatEmail,
+            errorMessage:'البريد الإلكتروني مستخدم بالفعل.',
           ),
         );
       }

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class BookingCourseCardStudent extends StatelessWidget {
@@ -16,7 +16,7 @@ class BookingCourseCardStudent extends StatelessWidget {
   final CoursesModel course;
   final bool showStatus;
 
-   String formatDuration(Duration duration) {
+  String formatDuration(Duration duration) {
     if (duration.isNegative) {
       return 'انتهى';
     }
@@ -43,30 +43,28 @@ class BookingCourseCardStudent extends StatelessWidget {
         }
 
         final doc = snapshot.data!.docs.first;
-        final enrollmentId = doc.id;
-        final data = doc.data() as Map<String, dynamic>;
+        // final enrollmentId = doc.id;
+        final data = doc.data()! as Map<String, dynamic>;
 
-        double progress = (data['progress'] ?? 0.0) as double;
-        String status = data['statusProgress'] as String? ?? 'inProgress';
+        final progress = (data['progress'] ?? 0.0) as double;
+        final status = data['statusProgress'] as String? ?? 'inProgress';
 
-        final Color statusShadowColor = status == 'completed'
-    ? Colors.green[300]!.withOpacity(0.3)
-    : Colors.orange[300]!.withOpacity(0.3);
+        final statusShadowColor = status == 'completed'
+            ? Colors.green[300]!.withOpacity(0.3)
+            : Colors.orange[300]!.withOpacity(0.3);
 
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => VideoPlayerPage(course: course),
-              ),
+            context.pushNamed(
+              AppRoutes.videoPlayerScreen,
+              arguments: course,
             );
           },
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 8.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-             
+
               gradient: LinearGradient(
                 colors: [
                   context.color.mainColor!,
@@ -125,7 +123,7 @@ class BookingCourseCardStudent extends StatelessWidget {
                           ),
                           SizedBox(height: 2.h),
                           Text(
-                            'متبقى ${formatDuration(difference)} على انتهاء الكورس',
+                        'متبقى ${formatDuration(difference)} على انتهاء الكورس',
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 12.sp,
@@ -136,8 +134,8 @@ class BookingCourseCardStudent extends StatelessWidget {
                             value: progress,
                             backgroundColor: Colors.grey.shade300,
                             color: status == 'completed'
-                                    ? Colors.green
-                                    : Colors.orange[300],
+                                ? Colors.green
+                                : Colors.orange[300],
                             borderRadius: BorderRadius.circular(8),
                             minHeight: 6,
                           ),

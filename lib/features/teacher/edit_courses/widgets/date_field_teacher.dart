@@ -11,7 +11,7 @@ class DateField extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
+        border: Border.all(color: Colors.lightBlueAccent),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -23,7 +23,7 @@ class DateField extends StatelessWidget {
             date != null
                 ? DateFormat('yyyy-MM-dd').format(date!)
                 : 'اختر التاريخ',
-            style: const TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14, color: Colors.lightBlueAccent),
           ),
         ],
       ),

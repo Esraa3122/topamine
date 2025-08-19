@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_shimmer_card.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/edit_courses/screen/edit_courses_teacher_screen.dart';
@@ -74,11 +76,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
         }).toList();
 
         if (filteredDocs.isEmpty) {
-          return Center(
-            child: Text(
-              context.translate(LangKeys.noCourses),
-            ),
-          );
+          return Center(child: Lottie.asset(AppImages.emptyBox2));
         }
 
         return SizedBox(
@@ -132,7 +130,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                       ...course,
                     });
                     context.pushNamed(
-                      AppRoutes.courseDetailsTeacherProfile,
+                      AppRoutes.courseDetailseForViewProfileScreen,
                       arguments: courseModel,
                     );
                   },
@@ -178,15 +176,19 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
-                                  'تاريخ البداية: ${_formatTime((course['createdAt'] as Timestamp?)?.toDate())}',
-                                  style: const TextStyle(color: Colors.black54),
+                                  '${context.translate(LangKeys.startDate)} ${_formatTime((course['createdAt'] as Timestamp?)?.toDate())}',
+                                  style: TextStyle(
+                                    color: context.color.textColor,
+                                  ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
-                                  'تاريخ الانتهاء: ${_formatTime((course['endDate'] as Timestamp?)?.toDate())}',
-                                  style: const TextStyle(color: Colors.black54),
+                                  '${context.translate(LangKeys.endDate)} ${_formatTime((course['endDate'] as Timestamp?)?.toDate())}',
+                                  style: TextStyle(
+                                    color: context.color.textColor,
+                                  ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -219,7 +221,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                                   ),
                                 );
                               },
-                              icon: Icon(Icons.edit, color: Colors.amber),
+                              icon: const Icon(Icons.edit, color: Colors.amber),
                             ),
                             SizedBox(height: 8.h),
                             IconButton(
@@ -245,7 +247,7 @@ class _BookingCourseCardTeacherState extends State<BookingCourseCardTeacher> {
                                       );
                                     });
                               },
-                              icon: Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete, color: Colors.red),
                             ),
                           ],
                         ),

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/teacher/profile/presentation/refactors/about_us_screen.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -24,12 +24,7 @@ class AboutUs extends StatelessWidget {
 
         InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AboutUsPage(),
-              ),
-            );
+            context.pushNamed(AppRoutes.aboutUs);
           },
 
           child: Row(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/custom_app_bar.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/images/app_images.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({super.key});
@@ -114,7 +115,10 @@ class _AboutUsPageState extends State<AboutUsPage>
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.grey.shade50, context.color.mainColor!,],
+              colors: [
+                Colors.grey.shade50,
+                context.color.mainColor!,
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -158,7 +162,11 @@ class _AboutUsPageState extends State<AboutUsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'About Us', color: context.color.textColor!, backgroundColor: context.color.mainColor,),
+      appBar: CustomAppBar(
+        title: 'About Us',
+        color: context.color.textColor!,
+        backgroundColor: context.color.mainColor,
+      ),
       body: Container(
         decoration: BoxDecoration(
           // color: context.color.mainColor,
@@ -180,9 +188,7 @@ class _AboutUsPageState extends State<AboutUsPage>
                     width: double.infinity,
                     decoration: BoxDecoration(
                       image: const DecorationImage(
-                        image: NetworkImage(
-                          'https://cdn.cpointkw.com/content/20241024205728/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A.webp',
-                        ),
+                        image: AssetImage(AppImages.home1),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: const BorderRadius.vertical(

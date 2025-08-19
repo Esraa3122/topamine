@@ -1,70 +1,168 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:test/core/extensions/context_extension.dart';
 
 class RatingTabWidget extends StatelessWidget {
-  const RatingTabWidget({required this.lectureTitle, super.key});
-  final String lectureTitle;
+  const RatingTabWidget({
+    required this.courseId, super.key,
+  });
+
+  final String courseId;
 
   @override
   Widget build(BuildContext context) {
-    if (lectureTitle.isEmpty || lectureTitle == 'There are no lectures.') {
-      return const Center(
-        child: Text(
-          'Opinions cannot be uploaded due to lack of a valid lecture title.',
-        ),
-      );
-    }
-
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('lectures')
-          .doc(lectureTitle.trim())
+          .collection('courses')
+          .doc(courseId)
           .collection('ratings')
           .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              'An error occurred while loading the opinions: ${snapshot.error}',
-            ),
-          );
-        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        final docs = snapshot.data?.docs ?? [];
-        if (docs.isEmpty) {
-          return const Center(child: Text('There are no reviews yet.'));
-        }
-        return ListView.separated(
-          padding: const EdgeInsets.all(12),
-          itemCount: docs.length,
-          separatorBuilder: (_, __) => const Divider(),
-          itemBuilder: (context, index) {
-            final data = docs[index].data() as Map<String, dynamic>? ?? {};
-            final rating = data['rating'] ?? 0;
-            final name = data['name'] ?? 'طالب مجهول';
-            final comment = data['comment']?.toString() ?? '';
-            final avatarUrl = data['avatar']?.toString() ?? '';
 
-            return ListTile(
-              leading: avatarUrl.isNotEmpty
-                  ? CircleAvatar(backgroundImage: NetworkImage(avatarUrl))
-                  : const CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-              title: Row(
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('لا توجد تقييمات بعد'));
+        }
+
+        final ratings = snapshot.data!.docs;
+
+        final totalRatings = ratings.length;
+        final avgRating = ratings.fold<double>(
+              0,
+              (sum, doc) =>
+                  sum + ((doc['rating'] as num?)?.toDouble() ?? 0),
+            ) /
+            totalRatings;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
                 children: [
-                  Expanded(child: Text(name.toString())),
-                  const Icon(Icons.star, color: Colors.amber, size: 18),
-                  Text(' $rating'),
+                  Text(
+                    'متوسط التقييم',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.blue.shade800,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (i) {
+                      return Icon(
+                        i < avgRating.round()
+                            ? Icons.star
+                            : Icons.star_border,
+                        color: Colors.amber,
+                        size: 28,
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    "${avgRating.toStringAsFixed(1)} / 5 من $totalRatings تقييم",
+                    style: TextStyle(fontSize: 14, color: context.color.textColor),
+                  ),
                 ],
               ),
-              subtitle: Text(comment),
-            );
-          },
+            ),
+
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(12),
+                itemCount: ratings.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final data =
+                      ratings[index].data() as Map<String, dynamic>;
+
+                  final name = data['name'] ?? "مستخدم";
+                  final comment = data['comment'] ?? "";
+                  final rating = (data['rating'] as num?)?.toInt() ?? 0;
+                  final avatar = data['avatar'] ?? "";
+
+                  return Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: context.color.mainColor,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.15),
+                          offset: const Offset(0, 3),
+                          blurRadius: 6,
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.blueGrey.shade100,
+                          backgroundImage: avatar.isNotEmpty as bool
+                              ? NetworkImage(avatar.toString())
+                              : null,
+                          child: avatar.isEmpty as bool
+                              ? const Icon(Icons.person, color: Colors.white)
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name.toString(),
+                                style: TextStyle(
+                                  color: context.color.textColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: List.generate(5, (i) {
+                                  return Icon(
+                                    i < rating
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    color: Colors.amber,
+                                    size: 20,
+                                  );
+                                }),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                comment.toString(),
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );

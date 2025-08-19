@@ -7,7 +7,6 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
-import 'package:test/features/student/notification/notification_screen.dart';
 import 'package:test/features/student/profile/presentation/widgets/settings_card.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/about_us.dart';
 import 'package:test/features/teacher/profile/presentation/widgets/contact_us.dart';
@@ -64,12 +63,7 @@ class SettingsList extends StatelessWidget {
                     await doc.reference.update({'read': true});
                   }
 
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const NotificationScreen(),
-                    ),
-                  );
+                  await context.pushNamed(AppRoutes.notifications);
                 },
                 badgeCount: notificationCount,
               ),

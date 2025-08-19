@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/notification/notifications_item.dart';
 
 class NotificationBody extends StatelessWidget {
@@ -15,29 +18,15 @@ class NotificationBody extends StatelessWidget {
     if (currentUserId == null) {
       return const Center(child: Text('User not logged in'));
     }
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .collection('notifications')
-          .orderBy('createdAt', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('لا يوجد إشعارات'));
-        }
-
-        final notifications = snapshot.data!.docs;
-
-        return Scaffold(
-          appBar: AppBar(
-        title: const Text(
-          'قائمة الإشعارات',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          context.translate(LangKeys.listNotifications),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         backgroundColor: context.color.bluePinkLight,
@@ -50,12 +39,35 @@ class NotificationBody extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-          body: Padding(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUserId)
+            .collection('notifications')
+            .orderBy('createdAt', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Lottie.asset(
+                AppImages.emptyBox2,
+                width: 326.w,
+                height: 300.h,
+              ),
+            );
+          }
+
+          final notifications = snapshot.data!.docs;
+          return Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: ListView.separated(
               itemCount: notifications.length,
               itemBuilder: (context, index) {
-                final data = notifications[index].data()! as Map<String, dynamic>;
+                final data =
+                    notifications[index].data()! as Map<String, dynamic>;
                 return NotificationsItem(
                   title: data['title']?.toString() ?? '',
                   body: data['message']?.toString() ?? '',
@@ -65,9 +77,9 @@ class NotificationBody extends StatelessWidget {
               },
               separatorBuilder: (context, index) => SizedBox(height: 10.h),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

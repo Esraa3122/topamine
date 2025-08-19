@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class LectureListWidget extends StatelessWidget {
@@ -31,14 +32,14 @@ class LectureListWidget extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 const Color.fromARGB(255, 212, 211, 211).withOpacity(0.8),
-                Colors.white.withOpacity(0.8),
+                context.color.mainColor!.withOpacity(0.8),
               ],
               begin: const Alignment(0.36, 0.27),
               end: const Alignment(0.58, 0.85),
             ),
             border: Border.all(
               color: isCurrent ? Colors.blue : Colors.transparent,
-              width: 2,
+              width: 1,
             ),
             boxShadow: [
               BoxShadow(

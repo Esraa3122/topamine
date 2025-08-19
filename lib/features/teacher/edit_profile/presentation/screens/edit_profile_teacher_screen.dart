@@ -129,18 +129,42 @@ class _EditProfileTeacherScreenState extends State<EditProfileTeacherScreen> {
                   children: [
                     GestureDetector(
                       onTap: pickImage,
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: selectedImage != null
-                            ? FileImage(selectedImage!)
-                            : (widget.user.userImage != null &&
-                                      widget.user.userImage!.isNotEmpty
-                                  ? NetworkImage(widget.user.userImage!)
-                                  : const AssetImage(
-                                      'assets/images/core/user.png',
-                                    )),
-                      ),
-                    ),
+                      child: Stack(
+    alignment: Alignment.center,
+    children: [
+      CircleAvatar(
+        radius: 50,
+        backgroundImage: selectedImage != null
+            ? FileImage(selectedImage!)
+            : (widget.user.userImage != null &&
+                    widget.user.userImage!.isNotEmpty
+                ? NetworkImage(widget.user.userImage!)
+                : const AssetImage('assets/images/core/user.png'))
+                as ImageProvider,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+            ),
+            child: const Icon(
+              Icons.camera_alt,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
                     SizedBox(height: 20.h),
                     CustomTextField(
                       controller: nameController,

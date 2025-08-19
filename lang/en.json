@@ -53,6 +53,9 @@
     "complete_your_account_to_start_student": "Complete your account to start learning",
     "grade": "Select grade",
     "please_select_grade": "Please select grade",
+    "subject": "Select subject",
+    "please_select_subject": "Please enter subject",
+    "subject_required": "Subject is required",
     "account_created_successfully": "Account created successfully",
     "the_account_already_exists_for_that_email": "The account already exists for that email",
     "courses_for_you": "Courses For You",
@@ -123,5 +126,8 @@
     "chat": "Chat",
     "noUserData": "No user data found",
     "subscribed_to_notifications": "Notifications have been subscribed",
-    "unsubscribed_to_notifications": "Notifications have been unsubscribed"
+    "unsubscribed_to_notifications": "Notifications have been unsubscribed",
+    "list_students": "List Students",
+    "messages": "Messages",
+    "list_notifications": "List Notifications"
 }

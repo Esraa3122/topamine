@@ -13,15 +13,21 @@ void buildAwesomeDialogError(String title, String desc, BuildContext context) {
   ).show();
 }
 
-void buildAwesomeDialogSucces(String title, String desc, BuildContext context) {
+void buildAwesomeDialogSucces(
+  String title,
+  String desc,
+  String btnOkText,
+  BuildContext context,
+  void Function()? btnOkOnPress,
+) {
   AwesomeDialog(
     context: context,
     dialogType: DialogType.success,
     title: title,
     desc: desc,
-    btnOkText: 'OK',
-    btnOkColor: Colors.lightBlue,
-    btnOkOnPress: () {},
+    btnOkText: btnOkText,
+    btnOkColor: Colors.green,
+    btnOkOnPress: btnOkOnPress,
   ).show();
 }
 

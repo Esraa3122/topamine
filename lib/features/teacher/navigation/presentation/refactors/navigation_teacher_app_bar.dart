@@ -23,7 +23,7 @@ class NavigationTeacherAppBar extends StatelessWidget
       title: BlocBuilder<TeacherNavigationCubit, TeacherNavigationState>(
         builder: (context, state) {
           final cubit = context.read<TeacherNavigationCubit>();
-          if (cubit.navBarEnum == NavBarEnum.home) {
+          if (cubit.navBarEnum == NavBarEnum2.home) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -47,31 +47,33 @@ class NavigationTeacherAppBar extends StatelessWidget
                 ),
               ],
             );
-          } else if (cubit.navBarEnum == NavBarEnum.search) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomFadeInRight(
-                  duration: 800,
-                  child: TextApp(
-                    text: context.translate(LangKeys.search),
-                    theme: context.textStyle.copyWith(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: context.color.textColor,
-                    ),
-                  ),
-                ),
-                CustomFadeInLeft(
-                  duration: 800,
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 40.w,
-                  ),
-                ),
-              ],
-            );
-          } else if (cubit.navBarEnum == NavBarEnum.booking) {
+          } 
+          // else if (cubit.navBarEnum == NavBarEnum.search) {
+          //   return Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       CustomFadeInRight(
+          //         duration: 800,
+          //         child: TextApp(
+          //           text: context.translate(LangKeys.search),
+          //           theme: context.textStyle.copyWith(
+          //             fontSize: 20.sp,
+          //             fontWeight: FontWeightHelper.bold,
+          //             color: context.color.textColor,
+          //           ),
+          //         ),
+          //       ),
+          //       CustomFadeInLeft(
+          //         duration: 800,
+          //         child: Image.asset(
+          //           AppImages.logo,
+          //           width: 40.w,
+          //         ),
+          //       ),
+          //     ],
+          //   );
+          // } 
+          else if (cubit.navBarEnum == NavBarEnum2.booking) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -95,7 +97,7 @@ class NavigationTeacherAppBar extends StatelessWidget
                 ),
               ],
             );
-          } else if (cubit.navBarEnum == NavBarEnum.profile) {
+          } else if (cubit.navBarEnum == NavBarEnum2.profile) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

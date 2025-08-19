@@ -84,9 +84,9 @@ if (!watchedVideos.contains(lectureKey) && lectureKey.isNotEmpty) {
 }
 
 final totalLectures = widget.course.lectures?.length ?? 1;
-double progress = watchedVideos.length / totalLectures;
+final progress = watchedVideos.length / totalLectures;
 
-String status = progress >= 1.0 ? 'completed' : 'inProgress';
+final status = progress >= 1.0 ? 'completed' : 'inProgress';
 
 await doc.reference.update({
   'watchedVideos': watchedVideos,
@@ -106,22 +106,37 @@ await doc.reference.update({
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton:
-          _tabController.index == 1 &&
-              selectedLecture.title != 'لا توجد محاضرات'
-          ? FloatingActionButton(
-              onPressed: () => showRatingDialog(
-                context,
-                selectedLecture.title,
-              ),
-              tooltip: 'أضف تقييم',
-              backgroundColor: context.color.mainColor,
-              child: const Icon(Icons.rate_review),
-            )
-          : null,
-      appBar: CustomAppBar(
-        title: context.translate(LangKeys.videoPlayer),
-        color: context.color.textColor,
-        backgroundColor: context.color.mainColor,
+    _tabController.index == 1 && widget.course.id != null
+        ? FloatingActionButton(
+            onPressed: () => showRatingDialog(
+              context,
+              widget.course.id!,
+            ),
+            tooltip: 'أضف تقييم',
+            backgroundColor: context.color.bluePinkLight,
+            child: Icon(Icons.rate_review, color: Colors.white),
+          )
+        : null,
+
+      appBar: AppBar(
+        title: Text(
+          context.translate(LangKeys.videoPlayer),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: context.color.bluePinkLight,
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,9 +147,9 @@ await doc.reference.update({
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.25,
               child: VideoPlayerWidget(
-  videoUrl: selectedLecture.videoUrl,
-  onVideoCompleted: _handleVideoCompleted,
-),
+                videoUrl: selectedLecture.videoUrl,
+                onVideoCompleted: _handleVideoCompleted,
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -169,9 +184,10 @@ await doc.reference.update({
                         onLectureSelected: _changeLecture,
                       )
                     : RatingTabWidget(
-                        key: ValueKey(selectedLecture.title),
-                        lectureTitle: selectedLecture.title,
-                      ),
+                      key: ValueKey(widget.course.id),
+                      courseId: widget.course.id!,
+                  ),
+
               ),
             ),
           ),

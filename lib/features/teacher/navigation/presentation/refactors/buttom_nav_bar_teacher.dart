@@ -9,31 +9,29 @@ import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.
 class ButtomNavBarTeacher extends StatelessWidget {
   const ButtomNavBarTeacher({super.key});
 
-  int _navEnumToIndex(NavBarEnum navEnum) {
+  int _navEnumToIndex(NavBarEnum2 navEnum) {
     switch (navEnum) {
-      case NavBarEnum.home:
+      case NavBarEnum2.home:
         return 0;
-      case NavBarEnum.search:
+      // case NavBarEnum.search:
+      //   return 1;
+      case NavBarEnum2.booking:
         return 1;
-      case NavBarEnum.booking:
+      case NavBarEnum2.profile:
         return 2;
-      case NavBarEnum.profile:
-        return 3;
     }
   }
 
-  NavBarEnum _indexToNavEnum(int index) {
+  NavBarEnum2 _indexToNavEnum(int index) {
     switch (index) {
       case 0:
-        return NavBarEnum.home;
+        return NavBarEnum2.home;
       case 1:
-        return NavBarEnum.search;
+        return NavBarEnum2.booking;
       case 2:
-        return NavBarEnum.booking;
-      case 3:
-        return NavBarEnum.profile;
+        return NavBarEnum2.profile;
       default:
-        return NavBarEnum.home;
+        return NavBarEnum2.home;
     }
   }
 
@@ -80,12 +78,12 @@ class ButtomNavBarTeacher extends StatelessWidget {
                     icon: Icon(Icons.home),
                     label: '',
                   ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.search),
+                  //   label: '',
+                  // ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.calendar_month),
+                    icon: Icon(Icons.video_collection_outlined),
                     label: '',
                   ),
                   BottomNavigationBarItem(

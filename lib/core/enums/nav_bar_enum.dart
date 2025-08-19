@@ -4,3 +4,9 @@ enum NavBarEnum {
   booking,
   profile,
 }
+
+enum NavBarEnum2 {
+  home,
+  booking,
+  profile,
+}

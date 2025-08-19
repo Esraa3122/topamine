@@ -27,6 +27,7 @@ class _ForgetPasswordBottonState extends State<ForgetPasswordBotton> {
         theme: context.textStyle.copyWith(
           fontSize: 15.sp,
           fontWeight: FontWeightHelper.bold,
+          color: Colors.white
         ),
       ),
     );

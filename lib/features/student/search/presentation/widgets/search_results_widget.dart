@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/search/presentation/widgets/card_search.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -40,7 +42,9 @@ class SearchResultsWidget extends StatelessWidget {
     }
 
     if (teachers.isEmpty && courses.isEmpty) {
-      results.add(const Center(child: Text('No results found')));
+      results.add(
+        Lottie.asset(AppImages.emptyBox2, width: 326.w, height: 300.h),
+      );
     } else {
       for (var course in courses) {
         results.add(

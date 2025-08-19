@@ -6,6 +6,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/utils/pickFileUtils.dart';
@@ -95,7 +97,6 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
   }) async {
     try {
       if (isNetwork) {
-        // حمل الفيديو مؤقتًا
         final tempDir = Directory.systemTemp;
         final tempPath =
             '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.mp4';
@@ -118,7 +119,6 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
           return null;
         }
       } else {
-        // فيديو محلي
         return await VideoThumbnail.thumbnailData(
           video: videoPath,
           imageFormat: ImageFormat.PNG,
@@ -263,21 +263,25 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'إضافة كورس',
-          style: TextStyle(color: Colors.white),
+          'تعديل كورس',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: Colors.blue,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
+        backgroundColor: context.color.bluePinkLight,
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        shadowColor: Colors.tealAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: BlocListener<EditCourseCubit, EditCourseState>(
+      body: BlocConsumer<EditCourseCubit, EditCourseState>(
         listener: (context, state) {
           if (state is EditCourseSuccess) {
             AwesomeSnackBar.show(
@@ -295,297 +299,373 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
             );
           }
         },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'صورة الكورس',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: context.color.textColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: pickImage,
-                  child: DottedBorder(
-                    options: const RoundedRectDottedBorderOptions(
-                      radius: Radius.circular(8),
-                      dashPattern: [6, 3],
-                      color: Colors.teal,
-                      strokeWidth: 1.5,
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 150,
-                      alignment: Alignment.center,
-                      child: imageFile == null
-                          ? (widget.coursesModel.imageUrl != null
-                                ? ClipRRect(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'صورة الكورس',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: context.color.textColor,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: pickImage,
+                        child: DottedBorder(
+                          options: RoundedRectDottedBorderOptions(
+                            radius: const Radius.circular(8),
+                            dashPattern: [6, 3],
+                            color: context.color.bluePinkLight!,
+                            strokeWidth: 1.5,
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            alignment: Alignment.center,
+                            child: imageFile == null
+                                ? (widget.coursesModel.imageUrl != null
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          child: Image.network(
+                                            widget.coursesModel.imageUrl!,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: 150,
+                                          ),
+                                        )
+                                      : Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.camera_alt_outlined,
+                                              size: 40,
+                                              color:
+                                                  context.color.bluePinkLight,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              'رفع صورة الكورس',
+                                              style: TextStyle(
+                                                color:
+                                                    context.color.bluePinkLight,
+                                              ),
+                                            ),
+                                          ],
+                                        ))
+                                : ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      widget.coursesModel.imageUrl!,
+                                    child: Image.file(
+                                      imageFile!,
                                       fit: BoxFit.cover,
                                       width: double.infinity,
                                       height: 150,
                                     ),
-                                  )
-                                : const Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.camera_alt_outlined,
-                                        size: 40,
-                                        color: Colors.teal,
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        'رفع صورة الكورس',
-                                        style: TextStyle(color: Colors.teal),
-                                      ),
-                                    ],
-                                  ))
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                imageFile!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 150,
-                              ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: titleController,
+                        style: TextStyle(
+                          color: context.color.textColor,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'عنوان الكورس',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: const OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
                             ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'عنوان الكورس',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: subTitleController,
-                  decoration: const InputDecoration(
-                    labelText: 'العنوان الفرعي',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: subjectController,
-                  decoration: const InputDecoration(
-                    labelText: 'المادة',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => pickDate(true),
-                        child: DateField(
-                          label: 'تاريخ البداية',
-                          date: startDate,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
                         ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => pickDate(false),
-                        child: DateField(
-                          label: 'تاريخ النهاية',
-                          date: endDate,
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: subTitleController,
+                        style: TextStyle(
+                          color: context.color.textColor,
                         ),
+                        decoration: InputDecoration(
+                          labelText: 'العنوان الفرعي',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'السعر',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: gradeLevelController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'الصف الدراسي',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: termController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'الترم',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'المحاضرات',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.teal,
-                        // backgroundColor: Colors.teal,
-                        // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(12),
-                        // ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: subjectController,
+                        style: TextStyle(
+                          color: context.color.textColor,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'المادة',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
                       ),
-                      onPressed: addLecture,
-                      icon: const Icon(Icons.add_circle_outline),
-                      label: const Text('أضف محاضرة'),
-                    ),
-                  ],
-                ),
-                ...lectures.asMap().entries.map((entry) {
-                  final idx = entry.key;
-                  final lecture = entry.value;
-                  return Card(
-                    color: context.color.mainColor,
-                    elevation: 4,
-                    shadowColor: context.color.bluePinkLight!.withOpacity(
-                      0.5,
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 8),
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.teal,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Text(
-                                  'محاضرة ${idx + 1}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => pickDate(true),
+                              child: DateField(
+                                label: 'تاريخ البداية',
+                                date: startDate,
                               ),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () => removeLecture(idx),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller:
-                                lecture['title'] as TextEditingController,
-                            decoration: const InputDecoration(
-                              labelText: 'اسم المحاضرة',
-                              border: OutlineInputBorder(),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => pickDate(false),
+                              child: DateField(
+                                label: 'تاريخ النهاية',
+                                date: endDate,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: priceController,
+                        style: TextStyle(
+                          color: context.color.textColor,
+                        ),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'السعر',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: gradeLevelController,
+                        style: TextStyle(
+                          color: context.color.textColor,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'الصف الدراسي',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: termController,
+                        style: TextStyle(
+                          color: context.color.textColor,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'الترم',
+                          labelStyle: TextStyle(
+                            color: context.color.textColor,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: context.color.bluePinkLight!,
+                            ),
+                          ),
+                        ),
+                        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Text(
-                            'فيديو',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          DottedBorder(
-                            options: const RoundedRectDottedBorderOptions(
-                              radius: Radius.circular(8),
-                              dashPattern: [8, 4],
-                              strokeWidth: 2,
-                              color: Colors.teal,
-                              padding: EdgeInsets.all(16),
+                            'المحاضرات',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: context.color.textColor,
                             ),
-                            child: InkWell(
-                              onTap: () => pickLectureFile(idx, 'video'),
-                              child: lecture['video'] != null
-                                  ? FutureBuilder<Uint8List?>(
-                                      future: _generateThumbnail(
-                                        (lecture['video'] as File).path,
-                                        isNetwork: false,
+                          ),
+                          TextButton.icon(
+                            style: TextButton.styleFrom(
+                              foregroundColor: context.color.bluePinkLight,
+                            ),
+                            onPressed: addLecture,
+                            icon: const Icon(Icons.add_circle_outline),
+                            label: const Text('أضف محاضرة'),
+                          ),
+                        ],
+                      ),
+                      ...lectures.asMap().entries.map((entry) {
+                        final idx = entry.key;
+                        final lecture = entry.value;
+                        return Card(
+                          color: context.color.mainColor,
+                          elevation: 4,
+                          shadowColor: context.color.bluePinkLight!.withOpacity(
+                            0.5,
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
                                       ),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const SizedBox(
-                                            height: 100,
-                                            child: Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          );
-                                        }
-                                        if (snapshot.hasData) {
-                                          return Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                child: Image.memory(
-                                                  snapshot.data!,
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                  height: 100,
-                                                ),
-                                              ),
-                                              const Icon(
-                                                Icons.play_circle_fill,
-                                                size: 40,
-                                                color: Colors.white,
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                        return const Icon(
-                                          Icons.videocam,
-                                          color: Colors.teal,
-                                        );
-                                      },
-                                    )
-                                  : (lecture['videoUrl'] != null
+                                      decoration: BoxDecoration(
+                                        color: context.color.bluePinkLight,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        'محاضرة ${idx + 1}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () => removeLecture(idx),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller:
+                                      lecture['title'] as TextEditingController,
+                                  style: TextStyle(
+                                    color: context.color.textColor,
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelText: 'اسم المحاضرة',
+                                    labelStyle: TextStyle(
+                                      color: context.color.textColor,
+                                    ),
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: context.color.bluePinkLight!,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: context.color.bluePinkLight!,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'فيديو',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                DottedBorder(
+                                  options: RoundedRectDottedBorderOptions(
+                                    radius: const Radius.circular(8),
+                                    dashPattern: const [8, 4],
+                                    strokeWidth: 2,
+                                    color: context.color.bluePinkLight!,
+                                    padding: const EdgeInsets.all(16),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () => pickLectureFile(idx, 'video'),
+                                    child: lecture['video'] != null
                                         ? FutureBuilder<Uint8List?>(
                                             future: _generateThumbnail(
-                                              lecture['videoUrl'].toString(),
-                                              isNetwork: true,
+                                              (lecture['video'] as File).path,
+                                              isNetwork: false,
                                             ),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
@@ -622,213 +702,315 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
                                                   ],
                                                 );
                                               }
-                                              return const Icon(
+                                              return Icon(
                                                 Icons.videocam,
-                                                color: Colors.teal,
+                                                color:
+                                                    context.color.bluePinkLight,
                                               );
                                             },
                                           )
-                                        : const Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                Icons.videocam,
-                                                size: 32,
-                                                color: Colors.teal,
-                                              ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                'رفع فيديو',
-                                                style: TextStyle(
-                                                  color: Colors.teal,
-                                                ),
-                                              ),
-                                            ],
-                                          )),
-                            ),
-                          ),
-
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DottedBorder(
-                                  options: const RoundedRectDottedBorderOptions(
-                                    radius: Radius.circular(8),
-                                    dashPattern: [8, 4],
-                                    strokeWidth: 2,
-                                    color: Colors.teal,
-                                    padding: EdgeInsets.all(16),
+                                        : (lecture['videoUrl'] != null
+                                              ? FutureBuilder<Uint8List?>(
+                                                  future: _generateThumbnail(
+                                                    lecture['videoUrl']
+                                                        .toString(),
+                                                    isNetwork: true,
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const SizedBox(
+                                                        height: 100,
+                                                        child: Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        ),
+                                                      );
+                                                    }
+                                                    if (snapshot.hasData) {
+                                                      return Stack(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        children: [
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  8,
+                                                                ),
+                                                            child: Image.memory(
+                                                              snapshot.data!,
+                                                              fit: BoxFit.cover,
+                                                              width: double
+                                                                  .infinity,
+                                                              height: 100,
+                                                            ),
+                                                          ),
+                                                          const Icon(
+                                                            Icons
+                                                                .play_circle_fill,
+                                                            size: 40,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    return Icon(
+                                                      Icons.videocam,
+                                                      color: context
+                                                          .color
+                                                          .bluePinkLight,
+                                                    );
+                                                  },
+                                                )
+                                              : Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.videocam,
+                                                      size: 32,
+                                                      color: context
+                                                          .color
+                                                          .bluePinkLight,
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      'رفع فيديو',
+                                                      style: TextStyle(
+                                                        color: context
+                                                            .color
+                                                            .bluePinkLight,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
                                   ),
-                                  child: InkWell(
-                                    onTap: () => pickLectureFile(idx, 'text'),
-                                    child: lecture['text'] != null
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.description,
-                                                color: Colors.teal,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                lecture['text'].path
-                                                    .split('/')
-                                                    .last
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                  color: Colors.teal,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : (lecture['textUrl'] != null
+                                ),
+
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: DottedBorder(
+                                        options: RoundedRectDottedBorderOptions(
+                                          radius: Radius.circular(8),
+                                          dashPattern: const [8, 4],
+                                          strokeWidth: 2,
+                                          color: context.color.bluePinkLight!,
+                                          padding: EdgeInsets.all(16),
+                                        ),
+                                        child: InkWell(
+                                          onTap: () =>
+                                              pickLectureFile(idx, 'text'),
+                                          child: lecture['text'] != null
                                               ? Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    const Icon(
+                                                    Icon(
                                                       Icons.description,
-                                                      color: Colors.yellow,
+                                                      color: context
+                                                          .color
+                                                          .bluePinkLight,
                                                     ),
                                                     const SizedBox(width: 8),
                                                     Text(
-                                                      'ملف TXT موجود',
-                                                      style: const TextStyle(
-                                                        color: Colors.teal,
+                                                      lecture['text'].path
+                                                          .split('/')
+                                                          .last
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: context
+                                                            .color
+                                                            .bluePinkLight,
                                                       ),
                                                     ),
                                                   ],
                                                 )
-                                              : const Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .cloud_upload_outlined,
-                                                      size: 28,
-                                                      color: Colors.teal,
-                                                    ),
-                                                    SizedBox(height: 4),
-                                                    Text(
-                                                      'رفع .txt',
-                                                      style: TextStyle(
-                                                        color: Colors.teal,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: DottedBorder(
-                                  options: const RoundedRectDottedBorderOptions(
-                                    radius: Radius.circular(8),
-                                    dashPattern: [8, 4],
-                                    strokeWidth: 2,
-                                    color: Colors.teal,
-                                    padding: EdgeInsets.all(16),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () => pickLectureFile(idx, 'word'),
-                                    child: lecture['text'] != null
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.description,
-                                                color: Colors.teal,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                lecture['text'].path
-                                                    .split('/')
-                                                    .last
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                  color: Colors.teal,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : (lecture['textUrl'] != null
-                                              ? const Row(
+                                              : (lecture['textUrl'] != null
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.description,
+                                                            color:
+                                                                Colors.yellow,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Text(
+                                                            'ملف TXT موجود',
+                                                            style: TextStyle(
+                                                              color: context
+                                                                  .color
+                                                                  .bluePinkLight,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .cloud_upload_outlined,
+                                                            size: 28,
+                                                            color: context
+                                                                .color
+                                                                .bluePinkLight,
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Text(
+                                                            'رفع .txt',
+                                                            style: TextStyle(
+                                                              color: context
+                                                                  .color
+                                                                  .bluePinkLight,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: DottedBorder(
+                                        options: RoundedRectDottedBorderOptions(
+                                          radius: Radius.circular(8),
+                                          dashPattern: [8, 4],
+                                          strokeWidth: 2,
+                                          color: context.color.bluePinkLight!,
+                                          padding: EdgeInsets.all(16),
+                                        ),
+                                        child: InkWell(
+                                          onTap: () =>
+                                              pickLectureFile(idx, 'word'),
+                                          child: lecture['text'] != null
+                                              ? Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Icon(
-                                                      Icons.picture_as_pdf,
-                                                      color: Colors.red,
+                                                      Icons.description,
+                                                      color: context
+                                                          .color
+                                                          .bluePinkLight!,
                                                     ),
-                                                    SizedBox(width: 8),
+                                                    const SizedBox(width: 8),
                                                     Text(
-                                                      'ملف doc موجود',
+                                                      lecture['text'].path
+                                                          .split('/')
+                                                          .last
+                                                          .toString(),
                                                       style: TextStyle(
-                                                        color: Colors.teal,
+                                                        color: context
+                                                            .color
+                                                            .bluePinkLight,
                                                       ),
                                                     ),
                                                   ],
                                                 )
-                                              : const Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .cloud_upload_outlined,
-                                                      size: 28,
-                                                      color: Colors.teal,
-                                                    ),
-                                                    SizedBox(height: 4),
-                                                    Text(
-                                                      'رفع .doc',
-                                                      style: TextStyle(
-                                                        color: Colors.teal,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                  ),
+                                              : (lecture['textUrl'] != null
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .picture_as_pdf,
+                                                            color: Colors.red,
+                                                          ),
+                                                          SizedBox(width: 8),
+                                                          Text(
+                                                            'ملف doc موجود',
+                                                            style: TextStyle(
+                                                              color: context
+                                                                  .color
+                                                                  .bluePinkLight!,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons
+                                                                .cloud_upload_outlined,
+                                                            size: 28,
+                                                            color: context
+                                                                .color
+                                                                .bluePinkLight!,
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Text(
+                                                            'رفع .doc',
+                                                            style: TextStyle(
+                                                              color: context
+                                                                  .color
+                                                                  .bluePinkLight!,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ],
+                        );
+                      }),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: submit,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: context.color.bluePinkLight,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text(
+                            'حفظ الكورس',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: submit,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text(
-                      'حفظ الكورس',
-                      style: TextStyle(fontSize: 16),
+                    ],
+                  ),
+                ),
+              ),
+              if (state is EditCourseLoading)
+                Container(
+                  color: Colors.black.withOpacity(0.6),
+                  child: Center(
+                    child: SpinKitSpinningLines(
+                      color: context.color.bluePinkLight!,
+                      size: 50.sp,
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+            ],
+          );
+        },
       ),
     );
   }

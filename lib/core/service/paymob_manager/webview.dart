@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:test/core/common/toast/buildawesomedialog.dart';
+import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/paymob_manager/paymob_manager.dart';
-import 'package:test/features/student/video_player/presentation/screen/video_payer_page.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 
 class PaymentWebViewScreen extends StatefulWidget {
   const PaymentWebViewScreen({
@@ -89,28 +90,40 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
 
     if (!mounted) return;
 
-    await showDialog(
-  context: context,
-  builder: (_) => AlertDialog(
-    title: const Text('تم الدفع بنجاح'),
-    content: Text('تم الاشتراك في ${widget.course.title}'),
-    actions: [
-      TextButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => VideoPlayerPage(course: widget.course),
-            ),
-          );
-        },
-        child: const Text('اذهب للكورس'),
-      ),
-    ],
-  ),
-);
+    buildAwesomeDialogSucces(
+      'تم الدفع بنجاح',
+      'تم الاشتراك في ${widget.course.title}',
+      'اذهب للكورس',
+      context,
+      () {
+        context.pushReplacementNamed(
+          AppRoutes.videoPlayerScreen,
+          arguments: widget.course,
+        );
+      },
+    );
 
+    //     await showDialog(
+    //   context: context,
+    //   builder: (_) => AlertDialog(
+    //     title: const Text('تم الدفع بنجاح'),
+    //     content: Text('تم الاشتراك في ${widget.course.title}'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () {
+    //           Navigator.of(context).pop();
+    //           Navigator.pushReplacement(
+    //             context,
+    //             MaterialPageRoute(
+    //               builder: (_) => VideoPlayerPage(course: widget.course),
+    //             ),
+    //           );
+    //         },
+    //         child: const Text('اذهب للكورس'),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   Future<void> _markPaymentAsFailed() async {
@@ -136,7 +149,26 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('الدفع عبر Paymob')),
+      appBar: AppBar(
+        title: const Text(
+          'الدفع عبر Paymob',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: context.color.bluePinkLight,
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: WebViewWidget(controller: _controller),
     );
   }

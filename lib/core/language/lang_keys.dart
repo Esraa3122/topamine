@@ -57,6 +57,9 @@ class LangKeys {
       'complete_your_account_to_start_student';
   static const String grade = 'grade';
   static const String pleaseSelectGrade = 'please_select_grade';
+  static const String subject = 'subject';
+  static const String pleaseSelectSubject = 'please_select_subject';
+  static const String subjectRequired = 'subject_required';
   static const String accountCreatedSuccessfully =
       'account_created_successfully';
   static const String theAccountAlreadyExistsForThatEmail =
@@ -133,4 +136,7 @@ class LangKeys {
   static const String subscribedToNotifications = 'subscribed_to_notifications';
   static const String unsubscribedToNotifications =
       'unsubscribed_to_notifications';
+  static const String listStudents = 'list_students';
+  static const String messages = 'messages';
+  static const String listNotifications = 'list_notifications';
 }

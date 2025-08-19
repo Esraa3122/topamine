@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:test/core/extensions/context_extension.dart';
 
 class DateField extends StatelessWidget {
   const DateField({required this.label, required this.date, super.key});
@@ -9,9 +10,9 @@ class DateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
+        border: Border.all(color: context.color.containerLinear2!),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -23,7 +24,7 @@ class DateField extends StatelessWidget {
             date != null
                 ? DateFormat('yyyy-MM-dd').format(date!)
                 : 'اختر التاريخ',
-            style: const TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14, color: context.color.textColor),
           ),
         ],
       ),

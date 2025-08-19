@@ -81,7 +81,7 @@ class BarSelectedIconsState implements TeacherNavigationState {
   const BarSelectedIconsState({required this.navBarEnum});
   
 
- final  NavBarEnum navBarEnum;
+ final  NavBarEnum2 navBarEnum;
 
 /// Create a copy of TeacherNavigationState
 /// with the given fields replaced by the non-null parameter values.
@@ -113,7 +113,7 @@ abstract mixin class $BarSelectedIconsStateCopyWith<$Res> implements $TeacherNav
   factory $BarSelectedIconsStateCopyWith(BarSelectedIconsState value, $Res Function(BarSelectedIconsState) _then) = _$BarSelectedIconsStateCopyWithImpl;
 @useResult
 $Res call({
- NavBarEnum navBarEnum
+ NavBarEnum2 navBarEnum
 });
 
 
@@ -133,7 +133,7 @@ class _$BarSelectedIconsStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? navBarEnum = null,}) {
   return _then(BarSelectedIconsState(
 navBarEnum: null == navBarEnum ? _self.navBarEnum : navBarEnum // ignore: cast_nullable_to_non_nullable
-as NavBarEnum,
+as NavBarEnum2,
   ));
 }
 

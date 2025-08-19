@@ -22,6 +22,14 @@ class AppImages {
   static const String onbording3 =
       'assets/lottie/Animation - 1751584103443.json';
 
+  // Empty Box
+  static const String emptyBox=
+      'assets/lottie/Empty Box.json';
+  static const String emptyBox1 =
+      'assets/lottie/Empty Box (1).json';
+  static const String emptyBox2 =
+      'assets/lottie/Empty Box (2).json';
+
   // No Network
   static const String noNetwork =
       'assets/lottie/Animation - 1751583830430.json';

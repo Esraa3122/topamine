@@ -1,12 +1,15 @@
+
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:test/core/common/animations/animate_do.dart';
-import 'package:test/core/common/toast/show_toast.dart';
+import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/enums/rule_register.dart';
 import 'package:test/core/extensions/context_extension.dart';
@@ -64,13 +67,19 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) async{
         if (state is AuthSuccess) {
-          ShowToast.showToastSuccessTop(
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Success!',
             message: context.translate(state.successMessage),
+            contentType: ContentType.success,
           );
           await context.pushNamedAndRemoveUntil(AppRoutes.login);
         } else if (state is AuthFailure) {
-          ShowToast.showToastErrorTop(
-            message: context.translate(state.errorMessage),
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Error!',
+            message: state.errorMessage,
+            contentType: ContentType.failure,
           );
         }
       },
@@ -132,6 +141,14 @@ class _SignUpStudentBodyState extends State<SignUpStudentBody> {
                   height: 20.h,
                 ),
                 //SignUpButton
+                if (state is AuthLoading)
+                   Center(
+                    child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),
+                  )
+                else
                 SignUpButton(
                   onPressed: _registerStudent,
                 ),

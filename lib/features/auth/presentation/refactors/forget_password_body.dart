@@ -1,9 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test/core/common/animations/animate_do.dart';
-import 'package:test/core/common/toast/show_toast.dart';
+import 'package:test/core/common/toast/awesome_snackbar.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
@@ -27,25 +28,38 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
 
   void resetPassword() {
     if (emailController.text.isEmpty) {
-      ShowToast.showToastErrorTop(
-        message: context.translate(
-          LangKeys.enterYourEmailAddressToResetPassword,
-        ),
-      );
+      AwesomeSnackBar.show(
+            context: context,
+            title: 'Error!',
+            message: context.translate(LangKeys.enterYourEmailAddress),
+            contentType: ContentType.failure,
+          );
     }
 
     FirebaseAuth.instance
         .sendPasswordResetEmail(email: emailController.text.trim())
         .then((_) {
-          ShowToast.showToastSuccessTop(
-            message: context.translate(LangKeys.resetPassword),
+          AwesomeSnackBar.show(
+            context: context,
+            title: 'Success!',
+            message: 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.',
+            contentType: ContentType.success,
           );
+          // ShowToast.showToastSuccessTop(
+          //   message: context.translate(LangKeys.resetPassword),
+          // );
           context.pushNamedAndRemoveUntil(AppRoutes.login);
         })
         .catchError((error) {
-          ShowToast.showToastErrorTop(
+            AwesomeSnackBar.show(
+            context: context,
+            title: 'Error!',
             message: context.translate(LangKeys.enterYourEmailAddress),
+            contentType: ContentType.failure,
           );
+          // ShowToast.showToastErrorTop(
+          //   message: context.translate(LangKeys.enterYourEmailAddress),
+          // );
         });
   }
 

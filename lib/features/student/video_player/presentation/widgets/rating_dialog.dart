@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/extensions/context_extension.dart';
 
-Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
+Future<void> showRatingDialog(BuildContext context, String courseId) async {
   final commentController = TextEditingController();
   var selectedRating = 3;
   final currentUser = FirebaseAuth.instance.currentUser;
@@ -23,8 +25,8 @@ Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
   if (userData == null) return;
 
   final ratingCollection = FirebaseFirestore.instance
-      .collection('lectures')
-      .doc(lectureTitle)
+      .collection('courses')
+      .doc(courseId)
       .collection('ratings');
 
   final existingRating = await ratingCollection
@@ -46,10 +48,11 @@ Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: const Text(
-            '⭐ أضف تقييمك',
+          backgroundColor: context.color.mainColor,
+          title: Text(
+            '⭐ أضف تقييمك للكورس',
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: context.color.textColor),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -57,9 +60,15 @@ Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
               children: [
                 TextField(
                   controller: commentController,
+                  cursorColor: context.color.textColor,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: context.color.textColor,
+                    ),
                   decoration: InputDecoration(
                     labelText: 'اكتب رأيك هنا',
-                    labelStyle: TextStyle(color: Colors.grey[700]),
+                    labelStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -81,9 +90,7 @@ Future<void> showRatingDialog(BuildContext context, String lectureTitle) async {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Icon(
                           index < selectedRating
                               ? Icons.star

@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
-import 'package:test/features/student/course_details/presentation/screen/course_details_screen.dart';
 import 'package:test/features/student/profile_teacher/data/repo/view_profile_teacher_repo.dart';
 import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_cubit.dart';
 import 'package:test/features/student/profile_teacher/presentation/cubit/view_teacher_profile_state.dart';
@@ -37,13 +41,9 @@ class CoursesList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CourseDetailsScreen(
-                          course: state.courses[index],
-                        ),
-                      ),
+                    context.pushNamed(
+                      AppRoutes.courseDetails,
+                      arguments: state.courses[index],
                     );
                   },
                   child: CardViewTeacher(course: state.courses[index]),
@@ -54,7 +54,13 @@ class CoursesList extends StatelessWidget {
             return Center(child: Text(state.message));
           }
 
-          return const Center(child: Text('No courses available.'));
+          return Center(
+            child: Lottie.asset(
+              AppImages.emptyBox2,
+              width: 326.w,
+              height: 300.h,
+            ),
+          );
         },
       ),
     );

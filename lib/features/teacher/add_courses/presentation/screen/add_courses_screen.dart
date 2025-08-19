@@ -1,17 +1,22 @@
 import 'dart:io';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:test/core/common/toast/awesome_snackbar.dart';
+import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/utils/PickFileUtils.dart';
-import 'package:test/features/splash/view/widget/animation_splash_screen.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/add_courses/presentation/cubit/add_course_cubit.dart';
 import 'package:test/features/teacher/add_courses/presentation/widget/date_field.dart';
+import 'package:test/features/teacher/add_courses/presentation/widget/video_player_view_widget.dart';
 
 class AddCourseScreen extends StatefulWidget {
   const AddCourseScreen({super.key});
@@ -153,7 +158,6 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
     await cubit.submitCourse(course: course, imageFile: imageFile!);
 
-    // Reset form
     titleController.clear();
     subTitleController.clear();
     subjectController.clear();
@@ -180,423 +184,588 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       appBar: AppBar(
         title: const Text(
           'إضافة كورس',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: Colors.blue,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        leading: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
+        backgroundColor: context.color.bluePinkLight,
+        elevation: 4,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        shadowColor: Colors.tealAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: BlocListener<AddCourseCubit, AddCourseState>(
+      body: BlocConsumer<AddCourseCubit, AddCourseState>(
         listener: (context, state) {
-          if (state is AddCourseSuccess) {
-            AwesomeSnackBar.show(
-              context: context,
-              title: 'Success!',
-              message: 'تمت الإضافة بنجاح',
-              contentType: ContentType.success,
-            );
-          } else if (state is AddCourseError) {
-            AwesomeSnackBar.show(
-              context: context,
-              title: 'Error!',
-              message: state.message,
-              contentType: ContentType.failure,
-            );
-          }
-          if (state is AddCourseLoading) {
-            const AnimationSplashScreen();
-          }
-        },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'صورة الكورس',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: context.color.textColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: pickImage,
-                  child: DottedBorder(
-                    options: const RoundedRectDottedBorderOptions(
-                      radius: Radius.circular(8),
-                      dashPattern: [6, 3],
-                      color: Colors.teal,
-                      strokeWidth: 1.5,
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 150,
-                      alignment: Alignment.center,
-                      child: imageFile == null
-                          ? const Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.camera_alt_outlined,
-                                  size: 40,
-                                  color: Colors.teal,
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'رفع صورة الكورس',
-                                  style: TextStyle(
-                                    color: Colors.teal,
-                                    fontSize: 14,
+              if (state is AddCourseSuccess) {
+                AwesomeSnackBar.show(
+                  context: context,
+                  title: 'Success!',
+                  message: 'تمت الإضافة بنجاح',
+                  contentType: ContentType.success,
+                );
+              } else if (state is AddCourseError) {
+                AwesomeSnackBar.show(
+                  context: context,
+                  title: 'Error!',
+                  message: state.message,
+                  contentType: ContentType.failure,
+                );
+              }
+            },
+        builder: (context, state) {
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(16),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        color: context.color.mainColor,
+                        elevation: 4,
+                        shadowColor: context.color.bluePinkLight!.withOpacity(
+                          0.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    color: context.color.bluePinkLight!,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'صورة الكورس',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: context.color.textColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              GestureDetector(
+                                onTap: pickImage,
+                                child: DottedBorder(
+                                  options: RoundedRectDottedBorderOptions(
+                                    radius: const Radius.circular(8),
+                                    dashPattern: [6, 3],
+                                    color: context.color.bluePinkLight!,
+                                  ),
+                                  child: Container(
+                                    height: 150,
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    child: imageFile == null
+                                        ? Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.camera_alt_outlined,
+                                                size: 40,
+                                                color:
+                                                    context.color.bluePinkLight,
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                'رفع صورة الكورس',
+                                                style: TextStyle(
+                                                  color:
+                                                      context.color.bluePinkLight,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                      8,
+                                                    ),
+                                                child: Image.file(
+                                                  imageFile!,
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  height: 150,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: 4,
+                                                left: 0,
+                                                right: 0,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    IconButton(
+                                                      iconSize: 20,
+                                                      padding: EdgeInsets.zero,
+                                                      constraints:
+                                                          const BoxConstraints(),
+                                                      onPressed: pickImage,
+                                                      icon: const Icon(
+                                                        Icons.refresh,
+                                                        color: Colors.blueAccent,
+                                                      ),
+                                                      tooltip: 'إعادة رفع',
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    IconButton(
+                                                      iconSize: 20,
+                                                      padding: EdgeInsets.zero,
+                                                      constraints:
+                                                          const BoxConstraints(),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          imageFile = null;
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                      ),
+                                                      tooltip: 'حذف الصورة',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                   ),
                                 ),
-                              ],
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                imageFile!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 150,
                               ),
-                            ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'عنوان الكورس',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: subTitleController,
-                  decoration: const InputDecoration(
-                    labelText: 'العنوان الفرعي',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: subjectController,
-                  decoration: const InputDecoration(
-                    labelText: 'المادة',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => pickDate(true),
-                        child: DateField(
-                          label: 'تاريخ البداية',
-                          date: startDate,
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => pickDate(false),
-                        child: DateField(label: 'تاريخ النهاية', date: endDate),
+              
+                      const SizedBox(height: 16),
+                      Card(
+                        color: context.color.mainColor,
+                        elevation: 4,
+                        shadowColor: context.color.bluePinkLight!.withOpacity(
+                          0.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildTextField(titleController, "عنوان الكورس"),
+                              const SizedBox(height: 8),
+                              _buildTextField(subTitleController, "وصف الكورس"),
+                              const SizedBox(height: 8),
+                              _buildTextField(subjectController, "المادة"),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'السعر',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
-                  value: selectedGrade,
-                  decoration: const InputDecoration(
-                    labelText: 'الصف الدراسي',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: gradeLevels.map((grade) {
-                    return DropdownMenuItem<String>(
-                      value: grade,
-                      child: Text(grade),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    selectedGrade = value;
-                    gradeLevelController.text = value!;
-                  },
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 8),
-                DropdownButtonFormField<String>(
-                  value: selectedTerm,
-                  decoration: const InputDecoration(
-                    labelText: 'الترم',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: terms.map((term) {
-                    return DropdownMenuItem<String>(
-                      value: term,
-                      child: Text(term),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    selectedTerm = value;
-                    termController.text = value!;
-                  },
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'مطلوب' : null,
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'المحاضرات',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.teal,
-                        // backgroundColor: Colors.teal,
-                        // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(12),
-                        // ),
+              
+                      const SizedBox(height: 16),
+              
+                      Card(
+                        color: context.color.mainColor,
+                        elevation: 4,
+                        shadowColor: context.color.bluePinkLight!.withOpacity(
+                          0.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => pickDate(true),
+                                  child: DateField(
+                                    label: 'تاريخ البداية',
+                                    date: startDate,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => pickDate(false),
+                                  child: DateField(
+                                    label: 'تاريخ النهاية',
+                                    date: endDate,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      onPressed: addLecture,
-                      icon: const Icon(Icons.add_circle_outline),
-                      label: const Text('أضف محاضرة'),
-                    ),
-                  ],
-                ),
-                ...lectures.asMap().entries.map((entry) {
-                  final idx = entry.key;
-                  final lecture = entry.value;
-                  return Card(
-                    color: context.color.mainColor,
-                    elevation: 4,
-                    shadowColor: context.color.bluePinkLight!.withOpacity(0.5),
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 16),
+                      Card(
+                        color: context.color.mainColor,
+                        elevation: 4,
+                        shadowColor: context.color.bluePinkLight!.withOpacity(
+                          0.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildTextField(priceController, "السعر",keyboardType: TextInputType.number),
+                              const SizedBox(height: 8),
+                              _buildDropdown(
+                                "الصف الدراسي",
+                                selectedGrade,
+                                gradeLevels,
+                                (v) => setState(() {
+                                  selectedGrade = v;
+                                  gradeLevelController.text = v!;
+                                }),
+                              ),
+                              const SizedBox(height: 8),
+                              _buildDropdown("الترم", selectedTerm, terms, (v) {
+                                setState(() {
+                                  selectedTerm = v;
+                                  termController.text = v!;
+                                });
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+              
+                      const SizedBox(height: 20),
+              
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.teal,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Text(
-                                  'محاضرة ${idx + 1}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () => removeLecture(idx),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          TextFormField(
-                            controller:
-                                lecture['title'] as TextEditingController,
-                            decoration: const InputDecoration(
-                              labelText: 'اسم المحاضرة',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
                           Text(
-                            'فيديو',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          DottedBorder(
-                            options: const RoundedRectDottedBorderOptions(
-                              radius: Radius.circular(8),
-                              dashPattern: [8, 4],
-                              strokeWidth: 2,
-                              color: Colors.teal,
-                              padding: EdgeInsets.all(16),
-                            ),
-                            child: InkWell(
-                              onTap: () => pickLectureFile(idx, 'video'),
-                              child: const SizedBox(
-                                height: 100,
-                                width: double.infinity,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.videocam,
-                                        size: 32,
-                                        color: Colors.teal,
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        'رفع فيديو',
-                                        style: TextStyle(color: Colors.teal),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                            'المحاضرات',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: context.color.textColor,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DottedBorder(
-                                  options: const RoundedRectDottedBorderOptions(
-                                    radius: Radius.circular(8),
-                                    dashPattern: [8, 4],
-                                    strokeWidth: 2,
-                                    color: Colors.teal,
-                                    padding: EdgeInsets.all(16),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () => pickLectureFile(idx, 'text'),
-                                    child: const SizedBox(
-                                      height: 80,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.cloud_upload_outlined,
-                                              size: 28,
-                                              color: Colors.teal,
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              'رفع .txt',
-                                              style: TextStyle(
-                                                color: Colors.teal,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: DottedBorder(
-                                  options: const RoundedRectDottedBorderOptions(
-                                    radius: Radius.circular(8),
-                                    dashPattern: [8, 4],
-                                    strokeWidth: 2,
-                                    color: Colors.teal,
-                                    padding: EdgeInsets.all(16),
-                                  ),
-                                  child: InkWell(
-                                    onTap: () => pickLectureFile(idx, 'word'),
-                                    child: const SizedBox(
-                                      height: 80,
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.cloud_upload_outlined,
-                                              size: 28,
-                                              color: Colors.teal,
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              'رفع .doc',
-                                              style: TextStyle(
-                                                color: Colors.teal,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          TextButton.icon(
+                            onPressed: addLecture,
+                            style: TextButton.styleFrom(
+                              foregroundColor: context.color.bluePinkLight,
+                            ),
+                            icon: const Icon(Icons.add_circle_outline),
+                            label: const Text('أضف محاضرة'),
                           ),
                         ],
                       ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: submit,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text(
-                      'حفظ الكورس',
-                      style: TextStyle(fontSize: 16),
-                    ),
+              
+                      ...lectures.asMap().entries.map((entry) {
+                        final idx = entry.key;
+                        final lecture = entry.value;
+                        return _buildLectureCard(idx, lecture);
+                      }),
+                      const SizedBox(height: 100),
+                    ],
                   ),
                 ),
-              ],
+              ),
+              if (state is AddCourseLoading)
+                      Container(
+                        color: Colors.black.withOpacity(0.3),
+                        child: Center(
+                          child: SpinKitSpinningLines(
+                            color: context.color.bluePinkLight!,
+                            size: 50.sp,
+                          ),
+                        ),
+                      ),
+            ],
+          );
+        },
+      ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: ElevatedButton.icon(
+          onPressed: submit,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: context.color.bluePinkLight,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
+            padding: const EdgeInsets.symmetric(vertical: 14),
+          ),
+          icon: const Icon(Icons.save, color: Colors.white),
+          label: const Text(
+            'حفظ الكورس',
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
       ),
     );
   }
-}
 
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    TextInputType? keyboardType,
+    String? hintText,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: CustomTextField(
+        controller: controller,
+        hintText: hintText,
+        keyboardType: keyboardType,
+        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
+        lable: label,
+      ),
+    );
+  }
+
+  Widget _buildDropdown(
+    String label,
+    String? value,
+    List<String> items,
+    void Function(String?) onChanged,
+  ) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: context.color.textFormBorder!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: context.color.textFormBorder!),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+      ),
+      value: value,
+      isExpanded: true,
+      items: items
+          .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+          .toList(),
+      onChanged: onChanged,
+      validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
+    );
+  }
+
+  Widget _buildLectureCard(int idx, Map<String, dynamic> lecture) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      color: context.color.mainColor,
+      elevation: 4,
+      shadowColor: context.color.bluePinkLight!.withOpacity(0.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.color.bluePinkLight,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    "محاضرة ${idx + 1}",
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.delete_forever, color: Colors.red),
+                  onPressed: () => removeLecture(idx),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 12),
+
+            CustomTextField(
+              controller: lecture['title'] as TextEditingController,
+              hintText: 'ادخل اسم المحاضره',
+              validator: (value) {
+                if (value!.isEmpty == true) {
+                  return 'اسم المحاضره مطلوب';
+                } else {
+                  return null;
+                }
+              },
+              lable: 'اسم المحاضرة',
+            ),
+            const SizedBox(height: 16),
+
+            _buildFilePicker(
+              idx: idx,
+              lecture: lecture,
+              type: "video",
+              icon: Icons.videocam,
+              label: "فيديو",
+              color: context.color.bluePinkLight!,
+            ),
+
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                Expanded(
+                  child: _buildFilePicker(
+                    idx: idx,
+                    lecture: lecture,
+                    type: "text",
+                    icon: Icons.description,
+                    label: ".txt",
+                    color: Colors.orange,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildFilePicker(
+                    idx: idx,
+                    lecture: lecture,
+                    type: "word",
+                    icon: Icons.article,
+                    label: ".doc",
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilePicker({
+    required int idx,
+    required Map<String, dynamic> lecture,
+    required String type,
+    required IconData icon,
+    required String label,
+    required Color color,
+  }) {
+    final file = lecture[type] as File?;
+
+    return DottedBorder(
+      options: RoundedRectDottedBorderOptions(
+        radius: const Radius.circular(12),
+        dashPattern: const [6, 3],
+        color: color,
+      ),
+      child: Container(
+        height: type == "video" ? 180 : 100,
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: file == null
+            ? InkWell(
+                onTap: () => pickLectureFile(idx, type),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, color: color, size: 32),
+                    const SizedBox(height: 6),
+                    Text("رفع $label", style: TextStyle(color: color)),
+                  ],
+                ),
+              )
+            : Stack(
+                children: [
+                  Positioned.fill(
+                    child: type == "video"
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: VideoPlayerViewWidget(file: file),
+                          )
+                        : ListTile(
+                            leading: Icon(icon, color: color),
+                            title: Text("عرض ملف $label"),
+                            onTap: () => OpenFilex.open(file.path),
+                          ),
+                  ),
+
+                  Positioned(
+                    bottom: 4,
+                    left: 4,
+                    right: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 20,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () => pickLectureFile(idx, type),
+                          icon: const Icon(
+                            Icons.refresh,
+                            color: Colors.blueAccent,
+                          ),
+                          tooltip: "إعادة رفع",
+                        ),
+                        const SizedBox(width: 12),
+                        IconButton(
+                          iconSize: 20,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            setState(() {
+                              lecture[type] = null;
+                            });
+                          },
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          tooltip: "حذف الملف",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

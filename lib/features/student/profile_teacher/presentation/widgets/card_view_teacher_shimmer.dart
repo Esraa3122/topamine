@@ -30,7 +30,6 @@ class CardViewTeacherShimmer extends StatelessWidget {
               ),
             ),
             SizedBox(width: 16.w),
-            // النصوص
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12.h),
