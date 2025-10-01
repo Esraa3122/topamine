@@ -8,7 +8,7 @@ class TextApp extends StatelessWidget {
     this.softWrap,
     this.textOverflow,
     this.textAlign,
-    super.key, TextOverflow? overflow,
+    super.key,
   });
   final String text;
   final TextStyle theme;

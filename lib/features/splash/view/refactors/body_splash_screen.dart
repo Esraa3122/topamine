@@ -5,6 +5,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/style/color/colors_light.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/splash/view/widget/animation_splash_screen.dart';
 import 'package:test/features/splash/view/widget/container_logo_splash.dart';
@@ -95,6 +96,8 @@ class BodySplashScreen extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 28.sp,
                   fontWeight: FontWeightHelper.bold,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
                 ),),
               
                 SizedBox(height: 10.h),
@@ -105,6 +108,8 @@ class BodySplashScreen extends StatelessWidget {
                   color: Colors.white70,
                   fontSize: 16.sp,
                   fontWeight: FontWeightHelper.regular,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
                 ),),
                 SizedBox(height: 30.h),
                 const AnimationSplashScreen()

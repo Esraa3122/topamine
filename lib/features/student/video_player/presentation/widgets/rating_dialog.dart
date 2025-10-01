@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 Future<void> showRatingDialog(BuildContext context, String courseId) async {
   final commentController = TextEditingController();
@@ -40,6 +43,7 @@ Future<void> showRatingDialog(BuildContext context, String courseId) async {
     commentController.text = data['comment']?.toString() ?? '';
   }
 
+  // ignore: inference_failure_on_function_invocation
   await showDialog(
     context: context,
     builder: (_) {
@@ -49,10 +53,15 @@ Future<void> showRatingDialog(BuildContext context, String courseId) async {
             borderRadius: BorderRadius.circular(20),
           ),
           backgroundColor: context.color.mainColor,
-          title: Text(
-            '⭐ أضف تقييمك للكورس',
+          title: TextApp(
+            text: '⭐ أضف تقييمك للكورس',
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: context.color.textColor),
+            theme: context.textStyle.copyWith(
+              fontWeight: FontWeightHelper.bold,
+              fontSize: 20,
+              fontFamily: FontFamilyHelper.cairoArabic,
+              letterSpacing: 0.5,
+            ),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -61,14 +70,20 @@ Future<void> showRatingDialog(BuildContext context, String courseId) async {
                 TextField(
                   controller: commentController,
                   cursorColor: context.color.textColor,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: context.color.textColor,
-                    ),
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: context.color.textColor,
+                    fontFamily: FontFamilyHelper.cairoArabic,
+                    letterSpacing: 0.5,
+                  ),
                   decoration: InputDecoration(
                     labelText: 'اكتب رأيك هنا',
-                    labelStyle: const TextStyle(color: Colors.grey),
+                    labelStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                      letterSpacing: 0.5,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -110,7 +125,11 @@ Future<void> showRatingDialog(BuildContext context, String courseId) async {
             TextButton(
               child: const Text(
                 'إلغاء',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(
+                  color: Colors.red,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
+                ),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -123,7 +142,11 @@ Future<void> showRatingDialog(BuildContext context, String courseId) async {
               ),
               child: const Text(
                 'إرسال',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
+                ),
               ),
               onPressed: () async {
                 if (commentController.text.trim().isEmpty) return;

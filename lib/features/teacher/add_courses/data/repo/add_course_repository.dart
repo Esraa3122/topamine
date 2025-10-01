@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test/core/service/cloudinary/cloudinary_service.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
+import 'package:video_player/video_player.dart';
 
 class AddCourseRepository {
   final courseRef = FirebaseFirestore.instance.collection('courses');
@@ -30,6 +31,27 @@ class AddCourseRepository {
     if (url == null) throw Exception('$type upload failed');
     return url;
   }
+
+  Future<String?> getVideoDuration(String url) async {
+  try {
+    final controller = VideoPlayerController.network(url);
+    await controller.initialize();
+    final duration = controller.value.duration;
+    controller.dispose();
+
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return duration.inHours > 0
+        ? "$hours:$minutes:$seconds"
+        : "$minutes:$seconds";
+  } catch (e) {
+    return null;
+  }
+}
+
 
 Future<void> updateCourse({
     required CoursesModel course,

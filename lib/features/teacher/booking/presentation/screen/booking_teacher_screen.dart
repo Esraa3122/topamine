@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/widgets/custom_text_field.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/routes/app_routes.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
-import 'package:test/features/teacher/add_courses/data/repo/add_course_repository.dart';
-import 'package:test/features/teacher/add_courses/presentation/cubit/add_course_cubit.dart';
-import 'package:test/features/teacher/add_courses/presentation/screen/add_courses_screen.dart';
 import 'package:test/features/teacher/booking/presentation/widgets/booking_statuse_list_teacher.dart';
 import 'package:test/features/teacher/booking/presentation/widgets/courses_booking_list_teacher.dart';
 
@@ -41,21 +38,23 @@ class _BookingTeacherScreenState extends State<BookingTeacherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: context.color.bluePinkLight,
-        shape: const CircleBorder(),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) => AddCourseCubit(AddCourseRepository()),
-                child: const AddCourseScreen(),
-              ),
-            ),
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [context.color.bluePinkLight!, context.color.bluePinkDark!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          onPressed: () {
+            context.pushNamed(AppRoutes.addCoursesTeacherScreen);
+          },
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

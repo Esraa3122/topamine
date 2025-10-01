@@ -84,8 +84,8 @@ class SearchCubit extends Cubit<SearchState> {
   void addToRecentSearch(String query) {
     if (query.trim().isEmpty) return;
     final updatedRecents = List<String>.from(state.recentSearches)
-    ..remove(query)
-    ..insert(0, query);
+      ..remove(query)
+      ..insert(0, query);
     if (updatedRecents.length > 5) {
       updatedRecents.removeRange(5, updatedRecents.length);
     }
@@ -102,7 +102,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   void deleteRecentSearchAt(int index) {
     final updatedRecents = List<String>.from(state.recentSearches)
-    ..removeAt(index);
+      ..removeAt(index);
     emit(state.copyWith(recentSearches: updatedRecents));
     saveRecentSearches();
   }
@@ -153,10 +153,26 @@ class SearchCubit extends Cubit<SearchState> {
     }).toList();
   }
 
+  // List<String> get filteredTeachers {
+  //   final lowerSearch = state.searchQuery.toLowerCase();
+  //   return state.teacherSuggestions
+  //       .where((teacher) => teacher.toLowerCase().contains(lowerSearch))
+  //       .toList();
+  // }
+
   List<String> get filteredTeachers {
-    final lowerSearch = state.searchQuery.toLowerCase();
-    return state.teacherSuggestions
-        .where((teacher) => teacher.toLowerCase().contains(lowerSearch))
+    final lowerSearch = state.searchQuery.toLowerCase().trim();
+
+    final matchingCourses = filteredCourses;
+
+    final teachers = matchingCourses
+        .map((course) => course.teacherName)
+        .where((name) => name.isNotEmpty)
+        .toSet()
         .toList();
+
+    return teachers.where((teacher) {
+      return lowerSearch.isEmpty || teacher.toLowerCase().contains(lowerSearch);
+    }).toList();
   }
 }

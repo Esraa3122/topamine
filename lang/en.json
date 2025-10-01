@@ -129,5 +129,23 @@
     "unsubscribed_to_notifications": "Notifications have been unsubscribed",
     "list_students": "List Students",
     "messages": "Messages",
-    "list_notifications": "List Notifications"
+    "list_notifications": "List Notifications",
+    "active_courses": "Active Courses",
+    "inactive_courses": "Inactive Courses",
+    "total_payments": "Total Payments",
+    "followers": "Followers",
+    "average_rating": "Average Rating",
+    "subscriptions": "Subscriptions",
+    "total_ratings": "Total Ratings",
+    "welcome_back": "Welcome back! 👋",
+    "ready_to_manage_your_courses": "Ready to manage your courses?",
+    "hours": "hours",
+    "minutes": "minutes",
+    "egp": "EGP",
+    "view_details": "view details",
+    "view": "view",
+    "reviews": "reviews",
+    "we_wish_you_to_have_a_great_time_in_topamin": "We wish you to have a great time in Topamin.",
+    "welcome": "Welcome"
+
 }

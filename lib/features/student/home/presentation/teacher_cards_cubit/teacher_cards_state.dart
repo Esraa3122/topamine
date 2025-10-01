@@ -4,10 +4,6 @@ import 'package:test/features/teacher/add_courses/data/model/courses_model.dart'
 enum TeacherCardsStatus { initial, loading, loaded, loadedCourses, error }
 
 class TeacherCardsState {
-  final TeacherCardsStatus status;
-  final List<UserModel> teachers;
-  final List<CoursesModel> courses;
-  final String? errorMessage;
 
   TeacherCardsState({
     this.status = TeacherCardsStatus.initial,
@@ -15,6 +11,10 @@ class TeacherCardsState {
     this.courses = const [],
     this.errorMessage,
   });
+  final TeacherCardsStatus status;
+  final List<UserModel> teachers;
+  final List<CoursesModel> courses;
+  final String? errorMessage;
 
   TeacherCardsState copyWith({
     TeacherCardsStatus? status,

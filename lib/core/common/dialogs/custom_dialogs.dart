@@ -32,9 +32,10 @@ class CustomDialog {
               text: textBody,
               theme: context.textStyle.copyWith(
                 fontWeight: FontWeightHelper.medium,
-                fontFamily: FontFamilyHelper.poppinsEnglish,
+                fontFamily: FontFamilyHelper.cairoArabic,
                 fontSize: 18.sp,
                 color: Colors.black,
+                letterSpacing: 0.5,
               ),
               softWrap: true,
               textAlign: TextAlign.center,

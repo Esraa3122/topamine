@@ -51,4 +51,5 @@ class AppImages {
   static const dropBlood = 'assets/svg/drop--blood.svg';
   static const student = 'assets/svg/Student.svg';
   static const teacher = 'assets/svg/Teacher.svg';
+  static const chatboot = 'assets/svg/hubot-svgrepo-com.svg';
 }

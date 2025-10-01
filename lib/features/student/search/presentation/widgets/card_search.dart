@@ -5,6 +5,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -84,6 +85,8 @@ class CardSearch extends StatelessWidget {
                           fontSize: 16.sp,
                           fontWeight: FontWeightHelper.bold,
                           color: context.color.textColor,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       SizedBox(height: 6.h),
@@ -93,6 +96,8 @@ class CardSearch extends StatelessWidget {
                           color: Colors.black54,
                           fontSize: 14.sp,
                           fontWeight: FontWeightHelper.regular,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       SizedBox(height: 6.h),
@@ -103,6 +108,8 @@ class CardSearch extends StatelessWidget {
                           color: context.color.bluePinkLight,
                           fontSize: 14.sp,
                           fontWeight: FontWeightHelper.regular,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       SizedBox(height: 6.h),
@@ -113,6 +120,8 @@ class CardSearch extends StatelessWidget {
                           color: Colors.grey,
                           fontSize: 12.sp,
                           fontWeight: FontWeightHelper.regular,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       TextApp(
@@ -122,6 +131,8 @@ class CardSearch extends StatelessWidget {
                           color: Colors.grey,
                           fontSize: 12.sp,
                           fontWeight: FontWeightHelper.regular,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
                         ),
                       ),
                     ],

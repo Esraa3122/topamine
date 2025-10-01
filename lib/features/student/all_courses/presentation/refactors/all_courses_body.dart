@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/all_courses/presentation/cubit/all_courses_cubit.dart';
 import 'package:test/features/student/home/presentation/widgets/animated_card.dart';
@@ -31,8 +33,15 @@ class AllCoursesBody extends StatelessWidget {
               ),
             );
           }
+
           if (state.status == AllCoursesStatus.error) {
-            return Center(child: Text('Error: ${state.errorMessage}'));
+            return Center(child: TextApp(
+              text: 'Error: ${state.errorMessage}', 
+              theme: TextStyle(
+                fontFamily: FontFamilyHelper.cairoArabic,
+                fontSize: 18.sp,
+                letterSpacing: 0.5
+              ),));
           }
 
           if (state.filteredCourses.isEmpty) {
@@ -54,7 +63,7 @@ class AllCoursesBody extends StatelessWidget {
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: state.filters.length,
-                    separatorBuilder: (_, __) => SizedBox(width: 10.w),
+                    separatorBuilder: (_, _) => SizedBox(width: 10.w),
                     itemBuilder: (context, index) {
                       final filter = state.filters[index];
                       final isSelected = filter == state.selectedFilter;
@@ -66,8 +75,11 @@ class AllCoursesBody extends StatelessWidget {
                         },
                         selectedColor: Colors.blueAccent,
                         backgroundColor: Colors.grey.shade200,
+                        shape: const StadiumBorder(),
                         labelStyle: TextStyle(
                           color: isSelected ? Colors.white : Colors.black,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5
                         ),
                       );
                     },
@@ -80,9 +92,9 @@ class AllCoursesBody extends StatelessWidget {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 0.78,
+                          crossAxisSpacing: 4,
+                          mainAxisSpacing: 4,
+                          childAspectRatio: 0.65,
                         ),
                     itemBuilder: (context, index) {
                       return AnimatedCourseCard(

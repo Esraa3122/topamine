@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,63 +40,82 @@ class ButtomNavBarTeacher extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomFadeInUp(
       duration: 88,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 70.h,
-          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: BlocBuilder<TeacherNavigationCubit, TeacherNavigationState>(
+      builder: (context, state) {
+        final cubit = context.read<TeacherNavigationCubit>();
+        final currentIndex = _navEnumToIndex(cubit.navBarEnum);
+
+        return Container(
           decoration: BoxDecoration(
-            color: context.color.navBarbg,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: const [
+            // gradient: const LinearGradient(
+            //   colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            // ),
+            boxShadow: [
               BoxShadow(
-                color: Colors.black12,
-                blurRadius: 15,
-                offset: Offset(0, 5),
+                color: Colors.grey.withOpacity(0.15),
+                blurRadius: 10,
+                offset: const Offset(0, -4),
               ),
             ],
           ),
-          child: BlocBuilder<TeacherNavigationCubit, TeacherNavigationState>(
-            builder: (context, state) {
-              final cubit = context.read<TeacherNavigationCubit>();
+          child: CurvedNavigationBar(
+            index: currentIndex,
+            height: 60.h,
+            backgroundColor: Colors.transparent,
+            color: context.color.mainColor!,
+            buttonBackgroundColor: Colors.transparent,
+            animationCurve: Curves.easeInOutCubic,
+            animationDuration: const Duration(milliseconds: 500),
+            items: List.generate(3, (index) {
+              final navEnum = _indexToNavEnum(index);
+              final isSelected = currentIndex == index;
 
-              return BottomNavigationBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: _navEnumToIndex(cubit.navBarEnum),
-                selectedItemColor: Colors.blue.shade700,
-                unselectedItemColor: Colors.grey.shade400,
-                showSelectedLabels: true,
-                showUnselectedLabels: false,
-                onTap: (index) {
-                  final selectedEnum = _indexToNavEnum(index);
-                  cubit.selectedNavBarIcons(selectedEnum);
-                },
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: '',
-                  ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(Icons.search),
-                  //   label: '',
-                  // ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.video_collection_outlined),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: ' ',
-                  ),
-                ],
+              IconData icon;
+              switch (navEnum) {
+                case NavBarEnum2.home:
+                  icon = Icons.home;
+                  break;
+                case NavBarEnum2.booking:
+                  icon = Icons.video_collection_sharp;
+                  break;
+                case NavBarEnum2.profile:
+                  icon = Icons.person;
+                  break;
+              }
+
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: EdgeInsets.all(isSelected ? 10.w : 6.w),
+                decoration: isSelected
+                    ? BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            context.color.bluePinkLight!,
+                            context.color.bluePinkDark!,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      )
+                    : const BoxDecoration(shape: BoxShape.circle),
+                child: Icon(
+                  icon,
+                  size: 28,
+                  color: isSelected ? Colors.white : context.color.navBarSelectedTab,
+                ),
               );
+            }),
+            onTap: (index) {
+              cubit.selectedNavBarIcons(_indexToNavEnum(index));
             },
           ),
-        ),
-      ),
+        );
+      },
+    )
+
     );
   }
 }

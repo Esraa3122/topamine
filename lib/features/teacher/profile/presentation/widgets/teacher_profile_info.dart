@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/extensions/string_exetension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 
@@ -34,36 +35,46 @@ class TeacherProfileInfo extends StatelessWidget {
         TextApp(
           text: user.userName.toLowerCase().toCapitalized(), 
           theme: context.textStyle.copyWith(
-            fontSize: 18.sp,
-            fontWeight: FontWeightHelper.bold
+            fontSize: 15.sp,
+            fontWeight: FontWeightHelper.bold,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
         )),
          SizedBox(height: 7.h,),
         TextApp(
           text: user.userEmail, 
           theme: context.textStyle.copyWith(
-            fontSize: 14.sp,
-            fontWeight: FontWeightHelper.regular
+            fontSize: 13.sp,
+            fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
         )),
          SizedBox(height: 7.h,),
         TextApp(
           text: user.phone, 
           theme: context.textStyle.copyWith(
-            fontSize: 14.sp,
-            fontWeight: FontWeightHelper.regular
+            fontSize: 13.sp,
+            fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
         )),
          SizedBox(height: 7.h,),
         TextApp(
           text: user.governorate, 
           theme: context.textStyle.copyWith(
-            fontSize: 14.sp,
-            fontWeight: FontWeightHelper.regular
+            fontSize: 13.sp,
+            fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
         )),
         SizedBox(height: 7.h,),
         TextApp(
           text: 'مدرس : ${user.subject}', 
           theme: context.textStyle.copyWith(
-            fontSize: 14.sp,
-            fontWeight: FontWeightHelper.regular
+            fontSize: 13.sp,
+            fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
         )),
       ],
     );

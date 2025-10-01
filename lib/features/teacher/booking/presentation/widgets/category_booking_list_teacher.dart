@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/style/color/colors_dark.dart';
+import 'package:test/core/style/color/colors_light.dart';
 import 'package:test/features/student/booking/data/model/categorey_booking_model.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_category_chip.dart';
 
@@ -19,14 +21,35 @@ class CategoryBookingListTeacher extends StatefulWidget {
 class _CategoryBookingListTeacherState
     extends State<CategoryBookingListTeacher> {
   List<BookingCategoryModel> filters = [
-    BookingCategoryModel(name: 'All', value: 'all', isSelected: true),
     BookingCategoryModel(
-      name: 'active',
-      value: 'active',
+      name: 'الكل', 
+      value: 'all', 
+      isSelected: true,
+      gradient: const LinearGradient(
+        colors: [ ColorsLight.pinkLight, ColorsDark.blueDark],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
     ),
     BookingCategoryModel(
-      name: 'not active',
+      name: 'نشط',
+      value: 'active',
+      color: Colors.green,
+      gradient: LinearGradient(
+        colors: [ Colors.greenAccent.shade400, Colors.green.shade700],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ),
+    BookingCategoryModel(
+      name: 'غير نشط',
       value: 'not active',
+      color: Colors.grey,
+      gradient: LinearGradient(
+        colors: [ Colors.grey.shade400, Colors.grey.shade700],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
     ),
   ];
 
@@ -52,6 +75,8 @@ class _CategoryBookingListTeacherState
             label: filter.name,
             isSelected: filter.isSelected,
             onTap: () => selectFilter(index),
+            color: filter.color,
+            gradient: filter.gradient,
           );
         },
       ),

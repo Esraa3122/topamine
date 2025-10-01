@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 
 class CustomDropDownButtonFormField extends StatelessWidget {
   const CustomDropDownButtonFormField({
@@ -24,6 +25,8 @@ class CustomDropDownButtonFormField extends StatelessWidget {
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
         color: context.color.textColor,
+        letterSpacing: 0.5,
+        fontFamily: FontFamilyHelper.cairoArabic,
       ),
       validator: (value) {
         return validator!(value);
@@ -63,6 +66,8 @@ class CustomDropDownButtonFormField extends StatelessWidget {
               color: context.color.textColor,
               fontWeight: FontWeight.w400,
               fontSize: 14.sp,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
       ),
       isExpanded: true,

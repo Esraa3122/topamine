@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:test/core/common/dialogs/donor_dialogs.dart';
+import 'package:test/core/common/dialogs/custom_dialogs.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
@@ -19,7 +19,7 @@ class LogOutWidget extends StatelessWidget {
         TextApp(
           text: context.translate(LangKeys.logOut),
           theme: context.textStyle.copyWith(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeightHelper.regular,
           ),
         ),
@@ -46,7 +46,7 @@ class LogOutWidget extends StatelessWidget {
               TextApp(
                 text: context.translate(LangKeys.logOut).toLowerCase(),
                 theme: context.textStyle.copyWith(
-                  fontSize: 14.sp,
+                  fontSize: 13.sp,
                   fontWeight: FontWeightHelper.regular,
                 ),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 
 class CustomContanierCourse extends StatelessWidget {
   const CustomContanierCourse({
@@ -20,7 +22,14 @@ class CustomContanierCourse extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         color: backgroundColor,
       ),
-      child: Text(label, style: TextStyle(color: textColor)),
+      child: TextApp(
+        text: label,
+        theme: TextStyle(
+          color: textColor,
+          fontFamily: FontFamilyHelper.cairoArabic,
+          letterSpacing: 0.5,
+        ),
+      ),
     );
   }
 }

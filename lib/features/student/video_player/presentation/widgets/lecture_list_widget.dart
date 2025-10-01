@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/features/student/video_player/presentation/widgets/lec_card.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class LectureListWidget extends StatelessWidget {
@@ -7,73 +7,36 @@ class LectureListWidget extends StatelessWidget {
     required this.course,
     required this.selectedLecture,
     required this.onLectureSelected,
+    required this.watchedVideos,
     super.key,
   });
 
   final CoursesModel course;
   final LectureModel selectedLecture;
+  // ignore: inference_failure_on_function_return_type
   final Function(LectureModel) onLectureSelected;
+  final List<String> watchedVideos;
 
   @override
   Widget build(BuildContext context) {
     final lectures = course.lectures ?? [];
 
-    return ListView.separated(
-      padding: const EdgeInsets.all(12),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: lectures.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final lecture = lectures[index];
-        final isCurrent = lecture.title == selectedLecture.title;
+        final isCurrent = lecture.videoUrl == selectedLecture.videoUrl;
+        final isWatched = watchedVideos.contains(lecture.videoUrl);
 
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 212, 211, 211).withOpacity(0.8),
-                context.color.mainColor!.withOpacity(0.8),
-              ],
-              begin: const Alignment(0.36, 0.27),
-              end: const Alignment(0.58, 0.85),
-            ),
-            border: Border.all(
-              color: isCurrent ? Colors.blue : Colors.transparent,
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                offset: const Offset(0, 4),
-                blurRadius: 8,
-              ),
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                offset: const Offset(0, 2),
-                blurRadius: 2,
-              ),
-            ],
-          ),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-            leading: Icon(
-              Icons.play_circle_fill,
-              color: isCurrent ? Colors.blue : Colors.grey,
-              size: 30,
-            ),
-            title: Text(
-              lecture.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: isCurrent ? Colors.blue.shade800 : Colors.black,
-              ),
-            ),
-            onTap: () => onLectureSelected(lecture),
-          ),
+        return LectureCard(
+          lecture: lecture,
+          index: index,
+          isSelected: isCurrent,
+          isCompleted: isWatched,
+          onVideoTap: () {
+            onLectureSelected(lecture);
+          },
         );
       },
     );

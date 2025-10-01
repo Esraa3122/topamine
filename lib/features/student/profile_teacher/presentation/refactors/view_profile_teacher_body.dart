@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/profile_teacher/presentation/widgets/course_list.dart';
@@ -36,6 +37,8 @@ class ViewProfileTeacherBody extends StatelessWidget {
                   fontSize: 20.sp,
                   fontWeight: FontWeightHelper.bold,
                   color: context.color.textColor,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5
                 ),
               ),
             ),

@@ -52,6 +52,7 @@ LectureModel _$LectureModelFromJson(Map<String, dynamic> json) => LectureModel(
   videoUrl: json['videoUrl'] as String,
   txtUrl: json['txtUrl'] as String?,
   docUrl: json['docUrl'] as String?,
+  duration: json['duration'] as String?,
 );
 
 Map<String, dynamic> _$LectureModelToJson(LectureModel instance) =>
@@ -60,4 +61,5 @@ Map<String, dynamic> _$LectureModelToJson(LectureModel instance) =>
       'videoUrl': instance.videoUrl,
       'txtUrl': instance.txtUrl,
       'docUrl': instance.docUrl,
+      'duration': instance.duration,
     };

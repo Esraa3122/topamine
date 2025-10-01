@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
+import 'package:test/core/common/widgets/text_app.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class SettingsCard extends StatelessWidget {
@@ -67,12 +69,14 @@ class SettingsCard extends StatelessWidget {
                           color: Colors.red,
                           shape: BoxShape.circle,
                         ),
-                        child: Text(
-                          badgeCount.toString(),
-                          style: TextStyle(
+                        child: TextApp(
+                          text: badgeCount.toString(),
+                          theme: TextStyle(
                             fontSize: 10.sp,
                             color: Colors.white,
                             fontWeight: FontWeightHelper.bold,
+                            fontFamily: FontFamilyHelper.cairoArabic,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
@@ -87,22 +91,26 @@ class SettingsCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (title != null)
-                          Text(
-                            title!,
-                            style: TextStyle(
+                          TextApp(
+                            text: title!,
+                            theme: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeightHelper.medium,
                               color: Colors.black,
+                              fontFamily: FontFamilyHelper.cairoArabic,
+                              letterSpacing: 0.5,
                             ),
                           ),
                         if (subtitle != null) SizedBox(height: 4.h),
                         if (subtitle != null)
-                          Text(
-                            subtitle!,
-                            style: TextStyle(
+                          TextApp(
+                            text: subtitle!,
+                            theme: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeightHelper.regular,
                               color: Colors.grey[600],
+                              fontFamily: FontFamilyHelper.cairoArabic,
+                              letterSpacing: 0.5,
                             ),
                           ),
                       ],

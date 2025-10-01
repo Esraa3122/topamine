@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -51,6 +53,8 @@ class CustomTextField extends StatelessWidget {
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
         color: context.color.textColor,
+        letterSpacing: 0.5,
+        fontFamily: FontFamilyHelper.cairoArabic,
       ),
       validator: validator,
       onChanged: onChanged,
@@ -60,9 +64,14 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       readOnly: readOnly,
       decoration: InputDecoration(
-        label: Text(
-          lable,
-          style: TextStyle(fontSize: 15.sp,color: context.color.textColor,),
+        label: TextApp(
+          text: lable,
+          theme: TextStyle(
+            fontSize: 15.sp,
+            color: context.color.textColor,
+            letterSpacing: 0.5,
+            fontFamily: FontFamilyHelper.cairoArabic,
+          ),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -100,11 +109,15 @@ class CustomTextField extends StatelessWidget {
               color: context.color.textColor,
               fontWeight: FontWeight.w400,
               fontSize: 14.sp,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
         errorStyle: context.textStyle.copyWith(
           color: Colors.red,
           fontWeight: FontWeight.w400,
           fontSize: 12.sp,
+          letterSpacing: 0.5,
+          fontFamily: FontFamilyHelper.cairoArabic,
         ),
       ),
     );

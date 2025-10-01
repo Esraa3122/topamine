@@ -19,7 +19,7 @@ class _ProfileTeacherBodyState extends State<ProfileTeacherBody> {
   Future<UserModel?> _getUser() async {
     final uid = await authRepo.sharedPref.getUserId();
     if (uid == null) return null;
-    return await authRepo.getUserData(uid);
+    return authRepo.getUserData(uid);
   }
 
   @override

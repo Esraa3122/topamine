@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+import 'package:test/core/common/loading/empty_screen.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/features/student/search/presentation/widgets/card_search.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -17,7 +17,9 @@ class SearchResultsWidget extends StatelessWidget {
   });
   final List<String> teachers;
   final List<CoursesModel> courses;
+  // ignore: inference_failure_on_function_return_type
   final Function(String) onTeacherSelected;
+  // ignore: inference_failure_on_function_return_type
   final Function(CoursesModel) onCourseSelected;
 
   @override
@@ -34,6 +36,8 @@ class SearchResultsWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: context.color.textColor,
               fontSize: 15.sp,
+              fontFamily: FontFamilyHelper.cairoArabic,
+              letterSpacing: 0.5,
             ),
           ),
           onTap: () => onTeacherSelected(teacher),
@@ -42,9 +46,7 @@ class SearchResultsWidget extends StatelessWidget {
     }
 
     if (teachers.isEmpty && courses.isEmpty) {
-      results.add(
-        Lottie.asset(AppImages.emptyBox2, width: 326.w, height: 300.h),
-      );
+      results.add(const EmptyScreen());
     } else {
       for (var course in courses) {
         results.add(

@@ -15,6 +15,7 @@ class MyColor extends ThemeExtension<MyColor> {
     required this.containerShadow2,
     required this.containerLinear1,
     required this.containerLinear2,
+    required this.chatboot,
   });
   final Color? mainColor;
   final Color? bluePinkDark;
@@ -27,6 +28,7 @@ class MyColor extends ThemeExtension<MyColor> {
   final Color? containerShadow2;
   final Color? containerLinear1;
   final Color? containerLinear2;
+  final Color? chatboot;
 
   @override
   ThemeExtension<MyColor> copyWith({
@@ -41,6 +43,7 @@ class MyColor extends ThemeExtension<MyColor> {
     Color? containerShadow2,
     Color? containerLinear1,
     Color? containerLinear2,
+    Color? chatboot,
   }) {
     return MyColor(
       mainColor: mainColor,
@@ -54,6 +57,7 @@ class MyColor extends ThemeExtension<MyColor> {
       containerShadow2: containerShadow2,
       containerLinear1: containerLinear1,
       containerLinear2: containerLinear2,
+      chatboot: chatboot
     );
   }
 
@@ -77,6 +81,7 @@ class MyColor extends ThemeExtension<MyColor> {
       containerShadow2: containerShadow2,
       containerLinear1: containerLinear1,
       containerLinear2: containerLinear2,
+      chatboot: chatboot
     );
   }
 
@@ -92,6 +97,7 @@ class MyColor extends ThemeExtension<MyColor> {
     containerShadow2: ColorsDark.black2,
     containerLinear1: ColorsDark.black1,
     containerLinear2: ColorsDark.black2,
+    chatboot: ColorsDark.black2,
   );
   static const MyColor light = MyColor(
     mainColor: ColorsLight.mainColor,
@@ -100,10 +106,11 @@ class MyColor extends ThemeExtension<MyColor> {
     textColor: ColorsLight.black,
     textFormBorder: ColorsLight.pinkLight,
     navBarbg: ColorsLight.mainColor,
-    navBarSelectedTab: ColorsLight.pinkDark,
+    navBarSelectedTab: ColorsLight.grey9FColor,
     containerShadow1: ColorsLight.white,
     containerShadow2: ColorsLight.white,
     containerLinear1: ColorsLight.pinkDark,
     containerLinear2: ColorsLight.pinkLight,
+    chatboot: ColorsLight.greyCFColor
   );
 }

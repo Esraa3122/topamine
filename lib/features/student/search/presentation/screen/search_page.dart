@@ -7,8 +7,8 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/student/profile_teacher/presentation/screen/view_profile_teacher_screen.dart';
 import 'package:test/features/student/search/data/data_sourse_search.dart';
 import 'package:test/features/student/search/presentation/cubit/search_cubit.dart';
 import 'package:test/features/student/search/presentation/cubit/search_state.dart';
@@ -78,6 +78,8 @@ class SearchView extends StatelessWidget {
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
                   color: context.color.textColor,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
                 ),
               ),
               SizedBox(height: 15.h),
@@ -95,19 +97,21 @@ class SearchView extends StatelessWidget {
                               .fetchTeacherByName(teacher);
                           if (teacherModel != null) {
                             if (!context.mounted) return;
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => ViewProfileTeacherScreen(
-                                  userModel: teacherModel,
-                                ),
-                              ),
+                            await context.pushNamed(
+                              AppRoutes.teacherProfile2,
+                              arguments: teacherModel,
                             );
                           } else {
                             if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Teacher not found'),
+                                content: TextApp(
+                                  text: 'Teacher not found',
+                                  theme: TextStyle(
+                                    fontFamily: FontFamilyHelper.cairoArabic,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
                               ),
                             );
                           }
@@ -115,8 +119,7 @@ class SearchView extends StatelessWidget {
                         onCourseSelected: (course) {
                           cubit.addToRecentSearch(course.title);
                           if (!context.mounted) return;
-                          Navigator.pushNamed(
-                            context,
+                          context.pushNamed(
                             AppRoutes.courseDetails,
                             arguments: course,
                           );

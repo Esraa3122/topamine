@@ -30,15 +30,17 @@ class SettingsListTeacher extends StatelessWidget {
     final currentUserId = userModel.userId;
 
     Stream<int> unreadMessagesStream() async* {
-      await for (var chatsSnap
-          in FirebaseFirestore.instance.collection('chats').snapshots()) {
-        int total = 0;
-        for (var chatDoc in chatsSnap.docs) {
+      await for (final chatsSnap
+          in FirebaseFirestore.instance.collection('chats')
+          .where('participants', arrayContains: currentUserId)
+          .snapshots()) {
+        var total = 0;
+        for (final chatDoc in chatsSnap.docs) {
           final messagesSnap = await chatDoc.reference
               .collection('messages')
               .get();
-          for (var msgDoc in messagesSnap.docs) {
-            final data = msgDoc.data() as Map<String, dynamic>;
+          for (final msgDoc in messagesSnap.docs) {
+            final data = msgDoc.data();
             if (data['createdBy'] != currentUserId && data['isRead'] == false) {
               total += 1;
             }
@@ -58,29 +60,13 @@ class SettingsListTeacher extends StatelessWidget {
           child: Column(
             children: [
               SettingsCard(
-                iconColor: const Color.fromARGB(255, 11, 0, 170),
+                iconColor: const Color.fromARGB(255, 82, 70, 247),
                 icon: const Icon(Icons.message, color: Colors.white),
                 title: context.translate(LangKeys.messages),
-                // subtitle:
-                //     '${context.translate(LangKeys.have)} $unreadCount ${context.translate(LangKeys.newmessage)} ',
+                subtitle:
+                    '${context.translate(LangKeys.have)} $unreadCount ${context.translate(LangKeys.newmessage)} ',
                 badgeCount: unreadCount,
                 onTap: () async {
-                  final chatsSnap = await FirebaseFirestore.instance
-                      .collection('chats')
-                      .get();
-                  for (var chatDoc in chatsSnap.docs) {
-                    final messagesSnap = await chatDoc.reference
-                        .collection('messages')
-                        .get();
-                    for (var msgDoc in messagesSnap.docs) {
-                      final data = msgDoc.data() as Map<String, dynamic>;
-                      if (data['createdBy'] != currentUserId &&
-                          data['isRead'] == false) {
-                        await msgDoc.reference.update({'isRead': true});
-                      }
-                    }
-                  }
-
                   await context.pushNamed(
                     AppRoutes.studentListScreen,
                   );

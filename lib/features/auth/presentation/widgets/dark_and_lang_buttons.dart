@@ -8,6 +8,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/app_localizations.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class DarkAndLangButtons extends StatelessWidget {
@@ -56,7 +57,9 @@ class DarkAndLangButtons extends StatelessWidget {
                 theme: context.textStyle.copyWith(
                     fontSize: 16.sp,
                     fontWeight: FontWeightHelper.bold,
-                    color: Colors.white)),
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  fontFamily: FontFamilyHelper.cairoArabic,)),
           ),
         )
       ],

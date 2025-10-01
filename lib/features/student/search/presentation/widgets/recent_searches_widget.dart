@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/features/student/search/presentation/widgets/search_for_data_icon.dart';
 
 class RecentSearchesWidget extends StatelessWidget {
   const RecentSearchesWidget({
@@ -17,16 +18,7 @@ class RecentSearchesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (recentSearches.isEmpty) {
-      return Center(
-        child: SizedBox(
-          width: 130,
-          height: 130,
-          child: SvgPicture.asset(
-            AppImages.search,
-            color: Colors.grey.withOpacity(0.5),
-          ),
-        ),
-      );
+      return const SearchForDataIcon();
     }
 
     return ListView.builder(
@@ -35,7 +27,11 @@ class RecentSearchesWidget extends StatelessWidget {
         final item = recentSearches[index];
         return ListTile(
           leading: Icon(Icons.history, color: context.color.textColor),
-          title: Text(item, style: TextStyle(color: context.color.textColor),),
+          title: TextApp(
+            text: item,
+            theme: TextStyle(color: context.color.textColor, fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5),
+          ),
           trailing: IconButton(
             icon: Icon(Icons.close, color: context.color.textColor),
             onPressed: () => onDeleteTap(index),

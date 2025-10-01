@@ -43,6 +43,7 @@ class AuthRepos {
       if (user == null) throw Exception('Registration failed');
 
       await user.updateDisplayName(name);
+      await user.updatePhotoURL(imageFile?.path);
       await user.reload();
 
       String? imageUrl;

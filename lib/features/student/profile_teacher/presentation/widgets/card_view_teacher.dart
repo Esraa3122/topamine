@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -75,47 +76,82 @@ class CardViewTeacher extends StatelessWidget {
                         fontSize: 16.sp,
                         fontWeight: FontWeightHelper.bold,
                         color: context.color.textColor,
+                        fontFamily: FontFamilyHelper.cairoArabic,
+                        letterSpacing: 0.5
                       ),
                     ),
                     SizedBox(height: 6.h),
-                    TextApp(
-                      text: course.teacherName,
-                      theme: context.textStyle.copyWith(
-                        color: Colors.black54,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeightHelper.regular,
-                      ),
+                    Row(
+                      children: [
+                       Icon(Icons.person, size: 14, color: context.color.textColor),
+                        SizedBox(width: 4.w),
+                        TextApp(
+                          text: course.teacherName,
+                          theme: context.textStyle.copyWith(
+                            color: context.color.textColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeightHelper.regular,
+                            fontFamily: FontFamilyHelper.cairoArabic,
+                            letterSpacing: 0.5
+                          ),
+                        ),
+                      ],
                     ),
                      SizedBox(height: 6.h),
-                     TextApp(
-                      text: '${context.translate(LangKeys.price)} ${course.price} EGP',
-                      theme: context.textStyle.copyWith(
-                        color: context.color.bluePinkLight,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeightHelper.regular,
-                      ),
-                    ),
+                     Row(
+                       children: [
+                          Icon(Icons.monetization_on, size: 14, color: context.color.bluePinkLight),
+                        SizedBox(width: 4.w),
+                         TextApp(
+                          text: '${context.translate(LangKeys.price)} ${course.price} EGP',
+                          theme: context.textStyle.copyWith(
+                            color: context.color.bluePinkLight,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeightHelper.regular,
+                            fontFamily: FontFamilyHelper.cairoArabic,
+                            letterSpacing: 0.5
+                          ),
+                                             ),
+                       ],
+                     ),
                     SizedBox(height: 6.h),
-                    TextApp(
-                      text: '${context.translate(LangKeys.startDate)} ${_formatTime(course.createdAt)}',
-                      theme: context.textStyle.copyWith(
-                        color: Colors.grey,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                      ),
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range, size: 14, color: Colors.grey),
+                        SizedBox(width: 4.w),
+                        TextApp(
+                          text: '${context.translate(LangKeys.startDate)} ${_formatTime(course.createdAt)}',
+                          theme: context.textStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeightHelper.regular,
+                            fontFamily: FontFamilyHelper.cairoArabic,
+                            letterSpacing: 0.5
+                          ),
+                        ),
+                      ],
                     ),
-                     TextApp(
-                      text: '${context.translate(LangKeys.endDate)} ${_formatTime(course.endDate)}',
-                      theme: context.textStyle.copyWith(
-                        color: Colors.grey,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeightHelper.regular,
-                      ),
-                    ),
+                     Row(
+                      children: [
+                        const Icon(Icons.event, size: 14, color: Colors.grey),
+                        SizedBox(width: 4.w),
+                         TextApp(
+                          text: '${context.translate(LangKeys.endDate)} ${_formatTime(course.endDate)}',
+                          theme: context.textStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeightHelper.regular,
+                            fontFamily: FontFamilyHelper.cairoArabic,
+                            letterSpacing: 0.5
+                          ),
+                                             ),
+                       ],
+                     ),
                   ],
                 ),
               ),
             ),
+            Icon(Icons.arrow_forward_ios, color: Colors.blueGrey, size: 16),
           ],
         ),
       ),

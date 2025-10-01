@@ -9,6 +9,7 @@ class AllCoursesCubit extends Cubit<AllCoursesState> {
   AllCoursesCubit() : super(const AllCoursesState());
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // ignore: strict_raw_type
   StreamSubscription? _coursesSubscription;
 
   void listenToCourses() {
@@ -43,6 +44,7 @@ class AllCoursesCubit extends Cubit<AllCoursesState> {
           filters: _extractFilters(courses),
         ));
       },
+      // ignore: inference_failure_on_untyped_parameter
       onError: (error) {
         emit(state.copyWith(
           status: AllCoursesStatus.error,

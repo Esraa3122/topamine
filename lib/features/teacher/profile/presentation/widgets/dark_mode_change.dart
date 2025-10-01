@@ -5,6 +5,7 @@ import 'package:test/core/app/app_cubit/app_cubit.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 
@@ -19,8 +20,10 @@ class DarkModeChange extends StatelessWidget {
         TextApp(
           text: context.translate(LangKeys.darkMode),
           theme: context.textStyle.copyWith(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
           ),
         ),
         const Spacer(),

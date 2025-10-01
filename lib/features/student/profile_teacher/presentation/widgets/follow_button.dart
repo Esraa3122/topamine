@@ -1,19 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/features/student/chat/presentation/screen/chat_screen.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
 
 class FollowButton extends StatefulWidget {
   const FollowButton({
     required this.teacherId,
     required this.teacherName,
-    super.key,
+    super.key, required this.userModel,
   });
 
   final String teacherId;
   final String teacherName;
+  final UserModel userModel;
 
   @override
   State<FollowButton> createState() => _FollowButtonState();
@@ -45,7 +49,7 @@ class _FollowButtonState extends State<FollowButton>
         .collection('followers')
         .get();
 
-  if (!mounted) return;
+    if (!mounted) return;
     setState(() {
       isFollowing = doc.exists;
       followersCount = followersSnapshot.docs.length;
@@ -54,9 +58,9 @@ class _FollowButtonState extends State<FollowButton>
 
   Future<void> toggleFollow() async {
     final user = FirebaseAuth.instance.currentUser;
-final studentId = user?.uid;
-final studentName = user?.displayName ?? '';
-final studentEmail = user?.email ?? '';
+    final studentId = user?.uid;
+    final studentName = user?.displayName ?? '';
+    final studentEmail = user?.email ?? '';
 
     final ref = FirebaseFirestore.instance
         .collection('users')
@@ -72,7 +76,7 @@ final studentEmail = user?.email ?? '';
         'studentName': studentName,
         'studentEmail': studentEmail,
         'followedAt': Timestamp.now(),
-        });
+      });
       setState(() => followersCount++);
     } else {
       await ref.delete();
@@ -103,12 +107,14 @@ final studentEmail = user?.email ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(
-          '$followersCount متابع',
-          style: TextStyle(
+        TextApp(
+          text: '$followersCount متابع',
+          theme: TextStyle(
             fontSize: 14,
             color: context.color.textColor,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
           ),
         ),
         const SizedBox(height: 8),
@@ -131,9 +137,13 @@ final studentEmail = user?.email ?? '';
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Text(
-                      isFollowing ? '✓ متابع' : 'متابعة',
-                      style: const TextStyle(fontSize: 13),
+                    child: TextApp(
+                      text: isFollowing ? '✓ متابع' : 'متابعة',
+                      theme: const TextStyle(
+                        fontSize: 13,
+                        fontFamily: FontFamilyHelper.cairoArabic,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                   ),
                 ),
@@ -153,7 +163,13 @@ final studentEmail = user?.email ?? '';
                           ? '${studentId}_$teacherId'
                           : '${teacherId}_$studentId';
 
-                      context.pushNamed(AppRoutes.chat, arguments: chatId);
+                      context.pushNamed(
+                        AppRoutes.chat,
+                        arguments: {
+                          'chatId': chatId,
+                          'otherUser': widget.userModel,
+                        },
+                      );
                     },
 
                     icon: const Padding(
@@ -162,9 +178,13 @@ final studentEmail = user?.email ?? '';
                     ),
                     label: const Padding(
                       padding: EdgeInsets.all(8),
-                      child: Text(
-                        'راسلني',
-                        style: TextStyle(fontSize: 13),
+                      child: TextApp(
+                        text: 'راسلني',
+                        theme: TextStyle(
+                          fontSize: 13,
+                          fontFamily: FontFamilyHelper.cairoArabic,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(

@@ -9,6 +9,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/color/colors_light.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/widgets/dark_and_lang_buttons.dart';
@@ -39,19 +40,19 @@ class RuleSignUpBody extends StatelessWidget {
           SizedBox(
             height: 40.h,
           ),
-          const CustomFadeInDown( 
-                  duration: 800,
-                  child: ContainerLogoSplash()),
+          const CustomFadeInDown(duration: 800, child: ContainerLogoSplash()),
 
-                SizedBox(
-                  height: 10.h,
-                ),
+          SizedBox(
+            height: 10.h,
+          ),
           TextApp(
             text: context.translate(LangKeys.joinToTopamine),
             theme: context.textStyle.copyWith(
               color: ColorsLight.pinkLight,
               fontSize: 26.sp,
               fontWeight: FontWeightHelper.bold,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
           SizedBox(height: 10.h),
@@ -61,6 +62,8 @@ class RuleSignUpBody extends StatelessWidget {
               color: ColorsLight.grey9FColor,
               fontSize: 18.sp,
               fontWeight: FontWeightHelper.medium,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
           SizedBox(height: 32.h),
@@ -73,24 +76,27 @@ class RuleSignUpBody extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.grey.shade50, context.color.mainColor!,],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.grey.shade50,
+                    context.color.mainColor!,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: Colors.blueAccent.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
-            ],
-            border: Border.all(
-              color: Colors.blueAccent.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
               child: Column(
                 children: [
                   SvgPicture.asset(AppImages.teacher),
@@ -102,6 +108,8 @@ class RuleSignUpBody extends StatelessWidget {
                       color: const Color(0xFF3a6ea5),
                       fontSize: 18.sp,
                       fontWeight: FontWeightHelper.bold,
+                      letterSpacing: 0.5,
+                      fontFamily: FontFamilyHelper.cairoArabic,
                     ),
                   ),
 
@@ -113,6 +121,8 @@ class RuleSignUpBody extends StatelessWidget {
                       color: Colors.black54,
                       fontSize: 15.sp,
                       fontWeight: FontWeightHelper.regular,
+                      letterSpacing: 0.5,
+                      fontFamily: FontFamilyHelper.cairoArabic,
                     ),
                   ),
                 ],
@@ -127,34 +137,39 @@ class RuleSignUpBody extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.grey.shade50, context.color.mainColor!,],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.grey.shade50,
+                    context.color.mainColor!,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: Colors.blueAccent.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
-            ],
-            border: Border.all(
-              color: Colors.blueAccent.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
               child: Column(
                 children: [
                   SvgPicture.asset(AppImages.student),
                   SizedBox(height: 10.h),
-                   TextApp(
+                  TextApp(
                     text: context.translate(LangKeys.iAmAStudent),
                     theme: context.textStyle.copyWith(
                       color: const Color(0xFF3a6ea5),
                       fontSize: 18.sp,
                       fontWeight: FontWeightHelper.bold,
+                      letterSpacing: 0.5,
+                      fontFamily: FontFamilyHelper.cairoArabic,
                     ),
                   ),
 
@@ -166,6 +181,8 @@ class RuleSignUpBody extends StatelessWidget {
                       color: Colors.black54,
                       fontSize: 15.sp,
                       fontWeight: FontWeightHelper.regular,
+                      letterSpacing: 0.5,
+                      fontFamily: FontFamilyHelper.cairoArabic,
                     ),
                   ),
                 ],
@@ -187,6 +204,8 @@ class RuleSignUpBody extends StatelessWidget {
                     fontSize: 16.sp,
                     fontWeight: FontWeightHelper.regular,
                     color: context.color.textColor,
+                    letterSpacing: 0.5,
+                    fontFamily: FontFamilyHelper.cairoArabic,
                   ),
                 ),
                 TextButton(
@@ -199,6 +218,8 @@ class RuleSignUpBody extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeightHelper.bold,
                       color: context.color.bluePinkLight,
+                      letterSpacing: 0.5,
+                      fontFamily: FontFamilyHelper.cairoArabic,
                     ),
                   ),
                 ),

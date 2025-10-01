@@ -4,6 +4,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class AboutUs extends StatelessWidget {
@@ -16,8 +17,10 @@ class AboutUs extends StatelessWidget {
         TextApp(
           text: context.translate(LangKeys.aboutUs),
           theme: context.textStyle.copyWith(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeightHelper.regular,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
           ),
         ),
         const Spacer(),
@@ -32,8 +35,10 @@ class AboutUs extends StatelessWidget {
               TextApp(
                 text: context.translate(LangKeys.aboutUs).toLowerCase(),
                 theme: context.textStyle.copyWith(
-                  fontSize: 14.sp,
+                  fontSize: 13.sp,
                   fontWeight: FontWeightHelper.regular,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
                 ),
               ),
               SizedBox(width: 5.w),

@@ -12,55 +12,67 @@ class BookingStudentCubit extends Cubit<BookingStudentState> {
   }
 
   Future<void> fetchEnrolledCourses() async {
-    safeEmit(BookingStudentLoading());
-    try {
-      final currentUserId = FirebaseAuth.instance.currentUser!.uid;
-      final now = DateTime.now();
+  safeEmit(BookingStudentLoading());
+  try {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    final now = DateTime.now();
 
-      final enrollmentSnapshot = await FirebaseFirestore.instance
-          .collection('enrollments')
-          .where('userId', isEqualTo: currentUserId)
-          .get();
+    final enrollmentSnapshot = await FirebaseFirestore.instance
+        .collection('enrollments')
+        .where('userId', isEqualTo: currentUserId)
+        .get();
 
-      final Map<String, String> courseStatusMap = {};
+    final Map<String, String> courseStatusMap = {};
+    final List<String> enrollmentDocIdsToDelete = [];
 
-      for (var doc in enrollmentSnapshot.docs) {
-        final data = doc.data();
-        final courseId = data['courseId']?.toString();
-        if (courseId == null || courseId.isEmpty) continue;
+    for (var doc in enrollmentSnapshot.docs) {
+      final data = doc.data();
+      final courseId = data['courseId']?.toString();
+      if (courseId == null || courseId.isEmpty) continue;
 
-        final status = data['statusProgress']?.toString() ?? 'inProgress';
-        courseStatusMap[courseId] = status;
-      }
-
-      final enrolledCourseIds = courseStatusMap.keys.toList();
-
-      final courseSnapshot =
-          await FirebaseFirestore.instance.collection('courses').get();
-
-      final courses = courseSnapshot.docs
-          .map((doc) {
-            final courseId = doc.id;
-            if (!enrolledCourseIds.contains(courseId)) return null;
-
-            final courseData = {...doc.data(), 'id': courseId};
-            courseData['status'] = courseStatusMap[courseId] ?? 'inProgress';
-
-            final course = CoursesModel.fromJson(courseData);
-
-            if (course.endDate != null &&
-                (now.isBefore(course.endDate!) ||
-                    now.isAtSameMomentAs(course.endDate!))) {
-              return course;
-            }
-            return null;
-          })
-          .whereType<CoursesModel>()
-          .toList();
-
-      safeEmit(BookingStudentLoaded(courses));
-    } catch (e) {
-      safeEmit(BookingStudentError(e.toString()));
+      final status = data['statusProgress']?.toString() ?? 'inProgress';
+      courseStatusMap[courseId] = status;
     }
+
+    final enrolledCourseIds = courseStatusMap.keys.toList();
+
+    final courseSnapshot =
+        await FirebaseFirestore.instance.collection('courses').get();
+
+    final courses = <CoursesModel>[];
+
+    for (var doc in courseSnapshot.docs) {
+      final courseId = doc.id;
+      if (!enrolledCourseIds.contains(courseId)) continue;
+
+      final courseData = {...doc.data(), 'id': courseId};
+      courseData['status'] = courseStatusMap[courseId] ?? 'inProgress';
+
+      final course = CoursesModel.fromJson(courseData);
+
+      if (course.endDate != null &&
+          (now.isBefore(course.endDate!) ||
+              now.isAtSameMomentAs(course.endDate!))) {
+        courses.add(course);
+      } else {
+        final enrollmentDoc = enrollmentSnapshot.docs.firstWhere(
+          (e) => e.data()['courseId'] == courseId,
+        );
+        enrollmentDocIdsToDelete.add(enrollmentDoc.id);
+      }
+    }
+
+    for (var docId in enrollmentDocIdsToDelete) {
+      await FirebaseFirestore.instance
+          .collection('enrollments')
+          .doc(docId)
+          .delete();
+    }
+
+    safeEmit(BookingStudentLoaded(courses));
+  } catch (e) {
+    safeEmit(BookingStudentError(e.toString()));
   }
+}
+
 }

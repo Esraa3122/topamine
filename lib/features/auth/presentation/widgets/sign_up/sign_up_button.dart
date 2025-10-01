@@ -5,6 +5,7 @@ import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class SignUpButton extends StatelessWidget {
@@ -27,6 +28,8 @@ class SignUpButton extends StatelessWidget {
               color: Colors.white,
               fontSize: 18.sp,
               fontWeight: FontWeightHelper.bold,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
         ),

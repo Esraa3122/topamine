@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/profile_teacher/presentation/widgets/follow_button.dart';
@@ -46,7 +47,9 @@ class CustomShapeProfile extends StatelessWidget {
                     theme: context.textStyle.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeightHelper.bold,
-                      color: context.color.textColor
+                      color: context.color.textColor,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5
                     ),
                   ),
               if (userModel.subject != null) ...[
@@ -56,7 +59,9 @@ class CustomShapeProfile extends StatelessWidget {
                     theme: context.textStyle.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeightHelper.regular,
-                      color: Colors.grey
+                      color: Colors.grey,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5
                     ),
                   ),
               ],
@@ -71,7 +76,7 @@ class CustomShapeProfile extends StatelessWidget {
                SizedBox(height: 16.h),
             Center(
               child: FollowButton(
-                teacherId: userModel.userId, teacherName: userModel.userName,
+                teacherId: userModel.userId, teacherName: userModel.userName, userModel: userModel,
               ),
             ),
             ],

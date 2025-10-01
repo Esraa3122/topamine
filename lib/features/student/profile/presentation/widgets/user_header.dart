@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/extensions/string_exetension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 
@@ -14,12 +15,11 @@ class UserHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250.w,
+      width: 230.w,
       decoration: BoxDecoration(
         color: context.color.mainColor,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
         ),
         boxShadow: [
           BoxShadow(
@@ -29,56 +29,68 @@ class UserHeader extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(45),
-            child: CachedNetworkImage(
-              height: 80.h,
-              width: 80.w,
-              fit: BoxFit.cover,
-              imageUrl: userModel.userImage.toString(),
-              errorWidget: (context, url, error) => Icon(
-                Icons.person,
-                size: 70.w,
-                color: context.color.textColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            SizedBox(height: 10.h),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(45),
+              child: CachedNetworkImage(
+                height: 80.h,
+                width: 80.w,
+                fit: BoxFit.cover,
+                imageUrl: userModel.userImage.toString(),
+                errorWidget: (context, url, error) => Icon(
+                  Icons.person,
+                  size: 70.w,
+                  color: context.color.textColor,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10.h),
-          TextApp(
-            text: userModel.userName.toLowerCase().toCapitalized(),
-            theme: context.textStyle.copyWith(
-              fontSize: 20.sp,
-              fontWeight: FontWeightHelper.bold,
+            SizedBox(height: 10.h),
+            TextApp(
+              text: userModel.userName.toLowerCase().toCapitalized(),
+              theme: context.textStyle.copyWith(
+                fontSize: 15.sp,
+                fontWeight: FontWeightHelper.bold,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-          SizedBox(height: 5.h),
-          TextApp(
-            text: userModel.userEmail,
-            theme: context.textStyle.copyWith(
-              fontSize: 14.sp,
-              fontWeight: FontWeightHelper.regular,
+            SizedBox(height: 5.h),
+            TextApp(
+              text: userModel.userEmail,
+              theme: context.textStyle.copyWith(
+                fontSize: 13.sp,
+                fontWeight: FontWeightHelper.regular,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-          SizedBox(height: 5.h),
-          TextApp(
-            text: userModel.governorate,
-            theme: context.textStyle.copyWith(
-              fontSize: 14.sp,
-              fontWeight: FontWeightHelper.regular,
+            SizedBox(height: 5.h),
+            TextApp(
+              text: userModel.governorate,
+              theme: context.textStyle.copyWith(
+                fontSize: 13.sp,
+                fontWeight: FontWeightHelper.regular,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-          SizedBox(height: 5.h),
-          TextApp(
-            text: userModel.grade.toString(),
-            theme: context.textStyle.copyWith(
-              fontSize: 14.sp,
-              fontWeight: FontWeightHelper.regular,
+            SizedBox(height: 5.h),
+            TextApp(
+              text: userModel.grade.toString(),
+              theme: context.textStyle.copyWith(
+                fontSize: 13.sp,
+                fontWeight: FontWeightHelper.regular,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-          SizedBox(height: 20.h),
-        ],
+            SizedBox(height: 20.h),
+          ],
+        ),
       ),
     );
   }

@@ -10,7 +10,7 @@ class VideoPlayerWidget extends StatefulWidget {
   });
 
   final String? videoUrl;
-  final VoidCallback onVideoCompleted; 
+  final VoidCallback onVideoCompleted;
 
   @override
   State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
@@ -94,28 +94,32 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _disposeControllers();
     super.dispose();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_errorMessage != null) {
-      return Center(
-        child: Text(
-          _errorMessage!,
-          style: const TextStyle(color: Colors.red, fontSize: 16),
-        ),
-      );
-    }
-
-    if (_videoController == null || !_videoController!.value.isInitialized) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: AspectRatio(
-        aspectRatio: _videoController!.value.aspectRatio,
-        child: Chewie(controller: _chewieController!),
+@override
+Widget build(BuildContext context) {
+  if (_errorMessage != null) {
+    return Center(
+      child: Text(
+        _errorMessage!,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
       ),
     );
   }
+
+  if (_videoController == null || !_videoController!.value.isInitialized) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  final aspectRatio = (_videoController!.value.aspectRatio > 0)
+      ? _videoController!.value.aspectRatio
+      : 16 / 9; 
+
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(12),
+    child: AspectRatio(
+      aspectRatio: aspectRatio,
+      child: Chewie(controller: _chewieController!),
+    ),
+  );
+}
+
 }

@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:test/core/common/loading/empty_screen.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/student/profile_teacher/data/repo/view_profile_teacher_repo.dart';
@@ -34,6 +37,10 @@ class CoursesList extends StatelessWidget {
               itemBuilder: (_, __) => const CardViewTeacherShimmer(),
             );
           } else if (state is LoadedState) {
+            if (state.courses.isEmpty) {
+              return const EmptyScreen(title: 'لا يوجد كورسات',);
+            }
+
             return ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -51,7 +58,16 @@ class CoursesList extends StatelessWidget {
               },
             );
           } else if (state is ErrorState) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: TextApp(
+                text: state.message,
+                theme: TextStyle(
+                  fontSize: 18.sp,
+                  fontFamily: FontFamilyHelper.cairoArabic,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            );
           }
 
           return Center(

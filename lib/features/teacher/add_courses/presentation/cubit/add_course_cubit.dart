@@ -13,13 +13,14 @@ class AddCourseCubit extends Cubit<AddCourseState> {
   List<LectureModel> lectures = [];
 
   Future<void> uploadLecture({
-    required String title,
-    required File video,
-    File? word,
-    File? text,
-  }) async {
-    emit(AddCourseLoading());
+  required String title,
+  required File video,
+  File? word,
+  File? text,
+}) async {
+  emit(AddCourseLoading());
 
+  try {
     final videoUrl = await repository.uploadLectureFile(video, 'video');
     final wordUrl = word != null
         ? await repository.uploadLectureFile(word, 'raw')
@@ -28,10 +29,7 @@ class AddCourseCubit extends Cubit<AddCourseState> {
         ? await repository.uploadLectureFile(text, 'raw')
         : null;
 
-    if (videoUrl == null) {
-      emit(AddCourseError('Video upload failed'));
-      return;
-    }
+    final duration = await repository.getVideoDuration(videoUrl);
 
     lectures.add(
       LectureModel(
@@ -39,11 +37,15 @@ class AddCourseCubit extends Cubit<AddCourseState> {
         videoUrl: videoUrl,
         docUrl: wordUrl,
         txtUrl: textUrl,
+        duration: duration, 
       ),
     );
 
     emit(AddCourseLectureAdded(lectures.length));
+  } catch (e) {
+    emit(AddCourseError(e.toString()));
   }
+}
 
   Future<void> submitCourse({
     required CoursesModel course,

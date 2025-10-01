@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/core/common/loading/empty_screen.dart';
 import 'package:test/features/student/booking/presentation/widgets/booking_course_card_student.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
@@ -15,9 +13,7 @@ class CoursesBookingListStudent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (courses.isEmpty) {
-      return Center(
-        child: Lottie.asset(AppImages.emptyBox2, width: 326.w, height: 300.h),
-      );
+      return const EmptyScreen(title: 'لا يوجد كورسات',);
     }
 
     return ListView.builder(

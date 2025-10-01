@@ -1,10 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:test/core/common/widgets/custom_text_field.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/bot/presentation/widget/message.dart';
 
@@ -18,171 +20,186 @@ class ChatbotScreen extends StatefulWidget {
 class _ChatbotScreenState extends State<ChatbotScreen> {
   final List<Message> _messages = [
     const Message(
-      message: 'أهلا كيف يمكننى مساعدتك ؟',
-      isUser: false,
+      message: 'أهلا 👋\n كيف يمكننى مساعدتك ؟',
     ),
   ];
   final TextEditingController _textEditingController = TextEditingController();
-  bool _isLoading = false;
+  bool _isTyping = false;
 
   Future<void> handleSubmit() async {
     final prompt = _textEditingController.text.trim();
+    if (prompt.isEmpty) return;
 
-  if (prompt.isEmpty) {
-    return;
-  }
+    setState(() {
+      _messages.insert(
+        0,
+        Message(
+          isUser: true,
+          message: prompt,
+        ),
+      );
+      _textEditingController.clear();
+      _isTyping = true; 
+    });
 
     try {
-      setState(() {
-        _isLoading = true;
-      });
       final model = GenerativeModel(
         model: 'gemini-1.5-flash',
-        apiKey: 'AIzaSyBqKzsFPotUr-x-8HcnbRmEobrcMY-i-Ts',
+        apiKey: 'AIzaSyDT_K1WmbFE4sT1ekAU_UJvH6QN3hhvroY',
       );
-      final prompt = _textEditingController.text;
-
-      setState(() {
-        _messages.add(
-          Message(
-            isUser: true,
-            message: prompt,
-          ),
-        );
-        _textEditingController.clear();
-      });
 
       final response = await model.generateContent([Content.text(prompt)]);
 
+      // await Future.delayed(const Duration(seconds: 1));
+
       setState(() {
-        _messages.add(
+        _isTyping = false;
+        _messages.insert(
+          0,
           Message(
-            isUser: false,
             message: response.text != null ? response.text!.trim() : '',
           ),
         );
       });
-      if (kDebugMode) {
-        print(response.text);
-      }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } finally {
       setState(() {
-        _isLoading = false;
+        _isTyping = false;
       });
+      debugPrint(e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.color.chatboot,
       appBar: AppBar(
-        title: Text(
-          'Gemini Chatbot',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: context.color.textColor!,
-          ),
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.blue.shade200,
+              child: SvgPicture.asset(
+                AppImages.chatboot,
+                color: Colors.white,
+                height: 25.h,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 TextApp(
+                  text: 'Gemini Bot',
+                  theme: TextStyle(
+                    fontWeight: FontWeightHelper.bold,
+                    fontFamily: FontFamilyHelper.cairoArabic,
+                    letterSpacing: 0.5,
+                    color: context.color.textColor
+                    ),
+                ),
+                TextApp(
+                  text:  _isTyping ? 'يكتب...' : 'متصل الآن',
+                  theme: const TextStyle(
+                    fontSize: 12, 
+                    color: Colors.white70,
+                    fontFamily: FontFamilyHelper.cairoArabic,
+                    letterSpacing: 0.5
+                    ),
+                ),
+              ],
+            ),
+          ],
         ),
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 6, top: 6, bottom: 6, right: 6),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(AppImages.logo),
-          ),
+        backgroundColor: Colors.blue.shade400,
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: Icon(Icons.arrow_back_ios, color: context.color.textColor,),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_forward_ios,
-              color: context.color.textColor,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              reverse: true,
+              padding: const EdgeInsets.all(12),
+              itemBuilder: (context, index) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, anim) => SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.1, 0.3),
+                      end: Offset.zero,
+                    ).animate(anim),
+                    child: FadeTransition(opacity: anim, child: child),
+                  ),
+                  child: _messages[index],
+                );
+              },
+              separatorBuilder: (_, _) => const SizedBox(height: 6),
+              itemCount: _messages.length,
             ),
           ),
-        ],
-        backgroundColor: Colors.blue.shade300,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade300, context.color.mainColor!],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          // padding: const EdgeInsets.all(8),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+
+          if (_isTyping)
+            Padding(
+              padding: const EdgeInsets.only(left: 16, bottom: 8),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Colors.blue.shade200,
+                    child: SvgPicture.asset(
+                      AppImages.chatboot,
+                      color: Colors.white,
+                      height: 25.h,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SpinKitThreeBounce(
+                    color: Colors.grey.shade700,
+                    size: 18,
+                  ),
+                ],
+              ),
+            ),
+
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            color: context.color.mainColor,
+            child: Row(
               children: [
                 Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return _messages[index];
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 10,
-                      );
-                    },
-                    itemCount: _messages.length,
-                  ),
-                ),
-                Visibility(
-                  visible: _isLoading,
-                  child: Center(
-                    child: SpinKitSpinningLines(
-                      color: context.color.textColor!,
-                      size: 50.sp,
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: CustomTextField(
-                          hintText: 'اسأل شىء هنا ...',
-                          lable: '',
-                          controller: _textEditingController,
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: InkWell(
-                              onTap: handleSubmit,
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: context.color.bluePinkLight,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.send,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                  child: TextField(
+                    controller: _textEditingController,
+                    decoration: InputDecoration(
+                      hintText: 'اكتب رسالة',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
                       ),
                     ),
-                  ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.white),
+                    onPressed: handleSubmit,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

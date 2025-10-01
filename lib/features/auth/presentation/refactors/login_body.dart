@@ -14,6 +14,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_state.dart';
@@ -157,6 +158,8 @@ class _LoginBodyState extends State<LoginBody> {
                           fontSize: 14.sp,
                           fontWeight: FontWeightHelper.bold,
                           color: context.color.bluePinkLight,
+                          letterSpacing: 0.5,
+                          fontFamily: FontFamilyHelper.cairoArabic,
                         ),
                       ),
                     ),
@@ -216,9 +219,11 @@ class _LoginBodyState extends State<LoginBody> {
                     TextApp(
                       text: context.translate(LangKeys.dontHaveAnAccount),
                       theme: context.textStyle.copyWith(
-                        fontSize: 14.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeightHelper.regular,
                         color: context.color.textColor,
+                        letterSpacing: 0.5,
+                         fontFamily: FontFamilyHelper.cairoArabic,
                       ),
                     ),
                     TextButton(
@@ -231,6 +236,8 @@ class _LoginBodyState extends State<LoginBody> {
                           fontSize: 16.sp,
                           fontWeight: FontWeightHelper.bold,
                           color: context.color.bluePinkLight,
+                          letterSpacing: 0.5,
+                          fontFamily: FontFamilyHelper.cairoArabic,
                         ),
                       ),
                     ),

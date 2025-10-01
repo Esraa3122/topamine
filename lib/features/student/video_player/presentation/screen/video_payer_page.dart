@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:test/core/common/widgets/custom_app_bar.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/video_player/presentation/widgets/lecture_list_widget.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_dialog.dart';
 import 'package:test/features/student/video_player/presentation/widgets/rating_tab_widget.dart';
@@ -28,6 +30,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late LectureModel selectedLecture;
+  String? userRole;
+  List<String> watchedVideos = [];
 
   @override
   void initState() {
@@ -45,56 +49,85 @@ class _VideoPlayerPageState extends State<VideoPlayerPage>
         docUrl: '',
       );
     }
-    _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {});
+    _tabController = TabController(length: 2, vsync: this)
+      ..addListener(() => setState(() {}));
+
+    _loadUserRole();
+  }
+
+  Future<void> _loadUserRole() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid != null) {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
+      if (snapshot.exists && snapshot.data() != null) {
+        setState(() {
+          userRole = snapshot['role'] as String?;
+        });
       }
-    });
+
+      if (widget.course.id != null) {
+        final enrollmentQuery = await FirebaseFirestore.instance
+            .collection('enrollments')
+            .where('courseId', isEqualTo: widget.course.id)
+            .where('userId', isEqualTo: uid)
+            .limit(1)
+            .get();
+
+        if (enrollmentQuery.docs.isNotEmpty) {
+          final data = enrollmentQuery.docs.first.data();
+          final watched = data['watchedVideos'];
+          if (watched is List) {
+            setState(() {
+              watchedVideos = watched.map((e) => e.toString()).toList();
+            });
+          }
+        }
+      }
+    }
   }
 
   void _changeLecture(LectureModel lecture) {
     setState(() => selectedLecture = lecture);
   }
 
-  void _handleVideoCompleted() async {
+  Future<void> _handleVideoCompleted() async {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
     final enrollmentQuery = await FirebaseFirestore.instance
         .collection('enrollments')
         .where('courseId', isEqualTo: widget.course.id)
-        .where('userId', isEqualTo: currentUserId) 
+        .where('userId', isEqualTo: currentUserId)
         .limit(1)
-      .get();
+        .get();
 
-  if (enrollmentQuery.docs.isEmpty) return;
+    if (enrollmentQuery.docs.isEmpty) return;
 
-  final doc = enrollmentQuery.docs.first;
-  final data = doc.data();
+    final doc = enrollmentQuery.docs.first;
+    final data = doc.data();
 
-  List<String> watchedVideos = [];
+    if (data['watchedVideos'] != null && data['watchedVideos'] is List) {
+      watchedVideos = List<String>.from(data['watchedVideos'] as List<dynamic>);
+    }
 
-if (data['watchedVideos'] != null && data['watchedVideos'] is List) {
-  watchedVideos = List<String>.from(data['watchedVideos'] as List);
-}
+    final lectureKey = selectedLecture.videoUrl;
+    if (!watchedVideos.contains(lectureKey) && lectureKey.isNotEmpty) {
+      watchedVideos.add(lectureKey);
+    }
 
-final lectureKey = selectedLecture.videoUrl ?? '';
+    final totalLectures = widget.course.lectures?.length ?? 1;
+    final progress = watchedVideos.length / totalLectures;
+    final status = progress >= 1.0 ? 'completed' : 'inProgress';
 
-if (!watchedVideos.contains(lectureKey) && lectureKey.isNotEmpty) {
-  watchedVideos.add(lectureKey);
-}
+    await doc.reference.update({
+      'watchedVideos': watchedVideos,
+      'progress': progress,
+      'statusProgress': status,
+    });
 
-final totalLectures = widget.course.lectures?.length ?? 1;
-final progress = watchedVideos.length / totalLectures;
-
-final status = progress >= 1.0 ? 'completed' : 'inProgress';
-
-await doc.reference.update({
-  'watchedVideos': watchedVideos,
-  'progress': progress,
-  'statusProgress': status,
-});
+    setState(() {});
   }
-
 
   @override
   void dispose() {
@@ -106,25 +139,43 @@ await doc.reference.update({
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton:
-    _tabController.index == 1 && widget.course.id != null
-        ? FloatingActionButton(
-            onPressed: () => showRatingDialog(
-              context,
-              widget.course.id!,
-            ),
-            tooltip: 'أضف تقييم',
-            backgroundColor: context.color.bluePinkLight,
-            child: Icon(Icons.rate_review, color: Colors.white),
-          )
-        : null,
-
+          _tabController.index == 1 &&
+              widget.course.id != null &&
+              userRole != 'teacher'
+          ? FloatingActionButton(
+              onPressed: () => showRatingDialog(
+                context,
+                widget.course.id!,
+              ),
+              tooltip: 'أضف تقييم',
+              backgroundColor: Colors.transparent,
+              shape: const CircleBorder(),
+              elevation: 4,
+              child: Container(
+                constraints: const BoxConstraints.expand(),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      context.color.bluePinkLight!,
+                      context.color.bluePinkDark!,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: const Icon(Icons.rate_review, color: Colors.white),
+              ),
+            )
+          : null,
       appBar: AppBar(
-        title: Text(
-          context.translate(LangKeys.videoPlayer),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+        title: TextApp(
+          text: context.translate(LangKeys.videoPlayer),
+          theme: context.textStyle.copyWith(
+            fontWeight: FontWeightHelper.bold,
             fontSize: 22,
             color: Colors.white,
+            fontFamily: FontFamilyHelper.cairoArabic,
           ),
         ),
         centerTitle: true,
@@ -137,39 +188,77 @@ await doc.reference.update({
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+            gradient: LinearGradient(
+              colors: [
+                context.color.bluePinkLight!,
+                context.color.bluePinkDark!,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8),
-            child: SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.25,
-              child: VideoPlayerWidget(
-                videoUrl: selectedLecture.videoUrl,
-                onVideoCompleted: _handleVideoCompleted,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 6,
+              clipBehavior: Clip.antiAlias,
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: VideoPlayerWidget(
+                  videoUrl: selectedLecture.videoUrl,
+                  onVideoCompleted: _handleVideoCompleted,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListTile(
+                       title: TextApp(
+               text: widget.course.title,
+               theme: context.textStyle.copyWith(
+                 fontWeight: FontWeightHelper.bold,
+                 fontSize: 16,
+                 fontFamily: FontFamilyHelper.cairoArabic,
+                 letterSpacing: 0.5,
+               ),
+             ),
+                       subtitle: TextApp(
+               text: widget.course.teacherName,
+               theme: context.textStyle.copyWith(
+                fontWeight: FontWeightHelper.regular,
+                 fontFamily: FontFamilyHelper.cairoArabic,
+                 letterSpacing: 0.5,
+               ),
+             ),
+                     ),
+          ),
+          // MemoWidget(
+          //   pdfUrl: selectedLecture.docUrl,
+          //   textMemo: selectedLecture.txtUrl,
+          // ),
           TabBar(
             controller: _tabController,
             indicatorColor: Colors.blueAccent,
             indicatorWeight: 3,
             labelColor: Colors.blueAccent,
-            unselectedLabelColor: Colors.grey.shade800,
-            labelStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-            unselectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-            ),
+            unselectedLabelColor: Colors.grey.shade500,
             tabs: const [
-              Tab(text: 'المحاضرات'),
-              Tab(text: 'الآراء'),
+              Tab(icon: Icon(Icons.video_library), text: 'المحاضرات'),
+              Tab(icon: Icon(Icons.reviews), text: 'الآراء'),
             ],
           ),
           Expanded(
@@ -181,13 +270,13 @@ await doc.reference.update({
                     ? LectureListWidget(
                         course: widget.course,
                         selectedLecture: selectedLecture,
+                        watchedVideos: watchedVideos,
                         onLectureSelected: _changeLecture,
                       )
                     : RatingTabWidget(
-                      key: ValueKey(widget.course.id),
-                      courseId: widget.course.id!,
-                  ),
-
+                        key: ValueKey(widget.course.id),
+                        courseId: widget.course.id!,
+                      ),
               ),
             ),
           ),

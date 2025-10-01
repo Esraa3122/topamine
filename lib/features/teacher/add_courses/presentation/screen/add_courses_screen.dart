@@ -7,16 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:test/core/common/toast/awesome_snackbar.dart';
+import 'package:test/core/common/toast/gradient_snack_bar.dart';
 import 'package:test/core/common/widgets/custom_text_field.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/utils/PickFileUtils.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:test/features/teacher/add_courses/presentation/cubit/add_course_cubit.dart';
+import 'package:test/features/teacher/add_courses/presentation/widget/build_drop_down.dart';
+import 'package:test/features/teacher/add_courses/presentation/widget/build_lecture_card.dart';
 import 'package:test/features/teacher/add_courses/presentation/widget/date_field.dart';
-import 'package:test/features/teacher/add_courses/presentation/widget/video_player_view_widget.dart';
+import 'package:video_player/video_player.dart';
 
 class AddCourseScreen extends StatefulWidget {
   const AddCourseScreen({super.key});
@@ -56,14 +61,29 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
   String? selectedTerm;
 
-  void removeLecture(int index) {
-    setState(() {
-      lectures[index]['title']?.dispose();
-      lectures.removeAt(index);
-    });
+  Future<String?> getVideoDuration(String url) async {
+    try {
+      final controller = VideoPlayerController.network(
+        url,
+      );
+      await controller.initialize();
+      final duration = controller.value.duration;
+      await controller.dispose();
+
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      final hours = twoDigits(duration.inHours);
+      final minutes = twoDigits(duration.inMinutes.remainder(60));
+      final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+      return duration.inHours > 0
+          ? '$hours:$minutes:$seconds'
+          : '$minutes:$seconds';
+    } catch (e) {
+      return null;
+    }
   }
 
-  void pickImage() async {
+  Future<void> pickImage() async {
     final file = await PickFileUtils.pickImage();
     if (file != null) setState(() => imageFile = file);
   }
@@ -78,28 +98,38 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     setState(() {});
   }
 
-  void pickLectureFile(int index, String type) async {
-    File? file;
-    if (type == 'video') {
-      file = await PickFileUtils.pickVideo();
-    } else {
-      file = await PickFileUtils.pickDocument(
-        extensions: type == 'word' ? ['doc', 'docx'] : ['txt'],
-      );
-    }
-    if (file != null) {
-      lectures[index][type] = file;
-      setState(() {});
-    }
-  }
-
   Future<void> pickDate(bool isStart) async {
     final date = await showDatePicker(
       context: context,
       firstDate: DateTime(2023),
       lastDate: DateTime(2100),
       initialDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: context.color.bluePinkLight!,
+              onSurface: context.color.textColor!,
+            ),
+            datePickerTheme: DatePickerThemeData(
+              backgroundColor: context.color.mainColor,
+              headerBackgroundColor: context.color.bluePinkLight,
+              headerForegroundColor: Colors.white,
+              dayForegroundColor: WidgetStateProperty.all(
+                context.color.textColor,
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: context.color.bluePinkLight,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (date != null) {
       setState(() {
         if (isStart) {
@@ -111,11 +141,14 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     }
   }
 
-  void submit() async {
+  Future<void> submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يجب رفع صورة للكورس')),
+      GradientSnackBar.show(
+        context,
+        'يجب رفع صورة للكورس',
+        Colors.red.shade400,
+        Colors.redAccent.shade700,
       );
       return;
     }
@@ -126,10 +159,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       final title = (lecture['title'] as TextEditingController).text;
       final video = lecture['video'] as File?;
       if (title.isEmpty || video == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('كل محاضرة يجب أن تحتوي على عنوان وفيديو'),
-          ),
+        GradientSnackBar.show(
+          context,
+          'كل محاضرة يجب أن تحتوي على عنوان وفيديو',
+        Colors.red.shade400,
+        Colors.redAccent.shade700,
         );
         return;
       }
@@ -167,7 +201,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     startDate = null;
     endDate = null;
     imageFile = null;
-    for (var lecture in lectures) {
+    for (final lecture in lectures) {
       lecture['title']?.dispose();
     }
     lectures.clear();
@@ -200,25 +234,40 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+            gradient: LinearGradient(
+              colors: [
+                context.color.bluePinkLight!,
+                context.color.bluePinkDark!,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: BlocConsumer<AddCourseCubit, AddCourseState>(
         listener: (context, state) {
-              if (state is AddCourseSuccess) {
-                AwesomeSnackBar.show(
-                  context: context,
-                  title: 'Success!',
-                  message: 'تمت الإضافة بنجاح',
-                  contentType: ContentType.success,
-                );
-              } else if (state is AddCourseError) {
-                AwesomeSnackBar.show(
-                  context: context,
-                  title: 'Error!',
-                  message: state.message,
-                  contentType: ContentType.failure,
-                );
-              }
-            },
+          if (state is AddCourseSuccess) {
+            AwesomeSnackBar.show(
+              context: context,
+              title: 'Success!',
+              message: 'تمت الإضافة بنجاح',
+              contentType: ContentType.success,
+            );
+          } else if (state is AddCourseError) {
+            AwesomeSnackBar.show(
+              context: context,
+              title: 'Error!',
+              message: state.message,
+              contentType: ContentType.failure,
+            );
+          }
+        },
         builder: (context, state) {
           return Stack(
             children: [
@@ -248,15 +297,16 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 children: [
                                   Icon(
                                     Icons.image,
-                                    color: context.color.bluePinkLight!,
+                                    color: context.color.bluePinkLight,
                                   ),
                                   const SizedBox(width: 6),
-                                  Text(
-                                    'صورة الكورس',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: context.color.textColor,
+                                  TextApp(
+                                    text: 'صورة الكورس',
+                                    theme: context.textStyle.copyWith(
+                                      fontWeight: FontWeightHelper.bold,
+                                      fontSize: 16.sp,
+                                      fontFamily: FontFamilyHelper.cairoArabic,
+                                      letterSpacing: 0.5,
                                     ),
                                   ),
                                 ],
@@ -285,11 +335,15 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                     context.color.bluePinkLight,
                                               ),
                                               const SizedBox(height: 6),
-                                              Text(
-                                                'رفع صورة الكورس',
-                                                style: TextStyle(
-                                                  color:
-                                                      context.color.bluePinkLight,
+                                              TextApp(
+                                                text:  'رفع صورة الكورس',
+                                                theme: TextStyle(
+                                                  color: context
+                                                      .color
+                                                      .bluePinkLight,
+                                                   fontFamily: FontFamilyHelper
+                                                   .cairoArabic,
+                                      letterSpacing: 0.5,
                                                 ),
                                               ),
                                             ],
@@ -324,7 +378,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                                       onPressed: pickImage,
                                                       icon: const Icon(
                                                         Icons.refresh,
-                                                        color: Colors.blueAccent,
+                                                        color:
+                                                            Colors.blueAccent,
                                                       ),
                                                       tooltip: 'إعادة رفع',
                                                     ),
@@ -357,7 +412,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           ),
                         ),
                       ),
-              
+
                       const SizedBox(height: 16),
                       Card(
                         color: context.color.mainColor,
@@ -373,18 +428,48 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildTextField(titleController, "عنوان الكورس"),
+                              CustomTextField(
+                                controller: titleController,
+                                lable: 'عنوان الكورس',
+                                validator: (value) {
+                                  if (value!.isEmpty == true) {
+                                    return ' عنوان الكورس مطلوب';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                               const SizedBox(height: 8),
-                              _buildTextField(subTitleController, "وصف الكورس"),
+                              CustomTextField(
+                                controller: subTitleController,
+                                lable: 'وصف الكورس',
+                                validator: (value) {
+                                  if (value!.isEmpty == true) {
+                                    return 'وصف الكورس مطلوب';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                               const SizedBox(height: 8),
-                              _buildTextField(subjectController, "المادة"),
+                              CustomTextField(
+                                controller: subjectController,
+                                lable: 'المادة',
+                                validator: (value) {
+                                  if (value!.isEmpty == true) {
+                                    return 'اسم المادة مطلوب';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                             ],
                           ),
                         ),
                       ),
-              
+
                       const SizedBox(height: 16),
-              
+
                       Card(
                         color: context.color.mainColor,
                         elevation: 4,
@@ -436,40 +521,55 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildTextField(priceController, "السعر",keyboardType: TextInputType.number),
+                              CustomTextField(
+                                controller: priceController,
+                                lable: 'السعر',
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value!.isEmpty == true) {
+                                    return 'السعر مطلوب';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                               const SizedBox(height: 8),
-                              _buildDropdown(
-                                "الصف الدراسي",
-                                selectedGrade,
-                                gradeLevels,
-                                (v) => setState(() {
+                              BuildDropDown(
+                                label: 'الصف الدراسي',
+                                value: selectedGrade,
+                                items: gradeLevels,
+                                onChanged: (v) => setState(() {
                                   selectedGrade = v;
                                   gradeLevelController.text = v!;
                                 }),
                               ),
                               const SizedBox(height: 8),
-                              _buildDropdown("الترم", selectedTerm, terms, (v) {
-                                setState(() {
+                              BuildDropDown(
+                                label: 'الترم',
+                                value: selectedTerm,
+                                items: terms,
+                                onChanged: (v) => setState(() {
                                   selectedTerm = v;
                                   termController.text = v!;
-                                });
-                              }),
+                                }),
+                              ),
                             ],
                           ),
                         ),
                       ),
-              
+
                       const SizedBox(height: 20),
-              
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'المحاضرات',
-                            style: TextStyle(
+                          TextApp(
+                            text: 'المحاضرات',
+                            theme: context.textStyle.copyWith(
                               fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: context.color.textColor,
+                              fontWeight: FontWeightHelper.bold,
+                              fontFamily: FontFamilyHelper.cairoArabic,
+                              letterSpacing: 0.5,
                             ),
                           ),
                           TextButton.icon(
@@ -478,15 +578,25 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               foregroundColor: context.color.bluePinkLight,
                             ),
                             icon: const Icon(Icons.add_circle_outline),
-                            label: const Text('أضف محاضرة'),
+                            label: const TextApp(text: 'أضف محاضرة',theme: TextStyle( fontFamily: FontFamilyHelper.cairoArabic,
+                                      letterSpacing: 0.5,),),
                           ),
                         ],
                       ),
-              
+
                       ...lectures.asMap().entries.map((entry) {
                         final idx = entry.key;
                         final lecture = entry.value;
-                        return _buildLectureCard(idx, lecture);
+                        return BuildLectureCard(
+                          idx: idx,
+                          lecture: lecture,
+                          onRemove: () {
+                            lecture['title']?.dispose();
+                            setState(() {
+                              lectures.removeAt(idx);
+                            });
+                          },
+                        );
                       }),
                       const SizedBox(height: 100),
                     ],
@@ -494,15 +604,15 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 ),
               ),
               if (state is AddCourseLoading)
-                      Container(
-                        color: Colors.black.withOpacity(0.3),
-                        child: Center(
-                          child: SpinKitSpinningLines(
-                            color: context.color.bluePinkLight!,
-                            size: 50.sp,
-                          ),
-                        ),
-                      ),
+                ColoredBox(
+                  color: Colors.black.withOpacity(0.3),
+                  child: Center(
+                    child: SpinKitThreeBounce(
+                      color: context.color.bluePinkLight,
+                      size: 50.sp,
+                    ),
+                  ),
+                ),
             ],
           );
         },
@@ -511,260 +621,41 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
-        child: ElevatedButton.icon(
+        height: 55,
+        child: ElevatedButton(
           onPressed: submit,
           style: ElevatedButton.styleFrom(
-            backgroundColor: context.color.bluePinkLight,
+            padding: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 14),
           ),
-          icon: const Icon(Icons.save, color: Colors.white),
-          label: const Text(
-            'حفظ الكورس',
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    TextEditingController controller,
-    String label, {
-    TextInputType? keyboardType,
-    String? hintText,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: CustomTextField(
-        controller: controller,
-        hintText: hintText,
-        keyboardType: keyboardType,
-        validator: (v) => v!.isEmpty ? 'مطلوب' : null,
-        lable: label,
-      ),
-    );
-  }
-
-  Widget _buildDropdown(
-    String label,
-    String? value,
-    List<String> items,
-    void Function(String?) onChanged,
-  ) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: context.color.textFormBorder!),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: context.color.textFormBorder!),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.red),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.red),
-        ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-      ),
-      value: value,
-      isExpanded: true,
-      items: items
-          .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
-          .toList(),
-      onChanged: onChanged,
-      validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
-    );
-  }
-
-  Widget _buildLectureCard(int idx, Map<String, dynamic> lecture) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      color: context.color.mainColor,
-      elevation: 4,
-      shadowColor: context.color.bluePinkLight!.withOpacity(0.5),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.color.bluePinkLight,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    "محاضرة ${idx + 1}",
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.delete_forever, color: Colors.red),
-                  onPressed: () => removeLecture(idx),
-                ),
-              ],
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  context.color.bluePinkLight!,
+                  context.color.bluePinkDark!,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12),
             ),
-
-            const SizedBox(height: 12),
-
-            CustomTextField(
-              controller: lecture['title'] as TextEditingController,
-              hintText: 'ادخل اسم المحاضره',
-              validator: (value) {
-                if (value!.isEmpty == true) {
-                  return 'اسم المحاضره مطلوب';
-                } else {
-                  return null;
-                }
-              },
-              lable: 'اسم المحاضرة',
-            ),
-            const SizedBox(height: 16),
-
-            _buildFilePicker(
-              idx: idx,
-              lecture: lecture,
-              type: "video",
-              icon: Icons.videocam,
-              label: "فيديو",
-              color: context.color.bluePinkLight!,
-            ),
-
-            const SizedBox(height: 12),
-
-            Row(
-              children: [
-                Expanded(
-                  child: _buildFilePicker(
-                    idx: idx,
-                    lecture: lecture,
-                    type: "text",
-                    icon: Icons.description,
-                    label: ".txt",
-                    color: Colors.orange,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildFilePicker(
-                    idx: idx,
-                    lecture: lecture,
-                    type: "word",
-                    icon: Icons.article,
-                    label: ".doc",
-                    color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilePicker({
-    required int idx,
-    required Map<String, dynamic> lecture,
-    required String type,
-    required IconData icon,
-    required String label,
-    required Color color,
-  }) {
-    final file = lecture[type] as File?;
-
-    return DottedBorder(
-      options: RoundedRectDottedBorderOptions(
-        radius: const Radius.circular(12),
-        dashPattern: const [6, 3],
-        color: color,
-      ),
-      child: Container(
-        height: type == "video" ? 180 : 100,
-        width: double.infinity,
-        alignment: Alignment.center,
-        child: file == null
-            ? InkWell(
-                onTap: () => pickLectureFile(idx, type),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(icon, color: color, size: 32),
-                    const SizedBox(height: 6),
-                    Text("رفع $label", style: TextStyle(color: color)),
-                  ],
-                ),
-              )
-            : Stack(
+            child: Container(
+              alignment: Alignment.center,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned.fill(
-                    child: type == "video"
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: VideoPlayerViewWidget(file: file),
-                          )
-                        : ListTile(
-                            leading: Icon(icon, color: color),
-                            title: Text("عرض ملف $label"),
-                            onTap: () => OpenFilex.open(file.path),
-                          ),
-                  ),
-
-                  Positioned(
-                    bottom: 4,
-                    left: 4,
-                    right: 4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          iconSize: 20,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () => pickLectureFile(idx, type),
-                          icon: const Icon(
-                            Icons.refresh,
-                            color: Colors.blueAccent,
-                          ),
-                          tooltip: "إعادة رفع",
-                        ),
-                        const SizedBox(width: 12),
-                        IconButton(
-                          iconSize: 20,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            setState(() {
-                              lecture[type] = null;
-                            });
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          tooltip: "حذف الملف",
-                        ),
-                      ],
-                    ),
+                  Icon(Icons.save, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text(
+                    'حفظ الكورس',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ],
               ),
+            ),
+          ),
+        ),
       ),
     );
   }

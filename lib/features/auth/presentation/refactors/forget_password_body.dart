@@ -10,6 +10,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/auth/presentation/widgets/forget_password/forget_password_button.dart';
@@ -99,6 +100,8 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                 theme: context.textStyle.copyWith(
                   fontSize: 18.sp,
                   fontWeight: FontWeightHelper.bold,
+                  letterSpacing: 0.5,
+                  fontFamily: FontFamilyHelper.cairoArabic,
                 ),
               ),
             ),

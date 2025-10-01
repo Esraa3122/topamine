@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+import 'package:test/core/common/loading/empty_screen.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/features/auth/data/models/user_model.dart';
 
 class StudentsListScreen extends StatelessWidget {
   const StudentsListScreen({super.key});
@@ -23,6 +24,8 @@ class StudentsListScreen extends StatelessWidget {
           context.translate(LangKeys.listStudents),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
             fontSize: 22,
             color: Colors.white,
           ),
@@ -37,15 +40,32 @@ class StudentsListScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+            gradient: LinearGradient(
+              colors: [
+                context.color.bluePinkLight!,
+                context.color.bluePinkDark!,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('chats').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: SpinKitSpinningLines(
-                            color: context.color.bluePinkLight!,
-                            size: 50.sp,
-                          ),);
+            return Center(
+              child: SpinKitSpinningLines(
+                color: context.color.bluePinkLight!,
+                size: 50.sp,
+              ),
+            );
           }
 
           if (snapshot.hasError) {
@@ -58,17 +78,19 @@ class StudentsListScreen extends StatelessWidget {
             future: _getChatsStartedByStudents(chatDocs, currentUserId),
             builder: (context, futureSnapshot) {
               if (!futureSnapshot.hasData) {
-                return Center(child: SpinKitSpinningLines(
-                            color: context.color.bluePinkLight!,
-                            size: 50.sp,
-                          ),);
+                return Center(
+                  child: SpinKitSpinningLines(
+                    color: context.color.bluePinkLight!,
+                    size: 50.sp,
+                  ),
+                );
               }
 
               final studentChats = futureSnapshot.data!;
 
               if (studentChats.isEmpty) {
-                return Center(
-                  child: Lottie.asset(AppImages.emptyBox2)
+                return const EmptyScreen(
+                  title: 'لا يوجد محادثات',
                 );
               }
 
@@ -79,6 +101,7 @@ class StudentsListScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final chat = studentChats[index];
                   final student = chat['student'];
+                  final otherUser = UserModel.fromJson(student as Map<String, dynamic>);
                   final lastMessage = chat['lastMessage'] ?? 'ابدأ المحادثة';
                   final Timestamp? timestamp =
                       chat['lastMessageTime'] as Timestamp?;
@@ -96,11 +119,16 @@ class StudentsListScreen extends StatelessWidget {
                       final unreadCount = unreadSnapshot.data ?? 0;
 
                       return Card(
-                        color: Colors.blue.shade50,
+                        color: unreadCount > 0
+                            ? Colors.blue.shade50
+                            : context.color.mainColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        elevation: 3,
+                        elevation: unreadCount > 0 ? 3 : 2,
+                        shadowColor: unreadCount > 0
+                            ? Colors.blue.shade100
+                            : Colors.blue.shade200,
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -126,8 +154,13 @@ class StudentsListScreen extends StatelessWidget {
                           ),
                           title: Text(
                             student['name']?.toString() ?? 'طالب',
-                            style: const TextStyle(
+                            style: TextStyle(
+                              color: unreadCount > 0
+                                  ? Colors.black
+                                  : context.color.textColor,
                               fontWeight: FontWeight.w600,
+                              fontFamily: FontFamilyHelper.cairoArabic,
+                              letterSpacing: 0.5,
                               fontSize: 18,
                             ),
                           ),
@@ -139,6 +172,8 @@ class StudentsListScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey.shade700,
+                              fontFamily: FontFamilyHelper.cairoArabic,
+                              letterSpacing: 0.5,
                             ),
                           ),
                           trailing: Stack(
@@ -146,25 +181,42 @@ class StudentsListScreen extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.arrow_forward_ios,
-                                size: 18,
+                                size: 22,
                                 color: context.color.bluePinkLight,
                               ),
                               if (unreadCount > 0)
                                 Positioned(
-                                  right: -6,
-                                  top: -6,
+                                  right: 0,
+                                  top: 0,
                                   child: Container(
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
                                     ),
-                                    child: Text(
-                                      unreadCount.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 2,
+                                          offset: const Offset(0, 1),
+                                        ),
+                                      ],
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 20,
+                                      minHeight: 20,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        unreadCount.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
@@ -174,7 +226,10 @@ class StudentsListScreen extends StatelessWidget {
                           onTap: () {
                             context.pushNamed(
                               AppRoutes.chat,
-                              arguments: chatId.toString(),
+                              arguments: {
+                                'chatId': chatId,
+                                'otherUser': otherUser,
+                              },
                             );
                           },
                         ),
@@ -194,9 +249,9 @@ class StudentsListScreen extends StatelessWidget {
     List<QueryDocumentSnapshot> chats,
     String teacherId,
   ) async {
-    List<Map<String, dynamic>> studentChats = [];
+    final studentChats = <Map<String, dynamic>>[];
 
-    for (var chat in chats) {
+    for (final chat in chats) {
       final chatId = chat.id;
       if (!chatId.contains(teacherId)) continue;
 
@@ -243,11 +298,16 @@ class StudentsListScreen extends StatelessWidget {
         .collection('chats')
         .doc(chatId)
         .collection('messages')
-        .where('createdBy', isNotEqualTo: teacherId)
         .where('isRead', isEqualTo: false)
         .get();
 
-    return snapshot.docs.length;
+    final unreadMessages = snapshot.docs
+        .where(
+          (doc) => doc['createdBy'] != teacherId,
+        )
+        .toList();
+
+    return unreadMessages.length;
   }
 
   String _formatTimeAgo(DateTime dateTime) {

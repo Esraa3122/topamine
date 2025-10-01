@@ -5,6 +5,7 @@ import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/color/colors_light.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/onbording/model/list_boarding.dart';
 import 'package:test/features/onbording/view/refactor/on_boarding_page.dart';
@@ -53,6 +54,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   color: ColorsLight.pinkLight,
                   fontSize: 15.sp,
                   fontWeight: FontWeightHelper.bold,
+                  letterSpacing: 0.5,
+                  fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
                 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/routes/app_routes.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
+import 'package:test/core/common/toast/gradient_snack_bar.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -27,8 +29,11 @@ class _LectureItemState extends State<LectureItem> {
 
   void _handleTapExpansion() {
     if (widget.isLocked) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى الاشتراك لعرض محتوى المحاضرة')),
+      GradientSnackBar.show(
+        context,
+        'يرجى الاشتراك لعرض محتوى المحاضرة',
+        context.color.bluePinkLight!,
+        context.color.bluePinkDark!,
       );
       return;
     }
@@ -39,8 +44,11 @@ class _LectureItemState extends State<LectureItem> {
 
   void _handleVideoTap() {
     if (widget.isLocked) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى الاشتراك لعرض الفيديو')),
+      GradientSnackBar.show(
+        context,
+        'يرجى الاشتراك لعرض الفيديو',
+        context.color.bluePinkLight!,
+        context.color.bluePinkDark!,
       );
       return;
     }
@@ -49,8 +57,11 @@ class _LectureItemState extends State<LectureItem> {
 
   void _handleDocTap(String url, String type) {
     if (widget.isLocked) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجى الاشتراك لعرض $type')),
+      GradientSnackBar.show(
+        context,
+        'يرجى الاشتراك لعرض $type',
+        context.color.bluePinkLight!,
+        context.color.bluePinkDark!,
       );
       return;
     }
@@ -74,16 +85,21 @@ class _LectureItemState extends State<LectureItem> {
               size: 30,
             ),
             title: TextApp(
-              text:  widget.lecture.title, 
+              text: widget.lecture.title,
               theme: context.textStyle.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeightHelper.medium,
-                color: context.color.textColor
-                ),),
+                color: context.color.textColor,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
+            ),
             trailing: widget.isLocked
                 ? const Icon(Icons.lock, color: Colors.grey)
                 : Icon(
-                    _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                    _isExpanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
                     color: Colors.grey,
                   ),
             onTap: _handleTapExpansion,
@@ -95,12 +111,15 @@ class _LectureItemState extends State<LectureItem> {
                 ListTile(
                   leading: const Icon(Icons.play_arrow, color: Colors.green),
                   title: TextApp(
-              text:  'مشاهدة الفيديو', 
-              theme: context.textStyle.copyWith(
-                fontSize: 14,
-                fontWeight: FontWeightHelper.medium,
-                color: context.color.textColor
-                ),),
+                    text: 'مشاهدة الفيديو',
+                    theme: context.textStyle.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeightHelper.medium,
+                      color: context.color.textColor,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
                   onTap: _handleVideoTap,
                 ),
                 if ((widget.lecture.docUrl ?? '').isNotEmpty)
@@ -110,13 +129,17 @@ class _LectureItemState extends State<LectureItem> {
                       color: Colors.red,
                     ),
                     title: TextApp(
-              text:  'عرض PDF', 
-              theme: context.textStyle.copyWith(
-                fontSize: 14,
-                fontWeight: FontWeightHelper.medium,
-                color: context.color.textColor
-                ),),
-                    onTap: () => _handleDocTap(widget.lecture.docUrl!,  'ملف PDF'),
+                      text: 'عرض PDF',
+                      theme: context.textStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeightHelper.medium,
+                        color: context.color.textColor,
+                        fontFamily: FontFamilyHelper.cairoArabic,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    onTap: () =>
+                        _handleDocTap(widget.lecture.docUrl!, 'ملف PDF'),
                   ),
                 if ((widget.lecture.txtUrl ?? '').isNotEmpty)
                   ListTile(
@@ -125,13 +148,17 @@ class _LectureItemState extends State<LectureItem> {
                       color: Colors.orange,
                     ),
                     title: TextApp(
-              text:  'عرض TXT', 
-              theme: context.textStyle.copyWith(
-                fontSize: 14,
-                fontWeight: FontWeightHelper.medium,
-                color: context.color.textColor
-                ),),
-                    onTap: () => _handleDocTap(widget.lecture.txtUrl!, 'ملف TXT'),
+                      text: 'عرض TXT',
+                      theme: context.textStyle.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeightHelper.medium,
+                        color: context.color.textColor,
+                        fontFamily: FontFamilyHelper.cairoArabic,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    onTap: () =>
+                        _handleDocTap(widget.lecture.txtUrl!, 'ملف TXT'),
                   ),
               ],
             ),

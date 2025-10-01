@@ -135,6 +135,7 @@ class LectureModel {
     required this.videoUrl,
     required this.txtUrl,
     required this.docUrl,
+    this.duration,
   });
 
   factory LectureModel.fromJson(Map<String, dynamic> json) =>
@@ -154,17 +155,22 @@ class LectureModel {
   @JsonKey(name: 'docUrl')
   final String? docUrl;
 
+  @JsonKey(name: 'duration')
+  final String? duration;
+
   LectureModel copyWith({
     String? title,
     String? videoUrl,
     String? txtUrl,
     String? docUrl,
+    String? duration
   }) {
     return LectureModel(
       title: title ?? this.title,
       videoUrl: videoUrl ?? this.videoUrl,
       txtUrl: txtUrl ?? this.txtUrl,
       docUrl: docUrl ?? this.docUrl,
+      duration: duration ?? this.duration,
     );
   }
 }

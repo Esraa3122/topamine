@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test/features/auth/data/models/user_model.dart';
-import 'package:test/features/student/home/presentation/cubit/teacher_cards_state.dart';
+import 'package:test/features/student/home/presentation/teacher_cards_cubit/teacher_cards_state.dart';
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class TeacherCardsCubit extends Cubit<TeacherCardsState> {
@@ -67,10 +67,48 @@ class TeacherCardsCubit extends Cubit<TeacherCardsState> {
             .where(FieldPath.documentId, whereIn: activeTeacherIds.toList())
             .get();
 
-        final teachers = teacherSnapshot.docs
+        var teachers = teacherSnapshot.docs
             .map((doc) => UserModel.fromJson(doc.data()))
             .where((user) => user.userEmail != currentEmail)
             .toList();
+
+        // 🟢 احسب التقييم لكل مدرس
+        final teacherRatings = <String, double>{};
+        for (var teacher in teachers) {
+          final courses = await _firestore
+              .collection('courses')
+              .where('teacherId', isEqualTo: teacher.userId)
+              .get();
+
+          var totalRating = 0.0;
+          var totalCount = 0;
+
+          for (var courseDoc in courses.docs) {
+            final ratingsSnapshot = await courseDoc.reference
+                .collection('ratings')
+                .get();
+
+            for (final ratingDoc in ratingsSnapshot.docs) {
+              final ratingRaw = ratingDoc['rating'];
+              final ratingNum = ratingRaw is num
+                  ? ratingRaw.toDouble()
+                  : double.tryParse(ratingRaw.toString()) ?? 0.0;
+
+              totalRating += ratingNum;
+              totalCount++;
+            }
+          }
+
+          final avg = totalCount == 0 ? 0.0 : totalRating / totalCount;
+          teacherRatings[teacher.userId] = avg;
+        }
+
+        // 🟢 رتب المدرسين حسب التقييم (أعلى للأقل)
+        teachers.sort((a, b) {
+          final ratingA = teacherRatings[a.userId] ?? 0.0;
+          final ratingB = teacherRatings[b.userId] ?? 0.0;
+          return ratingB.compareTo(ratingA);
+        });
 
         if (!isClosed) {
           emit(

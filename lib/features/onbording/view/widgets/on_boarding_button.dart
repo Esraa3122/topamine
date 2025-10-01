@@ -4,6 +4,7 @@ import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class OnBoardingButton extends StatelessWidget {
@@ -31,6 +32,7 @@ class OnBoardingButton extends StatelessWidget {
               fontSize: 18.sp,
               fontWeight: FontWeightHelper.bold,
               color: Colors.white,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
         ),

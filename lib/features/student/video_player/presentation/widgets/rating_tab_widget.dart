@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class RatingTabWidget extends StatelessWidget {
   const RatingTabWidget({
-    required this.courseId, super.key,
+    required this.courseId,
+    super.key,
   });
 
   final String courseId;
@@ -24,16 +28,24 @@ class RatingTabWidget extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('لا توجد تقييمات بعد'));
+          return Center(
+            child: TextApp(
+              text: 'لا توجد تقييمات بعد',
+              theme: context.textStyle.copyWith(
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5,
+              ),
+            ),
+          );
         }
 
         final ratings = snapshot.data!.docs;
 
         final totalRatings = ratings.length;
-        final avgRating = ratings.fold<double>(
+        final avgRating =
+            ratings.fold<double>(
               0,
-              (sum, doc) =>
-                  sum + ((doc['rating'] as num?)?.toDouble() ?? 0),
+              (sum, doc) => sum + ((doc['rating'] as num?)?.toDouble() ?? 0),
             ) /
             totalRatings;
 
@@ -50,12 +62,14 @@ class RatingTabWidget extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Text(
-                    'متوسط التقييم',
-                    style: TextStyle(
+                  TextApp(
+                    text: 'متوسط التقييم',
+                    theme: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       color: Colors.blue.shade800,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -63,18 +77,21 @@ class RatingTabWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(5, (i) {
                       return Icon(
-                        i < avgRating.round()
-                            ? Icons.star
-                            : Icons.star_border,
+                        i < avgRating.round() ? Icons.star : Icons.star_border,
                         color: Colors.amber,
                         size: 28,
                       );
                     }),
                   ),
                   const SizedBox(height: 6),
-                  Text(
-                    "${avgRating.toStringAsFixed(1)} / 5 من $totalRatings تقييم",
-                    style: TextStyle(fontSize: 14, color: context.color.textColor),
+                  TextApp(
+                    text:
+                        '${avgRating.toStringAsFixed(1)} / 5 من $totalRatings تقييم',
+                    theme: context.textStyle.copyWith(
+                      fontSize: 14,
+                      fontFamily: FontFamilyHelper.cairoArabic,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ],
               ),
@@ -84,15 +101,14 @@ class RatingTabWidget extends StatelessWidget {
               child: ListView.separated(
                 padding: const EdgeInsets.all(12),
                 itemCount: ratings.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
-                  final data =
-                      ratings[index].data() as Map<String, dynamic>;
+                  final data = ratings[index].data()! as Map<String, dynamic>;
 
-                  final name = data['name'] ?? "مستخدم";
-                  final comment = data['comment'] ?? "";
+                  final name = data['name'] ?? 'مستخدم';
+                  final comment = data['comment'] ?? '';
                   final rating = (data['rating'] as num?)?.toInt() ?? 0;
-                  final avatar = data['avatar'] ?? "";
+                  final avatar = data['avatar'] ?? '';
 
                   return Container(
                     padding: const EdgeInsets.all(12),
@@ -104,7 +120,7 @@ class RatingTabWidget extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.15),
                           offset: const Offset(0, 3),
                           blurRadius: 6,
-                        )
+                        ),
                       ],
                     ),
                     child: Row(
@@ -125,32 +141,33 @@ class RatingTabWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                name.toString(),
-                                style: TextStyle(
-                                  color: context.color.textColor,
-                                  fontWeight: FontWeight.bold,
+                              TextApp(
+                                text: name.toString(),
+                                theme: context.textStyle.copyWith(
+                                  fontWeight: FontWeightHelper.bold,
                                   fontSize: 14,
+                                  fontFamily: FontFamilyHelper.cairoArabic,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Row(
                                 children: List.generate(5, (i) {
                                   return Icon(
-                                    i < rating
-                                        ? Icons.star
-                                        : Icons.star_border,
+                                    i < rating ? Icons.star : Icons.star_border,
                                     color: Colors.amber,
                                     size: 20,
                                   );
                                 }),
                               ),
                               const SizedBox(height: 6),
-                              Text(
-                                comment.toString(),
-                                style: const TextStyle(
+                              TextApp(
+                                text: comment.toString(),
+                                theme: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.grey,
+                                  fontFamily: FontFamilyHelper.cairoArabic,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                             ],

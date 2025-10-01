@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/custom_linear_button.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -46,6 +47,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontSize: 20.sp,
                 fontWeight: FontWeightHelper.bold,
                 color: color,
+                fontFamily: FontFamilyHelper.cairoArabic,
+                letterSpacing: 0.5
               ),
               // textOverflow: TextOverflow.ellipsis,
             ),

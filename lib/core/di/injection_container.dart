@@ -5,9 +5,11 @@ import 'package:test/core/service/shared_pref/shared_pref_helper.dart';
 import 'package:test/features/auth/data/datasources/auth_data_source.dart';
 import 'package:test/features/auth/data/repos/auth_repo.dart';
 import 'package:test/features/auth/presentation/auth_cubit/auth_cubit.dart';
-import 'package:test/features/student/home/presentation/cubit/teacher_cards_cubit.dart';
+import 'package:test/features/student/home/presentation/teacher_cards_cubit/teacher_cards_cubit.dart';
 import 'package:test/features/student/navigation/cubit/student_navigation_cubit.dart';
 import 'package:test/features/student/video_player/cubit/video_cubit.dart';
+import 'package:test/features/teacher/add_courses/data/repo/add_course_repository.dart';
+import 'package:test/features/teacher/add_courses/presentation/cubit/add_course_cubit.dart';
 import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
 
 final GetIt sl = GetIt.instance;
@@ -17,6 +19,7 @@ Future<void> setupInjector() async {
   await _initAuth();
   await _initMain();
   await _initHome();
+  await _initTeacher();
 }
 
 Future<void> _initCore() async {
@@ -49,6 +52,12 @@ Future<void> _initMain() async {
   sl
     ..registerFactory(StudentNavigationCubit.new)
     ..registerFactory(TeacherNavigationCubit.new);
+}
+
+Future<void> _initTeacher() async {
+  sl
+    ..registerFactory(() => AddCourseCubit(sl()))
+    ..registerLazySingleton<AddCourseRepository>(AddCourseRepository.new);
 }
 
 Future<void> _initHome() async {

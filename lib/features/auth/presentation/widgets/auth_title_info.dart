@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/animations/animate_do.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class AuthTitleInfo extends StatelessWidget {
@@ -27,6 +28,8 @@ class AuthTitleInfo extends StatelessWidget {
                 fontSize: 24.sp,
                 color: context.color.textColor,
                 fontWeight: FontWeightHelper.bold,
+                letterSpacing: 0.5,
+                fontFamily: FontFamilyHelper.cairoArabic,
                 ),
           ),
           SizedBox(
@@ -38,6 +41,8 @@ class AuthTitleInfo extends StatelessWidget {
               fontSize: 15.sp,
               color: context.color.textColor,
               fontWeight: FontWeightHelper.regular,
+              letterSpacing: 0.5,
+              fontFamily: FontFamilyHelper.cairoArabic,
             ),
             textAlign: TextAlign.center,
           ),

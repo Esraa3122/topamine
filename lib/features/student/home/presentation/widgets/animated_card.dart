@@ -3,14 +3,15 @@ import 'package:test/features/student/home/presentation/widgets/contanier_course
 import 'package:test/features/teacher/add_courses/data/model/courses_model.dart';
 
 class AnimatedCourseCard extends StatefulWidget {
+  const AnimatedCourseCard({required this.course, super.key});
   final CoursesModel course;
-  const AnimatedCourseCard({required this.course, Key? key}) : super(key: key);
 
   @override
   State<AnimatedCourseCard> createState() => _AnimatedCourseCardState();
 }
 
-class _AnimatedCourseCardState extends State<AnimatedCourseCard> with SingleTickerProviderStateMixin {
+class _AnimatedCourseCardState extends State<AnimatedCourseCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
@@ -20,7 +21,7 @@ class _AnimatedCourseCardState extends State<AnimatedCourseCard> with SingleTick
     super.initState();
 
     _controller = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 

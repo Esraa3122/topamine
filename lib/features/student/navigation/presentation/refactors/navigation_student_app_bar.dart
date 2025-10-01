@@ -6,6 +6,7 @@ import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/enums/nav_bar_enum.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/core/style/images/app_images.dart';
 import 'package:test/features/student/navigation/cubit/student_navigation_cubit.dart';
@@ -17,118 +18,92 @@ class NavigationStudentAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<StudentNavigationCubit>();
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: context.color.mainColor,
-      elevation: 0,
-      title: BlocBuilder(
-        bloc: cubit,
-        builder: (context, state) {
-          if (cubit.navBarEnum == NavBarEnum.home) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomFadeInRight(
-                  duration: 800,
+    return SizedBox(
+      height: 90.h,
+      child: AppBar(
+       automaticallyImplyLeading: false,
+        backgroundColor: context.color.mainColor,
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        centerTitle: true,
+        surfaceTintColor: Colors.transparent,
+        title: BlocBuilder(
+          bloc: cubit,
+          builder: (context, state) {
+            if (cubit.navBarEnum == NavBarEnum.home) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomFadeInRight(
+                    duration: 800,
+                    child: TextApp(
+                      text: context.translate(LangKeys.appName),
+                      theme: context.textStyle.copyWith(
+                        fontSize: 23.sp,
+                        fontWeight: FontWeightHelper.bold,
+                        color: context.color.textColor,
+                        fontFamily: FontFamilyHelper.cairoArabic
+                      ),
+                    ),
+                  ),
+                  CustomFadeInLeft(
+                    duration: 800,
+                    child: Image.asset(
+                      AppImages.logo,
+                      width: 40.w,
+                    ),
+                  ),
+                ],
+              );
+            } else if (cubit.navBarEnum == NavBarEnum.search) {
+              return CustomFadeInRight(
+                duration: 800,
+                child: Center(
                   child: TextApp(
-                    text: context.translate(LangKeys.appName),
+                    text: context.translate(LangKeys.search),
                     theme: context.textStyle.copyWith(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeightHelper.bold,
-                      color: context.color.textColor,
+                       fontSize: 23.sp,
+                    fontWeight: FontWeightHelper.bold,
+                    color: context.color.textColor,
+                    fontFamily: FontFamilyHelper.cairoArabic
                     ),
                   ),
                 ),
-                CustomFadeInLeft(
-                  duration: 800,
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 40.w,
-                  ),
-                ),
-              ],
-            );
-          } else if (cubit.navBarEnum == NavBarEnum.search) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomFadeInRight(
-                  duration: 800,
-                  child: Center(
-                    child: TextApp(
-                      text: context.translate(LangKeys.search),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.textColor,
-                      ),
+              );
+            } else if (cubit.navBarEnum == NavBarEnum.booking) {
+              return CustomFadeInRight(
+                duration: 800,
+                child: Center(
+                  child: TextApp(
+                    text: context.translate(LangKeys.myCourses),
+                    theme: context.textStyle.copyWith(
+                       fontSize: 23.sp,
+                    fontWeight: FontWeightHelper.bold,
+                    color: context.color.textColor,
+                    fontFamily: FontFamilyHelper.cairoArabic
                     ),
                   ),
                 ),
-                CustomFadeInLeft(
-                  duration: 800,
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 40.w,
-                  ),
-                ),
-              ],
-            );
-          } else if (cubit.navBarEnum == NavBarEnum.booking) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomFadeInRight(
-                  duration: 800,
-                  child: Center(
-                    child: TextApp(
-                      text: context.translate(LangKeys.myCourses),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.textColor,
-                      ),
+              );
+            } else if (cubit.navBarEnum == NavBarEnum.profile) {
+              return CustomFadeInRight(
+                duration: 800,
+                child: Center(
+                  child: TextApp(
+                    text: context.translate(LangKeys.profileAccount),
+                    theme: context.textStyle.copyWith(
+                       fontSize: 23.sp,
+                    fontWeight: FontWeightHelper.bold,
+                    color: context.color.textColor,
+                    fontFamily: FontFamilyHelper.cairoArabic
                     ),
                   ),
                 ),
-                CustomFadeInLeft(
-                  duration: 800,
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 40.w,
-                  ),
-                ),
-              ],
-            );
-          } else if (cubit.navBarEnum == NavBarEnum.profile) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomFadeInRight(
-                  duration: 800,
-                  child: Center(
-                    child: TextApp(
-                      text: context.translate(LangKeys.profileAccount),
-                      theme: context.textStyle.copyWith(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeightHelper.bold,
-                        color: context.color.textColor,
-                      ),
-                    ),
-                  ),
-                ),
-                CustomFadeInLeft(
-                  duration: 800,
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 40.w,
-                  ),
-                ),
-              ],
-            );
-          }
-          return const SizedBox.shrink();
-        },
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

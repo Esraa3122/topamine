@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 
 class CourseInfo extends StatelessWidget {
@@ -19,7 +20,7 @@ class CourseInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: Colors.grey[700]),
+        Icon(icon, color: context.color.textColor!.withOpacity(0.7)),
         SizedBox(height: 4.h),
         TextApp(
           text: label,
@@ -27,6 +28,8 @@ class CourseInfo extends StatelessWidget {
             fontSize: 14.sp,
             fontWeight: FontWeightHelper.bold,
             color: context.color.textColor,
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
           ),
         ),
         TextApp(
@@ -34,7 +37,9 @@ class CourseInfo extends StatelessWidget {
           theme: context.textStyle.copyWith(
             fontSize: 12.sp,
             fontWeight: FontWeightHelper.bold,
-            color: Colors.grey[600],
+            color: context.color.textColor!.withOpacity(0.6),
+            fontFamily: FontFamilyHelper.cairoArabic,
+            letterSpacing: 0.5,
           ),
         ),
       ],

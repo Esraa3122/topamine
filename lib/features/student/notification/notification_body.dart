@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+import 'package:test/core/common/loading/empty_screen.dart';
+import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/language/lang_keys.dart';
-import 'package:test/core/style/images/app_images.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
+import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/student/notification/notifications_item.dart';
 
 class NotificationBody extends StatelessWidget {
@@ -20,11 +22,13 @@ class NotificationBody extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          context.translate(LangKeys.listNotifications),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+        title: TextApp(
+          text: context.translate(LangKeys.listNotifications),
+          theme: const TextStyle(
+            fontWeight: FontWeightHelper.bold,
+            fontFamily: FontFamilyHelper.cairoArabic,
             fontSize: 22,
+            letterSpacing: 0.5,
             color: Colors.white,
           ),
         ),
@@ -37,6 +41,21 @@ class NotificationBody extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+            gradient: LinearGradient(
+              colors: [
+                context.color.bluePinkLight!,
+                context.color.bluePinkDark!,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -51,13 +70,7 @@ class NotificationBody extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Lottie.asset(
-                AppImages.emptyBox2,
-                width: 326.w,
-                height: 300.h,
-              ),
-            );
+            return const EmptyScreen(title: 'لا يوجد اشعارات',);
           }
 
           final notifications = snapshot.data!.docs;

@@ -19,11 +19,9 @@ class ConnectivityController {
 
       // الاشتراك في تغيّر الاتصال
       _subscription ??= _connectivity.onConnectivityChanged.listen(
-        (List<ConnectivityResult> results) {
-          _handleConnectionChange(results);
-        },
+        _handleConnectionChange,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error checking connectivity: $e');
       isConnected.value = false;
     }

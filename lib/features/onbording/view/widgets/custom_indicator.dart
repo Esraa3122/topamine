@@ -14,8 +14,8 @@ class CustomIndicator extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
         color: active?ColorsLight.pinkLight:ColorsLight.greyCFColor,
       ),
-      width: active?10:8,
-      height: active?10:8,
+      width: active?20:8,
+      height: active?8:8,
     );
   }
 }

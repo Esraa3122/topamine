@@ -30,6 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
  Future<void> _handleNavigation() async {
+  // ignore: inference_failure_on_instance_creation
   await Future.delayed(const Duration(seconds: 5));
 
   final firebaseUser = FirebaseAuth.instance.currentUser;

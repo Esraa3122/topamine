@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';
 import 'package:test/core/style/color/colors_light.dart';
+import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
 import 'package:test/features/onbording/model/on_boarding_page_data.dart';
 
@@ -28,7 +29,9 @@ class OnBoardingPage extends StatelessWidget {
             theme: context.textStyle.copyWith(
                   color: context.color.textColor,
                   fontSize: 30.sp,
+                  letterSpacing: 0.5,
                   fontWeight: FontWeightHelper.bold,
+                  fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
           TextApp(
@@ -37,7 +40,9 @@ class OnBoardingPage extends StatelessWidget {
             theme: context.textStyle.copyWith(
                   color: ColorsLight.grey9FColor,
                   fontSize: 17.sp,
+                  letterSpacing: 0.5,
                   fontWeight: FontWeightHelper.medium,
+                  fontFamily: FontFamilyHelper.cairoArabic,
             ),
           ),
         ],

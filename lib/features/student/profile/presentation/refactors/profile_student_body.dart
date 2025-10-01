@@ -36,6 +36,7 @@ class _ProfileStudentBodyState extends State<ProfileStudentBody> {
         final userModel = snapshot.data!;
         return Column(
           children: [
+            const SizedBox(height: 10),
             UserHeader(userModel: userModel),
             const SizedBox(height: 20),
             Expanded(

@@ -9,7 +9,9 @@ class WaitingApprovalScreen extends StatelessWidget {
 
   Future<void> _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    await context.pushNamedAndRemoveUntil(AppRoutes.login);
+    if (context.mounted) {
+      await context.pushNamedAndRemoveUntil(AppRoutes.login);
+    }
   }
 
   @override

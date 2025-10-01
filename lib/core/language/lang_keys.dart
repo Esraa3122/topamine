@@ -139,4 +139,22 @@ class LangKeys {
   static const String listStudents = 'list_students';
   static const String messages = 'messages';
   static const String listNotifications = 'list_notifications';
+  static const String welcomeBack = 'welcome_back';
+  static const String activeCourses = 'active_courses';
+  static const String inactiveCourses = 'inactive_courses';
+  static const String totalPayments = 'total_payments';
+  static const String averageRating = 'average_rating';
+  static const String subscriptions = 'subscriptions';
+  static const String followers = 'followers';
+  static const String totalRatings = 'total_ratings';
+  static const String readyToManageYourCourses = 'ready_to_manage_your_courses';
+  static const String hours = 'hours';
+  static const String minutes = 'minutes';
+  static const String eGP = 'egp';
+  static const String viewDetails = 'view_details';
+  static const String view = 'view';
+  static const String reviews = 'reviews';
+  static const String weWishYouToHaveAGreatTimeInTopamin =
+      'we_wish_you_to_have_a_great_time_in_topamin';
+  static const String welcome = 'welcome';
 }
