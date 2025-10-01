@@ -389,10 +389,8 @@ class _EditCoursesTeacherBodyState extends State<EditCoursesTeacherBody> {
 
                       const SizedBox(height: 16),
 
-                      /// باقي الفورم + المحاضرات
                       ..._buildForm(context),
 
-                      /// لستة المحاضرات
                       ...lectures.asMap().entries.map((entry) {
                         final idx = entry.key;
                         final lecture = entry.value;

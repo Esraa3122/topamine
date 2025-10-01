@@ -11,7 +11,6 @@ import 'package:test/core/language/lang_keys.dart';
 import 'package:test/core/routes/app_routes.dart';
 import 'package:test/core/style/fonts/font_family_helper.dart';
 import 'package:test/core/style/fonts/font_weight_helper.dart';
-import 'package:test/features/auth/data/models/user_model.dart';
 import 'package:test/features/teacher/navigation/cubit/teacher_navigation_cubit.dart';
 
 class NavigationTeacherAppBar extends StatelessWidget
@@ -109,7 +108,7 @@ class NavigationTeacherAppBar extends StatelessWidget
                       ),
                       trailing: StreamBuilder<int>(
                         stream:
-                            unreadMessagesStream(), // نفس الفنكشن اللى عندك فوق
+                            unreadMessagesStream(), 
                         builder: (context, snapshot) {
                           final unreadCount = snapshot.data ?? 0;
 

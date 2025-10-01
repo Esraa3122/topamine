@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/core/common/widgets/text_app.dart';
 import 'package:test/core/extensions/context_extension.dart';

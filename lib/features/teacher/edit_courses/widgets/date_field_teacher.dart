@@ -23,7 +23,7 @@ class DateField extends StatelessWidget {
             date != null
                 ? DateFormat('yyyy-MM-dd').format(date!)
                 : 'اختر التاريخ',
-            style: TextStyle(fontSize: 14, color: Colors.lightBlueAccent),
+            style: const TextStyle(fontSize: 14, color: Colors.lightBlueAccent),
           ),
         ],
       ),
